@@ -1,10 +1,13 @@
+package model;
+
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 
 /**
- * This class contains utility methods to read a PPM image from file and simply print its contents. Feel free to change this method 
- *  as required.
+ * This class contains utility methods to read a PPM image from file and simply print its contents.
+ * Its contents include the height, width, and max pixel value of the image
+ * For every pixel the file contains its red, green, blue, and alpha values
  */
 public class ImageUtil {
   /**
@@ -19,7 +22,7 @@ public class ImageUtil {
         sc = new Scanner(new FileInputStream(filename));
     }
     catch (FileNotFoundException e) {
-        System.out.println("File "+filename+ " not found!");
+        System.out.println("File " + filename + " not found!");
         return;
     }
     StringBuilder builder = new StringBuilder();
@@ -52,7 +55,9 @@ public class ImageUtil {
             int r = sc.nextInt();
             int g = sc.nextInt();
             int b = sc.nextInt();
-            System.out.println("Color of pixel ("+j+","+i+"): "+ r+","+g+","+b);
+            int a = sc.nextInt();
+            System.out.println("Color of pixel (" + j + " ," + i + "):" +
+                    " " + r + ", " + g + ", " + b + ", " + a);
         }
     }
   }
