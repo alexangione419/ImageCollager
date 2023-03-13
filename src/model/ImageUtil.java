@@ -1,8 +1,8 @@
 package model;
 
-import java.util.Scanner;
-import java.io.FileNotFoundException;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 /**
  * This class contains utility methods to read a PPM image from file and simply print its contents.

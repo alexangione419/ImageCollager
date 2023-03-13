@@ -1,11 +1,15 @@
 package model;
 
-import java.io.IOException;
-
 /**
  * A Layer a single slide of a project comprised of one or more images.
  */
 public interface Layer {
+
+  /**
+   * Returns the name of this {@code Layer}.
+   * @return the name of this {@code Layer}.
+   */
+  String getName();
 
   /**
    * Adds a given filter to the given layer.
