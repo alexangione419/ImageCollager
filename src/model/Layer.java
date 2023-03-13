@@ -3,12 +3,12 @@ package model;
 import java.io.IOException;
 
 /**
- * A Layer a single slide of a project comprised of one or more images
+ * A Layer a single slide of a project comprised of one or more images.
  */
 public interface Layer {
 
   /**
-   * Adds a given filter to the given layer
+   * Adds a given filter to the given layer.
    * @param filerOption the name of the filer to apply to the given layer
    * @throws IllegalArgumentException if filter is invalid
    */
@@ -16,7 +16,7 @@ public interface Layer {
 
   /**
    * Places an image onto the given layer
-   * The top left corner of the image will reside at the given x and y
+   * The top left corner of the image will reside at the given x and y.
    * @param imageFilename the name of the image to add to the layer
    * @param x the x position in the layer to add the image to
    * @param y the y position in the layer to add the image to
@@ -25,7 +25,7 @@ public interface Layer {
   void addImageToLayer(String imageFilename, int x, int y) throws IllegalArgumentException;
 
   /**
-   * Changes the colors of a specific pixel
+   * Changes the colors of a specific pixel.
    * @param x the x position of the pixel
    * @param y the y position of the pixel
    * @param r the red component of the pixel
