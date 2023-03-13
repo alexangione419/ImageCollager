@@ -13,8 +13,7 @@ public class PPMProject implements ImageProject {
 
   private int width;
   private int height;
-  private String projectName;
-  private List<Layer> layers;
+  private final List<Layer> layers;
 
   //should be false if loadProject() or createNewProject() hasn't been called
   private boolean hasAOpenProject;
@@ -24,7 +23,6 @@ public class PPMProject implements ImageProject {
    * and sets the name to "New Project".
    */
   public PPMProject() {
-    this.projectName = "New Project";
     this.layers = new ArrayList<Layer>();
     this.hasAOpenProject = false;
   }
@@ -54,7 +52,34 @@ public class PPMProject implements ImageProject {
     this.width = width;
     this.height = height;
     this.hasAOpenProject = true;
-    this.layers.add(new PPMLayer("Layer 1"));
+    this.layers.add(new PPMLayer("Layer 1", this));
+  }
+
+  @Override
+  public int getWidth() throws IllegalStateException {
+    if (!hasAOpenProject) {
+      throw new IllegalStateException("There's currently no open project.");
+    }
+
+    return this.width;
+  }
+
+  @Override
+  public int getHeight() throws IllegalStateException {
+    if (!hasAOpenProject) {
+      throw new IllegalStateException("There's currently no open project.");
+    }
+
+    return this.height;
+  }
+
+  @Override
+  public int getNumberOfLayers() throws IllegalStateException {
+    if (!hasAOpenProject) {
+      throw new IllegalStateException("There's currently no open project.");
+    }
+
+    return this.layers.size();
   }
 
   @Override
@@ -68,7 +93,7 @@ public class PPMProject implements ImageProject {
           + "just whitespace.");
     }
 
-    this.layers.add(new PPMLayer(name));
+    this.layers.add(new PPMLayer(name, this));
   }
 
   @Override

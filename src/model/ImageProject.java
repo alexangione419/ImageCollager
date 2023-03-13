@@ -43,6 +43,27 @@ public interface ImageProject {
   void createNewProject(int width, int height) throws IllegalArgumentException;
 
   /**
+   * Returns the width size of this {@code ImageProject}.
+   * @return the width of this this {@code ImageProject}
+   * @throws IllegalStateException    if this {@code ImageProject} doesn't have a loaded project
+   */
+  int getWidth() throws IllegalStateException;
+
+  /**
+   * Returns the height size of this {@code ImageProject}.
+   * @return the height of this this {@code ImageProject}
+   * @throws IllegalStateException    if this {@code ImageProject} doesn't have a loaded project
+   */
+  int getHeight() throws IllegalStateException;
+
+  /**
+   * Returns the number of layers this {@code ImageProject} has.
+   * @return the number of layers in this {@code ImageProject}
+   * @throws IllegalStateException    if this {@code ImageProject} doesn't have a loaded project
+   */
+  int getNumberOfLayers() throws IllegalStateException;
+
+  /**
    * Adds a new layer to this project with the specified name.
    *
    * @param name the name to give the layer
@@ -64,7 +85,7 @@ public interface ImageProject {
   /**
    * Sets a filter to a specified layer from this project.
    *
-   * @param filter the name of the filter to set to the specified layer
+   * @param filterName the name of the filter to set to the specified layer
    * @param layerName the name of the layer receiving the given filter
    * @throws IllegalArgumentException if the given layer is NOT in the current project
    * @throws IllegalStateException    if this {@code ImageProject} doesn't have a loaded project

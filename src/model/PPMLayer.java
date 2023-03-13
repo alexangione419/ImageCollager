@@ -8,12 +8,14 @@ package model;
 public final class PPMLayer implements Layer {
 
   private final String name;
+  private final PPMProject project; // the PPMProject that this Layer is in
 
   /**
    * Constructs a new {@code PPMLayer}.
    */
-  public PPMLayer(String name) {
+  public PPMLayer(String name, PPMProject project) {
     this.name = name;
+    this.project = project;
   }
 
   @Override
