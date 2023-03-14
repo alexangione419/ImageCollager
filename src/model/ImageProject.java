@@ -64,20 +64,38 @@ public interface ImageProject {
   int getNumberOfLayers() throws IllegalStateException;
 
   /**
-   * Adds a new layer to this project with the specified name.
+   * Returns the current layer that the user is editing.
+   * @return the layer the user is currently editing
+   * @throws IllegalStateException    if this {@code ImageProject} doesn't have a loaded project
+   */
+  Layer getActiveLayer() throws IllegalStateException;
+
+  /**
+   * Sets the active layer to the Layer whose name matches the given String.
+   * @param layerName the name of the layer to set as active
+   * @throws IllegalArgumentException if the name is an empty String or null,
+   * @throws IllegalStateException
+   */
+  void setActiveLayer(String layerName) throws IllegalArgumentException, IllegalStateException;
+
+  /**
+   * Adds a new layer to this project with the specified name. The active layer of this
+   * {@code ImageProject} gets set to this layer.
    *
-   * @param name the name to give the layer
+   * @param layerName the name to give the layer
    * @throws IllegalArgumentException if the name is an empty String or null
    * @throws IllegalStateException    if this {@code ImageProject} doesn't have a loaded project
    */
-  void addLayer(String name) throws IllegalArgumentException, IllegalStateException;
+  void addLayer(String layerName) throws IllegalArgumentException, IllegalStateException;
 
   /**
    * Removes the first layer whose name matches the given String from this project.
+   * This method also adjusts the active layer to ensure that it stays on the proper layer.
    *
    * @param layerName the name of the layer to remove.
    * @throws IllegalArgumentException if the given layer is NOT in the current project OR
-   *                                  if there's only one layer in the current project
+   *                                  if there's only one layer in the current project OR
+   *                                  if the given String is null
    * @throws IllegalStateException    if this {@code ImageProject} doesn't have a loaded project
    */
   void removeLayer(String layerName) throws IllegalArgumentException, IllegalStateException;
@@ -87,7 +105,8 @@ public interface ImageProject {
    *
    * @param filterName the name of the filter to set to the specified layer
    * @param layerName the name of the layer receiving the given filter
-   * @throws IllegalArgumentException if the given layer is NOT in the current project
+   * @throws IllegalArgumentException if the given layer is NOT in the current project OR
+   *                                  if filterName or layerName are null.
    * @throws IllegalStateException    if this {@code ImageProject} doesn't have a loaded project
    */
   void setFilter(String filterName, String layerName) throws IllegalArgumentException, IllegalStateException;

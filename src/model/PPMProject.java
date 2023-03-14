@@ -13,6 +13,7 @@ public class PPMProject implements ImageProject {
 
   private int width;
   private int height;
+  private int activeLayer;
   private final List<Layer> layers;
 
   //should be false if loadProject() or createNewProject() hasn't been called
@@ -24,22 +25,29 @@ public class PPMProject implements ImageProject {
    */
   public PPMProject() {
     this.layers = new ArrayList<Layer>();
+    this.activeLayer = 0;
     this.hasAOpenProject = false;
   }
 
   @Override
   public void saveImagePPM(String filePath) throws IOException, IllegalStateException {
-
+    if (filePath == null) {
+      throw new IllegalArgumentException("Filepath cannot be null.");
+    }
   }
 
   @Override
   public void saveProject(String filePath) throws IOException, IllegalStateException {
-
+    if (filePath == null) {
+      throw new IllegalArgumentException("Filepath cannot be null.");
+    }
   }
 
   @Override
   public void loadProject(String filePath) throws IOException, IllegalStateException {
-
+    if (filePath == null) {
+      throw new IllegalArgumentException("Filepath cannot be null.");
+    }
   }
 
   @Override
@@ -51,6 +59,7 @@ public class PPMProject implements ImageProject {
 
     this.width = width;
     this.height = height;
+    this.activeLayer = 0;
     this.hasAOpenProject = true;
     this.layers.add(new PPMLayer("Layer 1", this));
   }
@@ -83,17 +92,51 @@ public class PPMProject implements ImageProject {
   }
 
   @Override
-  public void addLayer(String name) throws IllegalArgumentException, IllegalStateException {
+  public Layer getActiveLayer() throws IllegalStateException {
     if (!hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
     }
 
-    if (name.isBlank() || name.equals(System.lineSeparator())) {
+    return this.layers.get(this.activeLayer);
+  }
+
+  @Override
+  public void setActiveLayer(String layerName) throws IllegalArgumentException, IllegalStateException {
+    if (!hasAOpenProject) {
+      throw new IllegalStateException("There's currently no open project.");
+    }
+
+    if (layerName == null) {
+      throw new IllegalArgumentException("Layer name cannot be null.");
+    }
+
+    if (!this.doesLayerExist(layerName)) {
+      throw new IllegalArgumentException("The layer " + layerName + " does not exist in "
+          + "this project");
+    }
+
+    else {
+      this.activeLayer = this.layers.indexOf(this.getLayer(layerName));
+    }
+  }
+
+  @Override
+  public void addLayer(String layerName) throws IllegalArgumentException, IllegalStateException {
+    if (!hasAOpenProject) {
+      throw new IllegalStateException("There's currently no open project.");
+    }
+
+    if (layerName == null) {
+      throw new IllegalArgumentException("Layer name cannot be null.");
+    }
+
+    if (layerName.isBlank() || layerName.equals(System.lineSeparator())) {
       throw new IllegalArgumentException("A layer name cannot be an empty string or "
           + "just whitespace.");
     }
 
-    this.layers.add(new PPMLayer(name, this));
+    this.layers.add(new PPMLayer(layerName, this));
+    this.activeLayer = this.layers.size() - 1;
   }
 
   @Override
@@ -102,22 +145,27 @@ public class PPMProject implements ImageProject {
       throw new IllegalStateException("There's currently no open project.");
     }
 
+    if (layerName == null) {
+      throw new IllegalArgumentException("Layer name cannot be null.");
+    }
+
     if (this.layers.size() == 1) {
       throw new IllegalStateException("There is only 1 layer. Operation cannot be done.");
     }
 
-    for (int i = 0; i < this.layers.size(); i++) {
-      String curName = this.layers.get(i).getName();
-
-      if (curName.equals(layerName)) {
-        this.layers.remove(i);
-        break;
+    if (!this.doesLayerExist(layerName)) {
+      throw new IllegalArgumentException("Tried to remove layer \"Layer \" but that layer doesn't exist "
+          + "in this project.");
+    }
+    else {
+      //adjusts activeLayer if this the index of the layer that's being removed
+      //is greater than activeLayer
+      if (this.activeLayer >= this.layers.indexOf(this.getLayer(layerName))) {
+        this.activeLayer = (this.activeLayer != 0) ? this.activeLayer - 1 : 0;
       }
 
-      if (i == (this.layers.size() - 1)) {
-        throw new IllegalArgumentException("Tried to remove layer \"Layer \" but that layer doesn't exist "
-            + "in this project.");
-      }
+      this.layers.remove(this.getLayer(layerName));
+
     }
   }
 
@@ -125,7 +173,59 @@ public class PPMProject implements ImageProject {
   public void setFilter(String filterName, String layerName)
       throws IllegalArgumentException, IllegalStateException {
     if (!hasAOpenProject) {
-      throw new IllegalArgumentException("There's currently no open project.");
+      throw new IllegalStateException("There's currently no open project.");
     }
+
+    if (filterName == null || layerName == null) {
+      throw new IllegalArgumentException("Layer name and/or Filter name cannot be null.");
+    }
+  }
+
+  /**
+   * Returns whether a {@code Layer} whose name is the given String exists in this project.
+   * @param layerName the name of the layer to look for
+   * @return true if the layer exists; otherwise false.
+   */
+  private boolean doesLayerExist(String layerName) {
+    boolean result = false;
+
+    for (Layer l : this.layers) {
+      String curName = l.getName();
+
+      if (curName.equals(layerName)) {
+        result = true;
+        break;
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Returns the {@code Layer} whose name matches the given String.
+   * @param layerName the name of the layer to look for
+   * @return the {@code Layer} with the given layerName; otherwise, this method
+   *         throws an IllegalArgumentException.
+   */
+  private Layer getLayer(String layerName) {
+    Layer result = null;
+
+    if (this.doesLayerExist(layerName)) {
+      for (Layer l : this.layers) {
+        String curName = l.getName();
+
+        if (curName.equals(layerName)) {
+          result = l;
+          break;
+        }
+      }
+    }
+
+    else {
+      throw new IllegalArgumentException("The layer " + layerName + " does not exist in "
+          + "this project");
+    }
+
+    return result;
   }
 }
