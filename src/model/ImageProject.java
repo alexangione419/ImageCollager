@@ -14,7 +14,7 @@ public interface ImageProject {
    * @throws IOException if the file path is invalid.
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
-  void saveImagePPM(String filePath) throws IOException, IllegalStateException;
+  void saveImagePPM(String filePath, String name) throws IOException, IllegalStateException;
 
   /**
    * Saves this project to a specified file path as a .collage file.
@@ -23,7 +23,7 @@ public interface ImageProject {
    * @throws IOException if the file path is invalid.
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
-  void saveProject(String filePath) throws IOException, IllegalStateException;
+  void saveProject(String filePath, String name) throws IOException, IllegalStateException;
 
   /**
    * Loads a project at a given file path.
