@@ -43,6 +43,11 @@ public class PPMProject implements ImageProject {
     if (filePath == null) {
       throw new IllegalArgumentException("Filepath cannot be null.");
     }
+
+    if (!hasAOpenProject) {
+      throw new IllegalStateException("There's currently no open project.");
+    }
+
   }
 
   @Override
@@ -63,7 +68,7 @@ public class PPMProject implements ImageProject {
     this.height = height;
     this.activeLayer = 0;
     this.hasAOpenProject = true;
-    this.layers.add(new PPMLayer("Layer 1", this));
+    this.layers.add(new PPMLayer("Layer 1", this)); // make this white
   }
 
   @Override
@@ -151,7 +156,6 @@ public class PPMProject implements ImageProject {
       throw new IllegalArgumentException("Layer name cannot be null.");
     }
 
-    // Why not? If we have no layers we still have the background? maybe?
     if (this.layers.size() == 1) {
       throw new IllegalStateException("There is only 1 layer. Operation cannot be done.");
     }

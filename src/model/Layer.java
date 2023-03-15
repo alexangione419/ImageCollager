@@ -12,6 +12,12 @@ public interface Layer {
   String getName();
 
   /**
+   * Returns a copy of the pixel data contained in a layer
+   * @return a 2D array of each pixel's data
+   */
+  int[][] getLayerData();
+
+  /**
    * Adds a given filter to the given layer.
    * @param filerOption the name of the filer to apply to the given layer
    * @throws IllegalArgumentException if filter is invalid
