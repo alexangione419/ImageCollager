@@ -12,10 +12,28 @@ public interface Layer {
   String getName();
 
   /**
-   * Returns a copy of the pixel data contained in a layer
-   * @return a 2D array of each pixel's data
+   * Returns the total number of pixels available on this {@code Layer}.
+   * @return total number of pixels on a {@code Layer}.
+   */
+  int getTotalPixels();
+
+  /**
+   * Returns a copy of the pixel data contained on this {@code Layer}.
+   * @return a 2D array of each pixel's data on this {@code Layer}
    */
   int[][] getLayerData();
+
+  /**
+   * Returns a copy of the unfiltered pixel data contained on this {@code Layer}.
+   * @return a 2D array of each pixel's data on this {@code Layer}
+   */
+  int[][] getUnfilteredLayer();
+
+  /**
+   * Gets the maximum value allowed for a pixel.
+   * @return the maximum allowed pixel value
+   */
+  int getMaxPixel();
 
   /**
    * Adds a given filter to the given layer.

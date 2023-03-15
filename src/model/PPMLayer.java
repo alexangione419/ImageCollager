@@ -1,7 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.HashMap;
 
 import model.filters.Blue_Component;
@@ -42,7 +41,6 @@ public final class PPMLayer implements Layer {
 
     this.currentFiler = "normal"; // filter is normal by default
 
-
     this.supportedFilters = new HashMap<>();
     this.supportedFilters.put("normal", new Normal());
     this.supportedFilters.put("red-component", new Red_Component());
@@ -64,8 +62,23 @@ public final class PPMLayer implements Layer {
   }
 
   @Override
+  public int getTotalPixels() {
+    return project.getHeight() * project.getWidth();
+  }
+
+  @Override
   public int[][] getLayerData() {
     return this.currentLayer.clone();
+  }
+
+  @Override
+  public int[][] getUnfilteredLayer() {
+    return this.unfilteredLayer.clone();
+  }
+
+  @Override
+  public int getMaxPixel() {
+    return this.project.getMaxPixelValue();
   }
 
   @Override

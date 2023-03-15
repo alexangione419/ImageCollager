@@ -71,6 +71,12 @@ public interface ImageProject {
   Layer getActiveLayer() throws IllegalStateException;
 
   /**
+   * Returns the maximum value allowed for a pixel
+   * @return the maximum value of a pixel
+   */
+  int getMaxPixelValue();
+
+  /**
    * Sets the active layer to the Layer whose name matches the given String.
    * @param layerName the name of the layer to set as active
    * @throws IllegalArgumentException if the name is an empty String or null,

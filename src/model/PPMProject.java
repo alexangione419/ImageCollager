@@ -108,6 +108,11 @@ public class PPMProject implements ImageProject {
   }
 
   @Override
+  public int getMaxPixelValue() {
+    return this.maxPixelValue;
+  }
+
+  @Override
   public void setActiveLayer(String layerName) throws IllegalArgumentException, IllegalStateException {
     if (!hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
