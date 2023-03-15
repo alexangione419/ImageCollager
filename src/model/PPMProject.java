@@ -13,6 +13,8 @@ public class PPMProject implements ImageProject {
 
   private int width;
   private int height;
+  // represents the maximum value allowed in any pixel value
+  private int maxPixelValue;
   private int activeLayer;
   private final List<Layer> layers;
 
@@ -149,6 +151,7 @@ public class PPMProject implements ImageProject {
       throw new IllegalArgumentException("Layer name cannot be null.");
     }
 
+    // Why not? If we have no layers we still have the background? maybe?
     if (this.layers.size() == 1) {
       throw new IllegalStateException("There is only 1 layer. Operation cannot be done.");
     }
@@ -178,6 +181,16 @@ public class PPMProject implements ImageProject {
 
     if (filterName == null || layerName == null) {
       throw new IllegalArgumentException("Layer name and/or Filter name cannot be null.");
+    }
+
+    if (!this.doesLayerExist(layerName)) {
+      throw new IllegalArgumentException("Layer does not exist within project.");
+    }
+
+    try {
+      this.getLayer(layerName).applyFilter(filterName);
+    } catch (IllegalArgumentException a) {
+      throw new IllegalArgumentException("Invalid filter");
     }
   }
 
