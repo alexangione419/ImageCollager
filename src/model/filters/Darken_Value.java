@@ -22,5 +22,4 @@ public class Darken_Value implements Filter{
 
     return layerToModify;
   }
-  }
 }
