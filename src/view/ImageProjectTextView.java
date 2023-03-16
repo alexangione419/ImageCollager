@@ -14,11 +14,11 @@ public class ImageProjectTextView implements ImageProjectView {
 
   /**
    * Constructs a {@code ImageProjectTextView} and sets output to {@code System.out}.
-   * @param m the {@code SetGameModelState} to view
+   * @param m the {@code ImageProject} to view
    */
   public ImageProjectTextView(ImageProject m) {
     if (m == null) {
-      throw new IllegalArgumentException("SetGameModelState cannot be null.");
+      throw new IllegalArgumentException("ImageProject cannot be null.");
     }
 
     this.model = m;
@@ -26,17 +26,22 @@ public class ImageProjectTextView implements ImageProjectView {
   }
 
   /**
-   * Constructs a new {@code SetGameTextView} with a specified {@code Appendable}.
-   * @param m the {@code SetGameModelState} to view
+   * Constructs a new {@code ImageProjectTextView} with a specified {@code Appendable}.
+   * @param m the {@code ImageProject} to view
    * @param a the {@code Appendable} to write to
    */
   public ImageProjectTextView(ImageProject m, Appendable a) {
     if ((m == null) || (a == null)) {
-      throw new IllegalArgumentException("SetGameModelState and/or Appendable cannot be null.");
+      throw new IllegalArgumentException("ImageProject and/or Appendable cannot be null.");
     }
 
     this.model = m;
     this.output = a;
+  }
+
+  @Override
+  public void currentCanvas() throws IOException {
+
   }
 
   @Override
