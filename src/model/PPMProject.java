@@ -53,7 +53,7 @@ public class PPMProject implements ImageProject {
   //In the controller, make it so that if this method is called after a project is opened, it asks
   //if
   @Override
-  public void loadProject(String filePath, String name) throws IOException, IllegalStateException {
+  public void loadProject(String filePath) throws IOException, IllegalStateException {
     if (filePath == null) {
       throw new IllegalArgumentException("Filepath cannot be null.");
     }

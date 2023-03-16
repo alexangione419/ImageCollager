@@ -50,7 +50,7 @@ public class PPMProjectTest {
   @Test
   public void badLoadProject() {
     try {
-      this.project.loadProject(null, null);
+      this.project.loadProject(null);
       fail("Null passed as an argument");
     }
     catch (IllegalArgumentException e) {
