@@ -1,7 +1,11 @@
 package model;
 
 
+import java.awt.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import model.filters.Blue_Component;
 import model.filters.Brighten_Intensity;
@@ -24,7 +28,7 @@ import model.filters.Red_Component;
 public final class PPMLayer implements Layer {
 
   private final String name;
-  private final PPMProject project; // the PPMProject that this Layer is in
+  private final ImageProject project; // the Project that this Layer is in
   private String currentFiler; // name of the filter currently applied to the layer
   private int[][] currentLayer;
   private int[][] unfilteredLayer; // a version of the layer with original pixel values retained
@@ -33,7 +37,12 @@ public final class PPMLayer implements Layer {
   /**
    * Constructs a new {@code PPMLayer}.
    */
-  public PPMLayer(String name, PPMProject project) {
+  public PPMLayer(String name, ImageProject project) throws IllegalArgumentException {
+    if (project == null || name == null) {
+      throw new IllegalArgumentException("Layer must have a valid name and project");
+    }
+
+
     this.name = name;
     this.project = project;
     this.currentLayer = new int[project.getHeight() * project.getWidth()][4];
@@ -91,12 +100,54 @@ public final class PPMLayer implements Layer {
 
   @Override
   public void addImageToLayer(String imageFilename, int x, int y) throws IllegalArgumentException {
+    Scanner sc;
+
+    try {
+      sc = new Scanner(new FileInputStream(imageFilename));
+    }
+    catch (FileNotFoundException e) {
+      System.out.println("File " + imageFilename + " not found!");
+      return;
+    }
+    StringBuilder builder = new StringBuilder();
+    //read the file line by line, and populate a string. This will throw away any comment lines
+    while (sc.hasNextLine()) {
+      String s = sc.nextLine();
+      if (s.charAt(0)!='#') {
+        builder.append(s).append(System.lineSeparator());
+      }
+    }
+    //now set up the scanner to read from the string we just built
+    sc = new Scanner(builder.toString());
+
+    for (int r = x; r < this.project.getWidth(); r++) {
+      for (int c = y; c < this.project.getHeight(); c++) {
+        String token;
+        token = sc.next();
+        if (!token.equals("P3")) {
+          throw new IllegalArgumentException("Invalid PPM file");
+        }
+        int width = sc.nextInt();
+        int height = sc.nextInt();
+        int maxValue = sc.nextInt();
+
+        for (int i = 0; i < height; i++) {
+          for (int j = 0; j < width; j++) {
+            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth() - c)][0] = sc.nextInt();
+            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth() - c)][1] = sc.nextInt();
+            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth() - c)][2] = sc.nextInt();
+            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth() - c)][3] = sc.nextInt();
+
+          }
+        }
+      }
+    }
 
   }
 
   @Override
   public void setPixelColor(int x, int y, int r, int g, int b, int a) {
-
+    // (y * w) - (w - x)
   }
 
 }
