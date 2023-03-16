@@ -63,7 +63,7 @@ public class PPMProjectTest {
   @Test
   public void badSaveProject() {
     try {
-      this.project.saveProject(null);
+      this.project.saveProject(null, null);
       fail("Null passed as an argument");
     }
     catch (IllegalArgumentException e) {
@@ -76,7 +76,7 @@ public class PPMProjectTest {
   @Test
   public void badSaveImagePPM() {
     try {
-      this.project.saveImagePPM(null);
+      this.project.saveImagePPM(null, null);
       fail("Null passed as an argument");
     }
     catch (IllegalArgumentException e) {
