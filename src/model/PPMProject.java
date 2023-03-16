@@ -27,6 +27,9 @@ public class PPMProject implements ImageProject {
    */
   public PPMProject() {
     this.layers = new ArrayList<Layer>();
+
+    // This shouldn't be hardcoded, but I'm not sure how to get it otherwise atm
+    this.maxPixelValue = 255;
     this.activeLayer = 0;
     this.hasAOpenProject = false;
   }
@@ -108,7 +111,10 @@ public class PPMProject implements ImageProject {
   }
 
   @Override
-  public int getMaxPixelValue() {
+  public int getMaxPixelValue() throws IllegalStateException {
+    if (!hasAOpenProject) {
+      throw new IllegalStateException("There's currently no open project.");
+    }
     return this.maxPixelValue;
   }
 

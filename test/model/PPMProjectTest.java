@@ -87,6 +87,25 @@ public class PPMProjectTest {
   }
 
   @Test
+  public void validGetMaxPixelValue() {
+    this.project.createNewProject(32, 32);
+    assertEquals(255, this.project.getMaxPixelValue());
+
+    this.project.createNewProject(302, 2);
+    assertEquals(255, this.project.getMaxPixelValue());
+  }
+
+  @Test
+  public void badGetMaxPixelValue() {
+    try {
+      this.project.getMaxPixelValue();
+      fail("Tried to access the width with no loaded Project");
+    } catch (IllegalStateException e) {
+      assertEquals("There's currently no open project.", e.getMessage());
+    }
+  }
+
+  @Test
   public void badGetWidth() {
     try {
       this.project.getWidth();

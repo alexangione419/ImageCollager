@@ -87,8 +87,6 @@ public final class PPMLayer implements Layer {
       throw new IllegalArgumentException("Unsupported filter");
     }
     this.currentLayer = this.supportedFilters.get(filterOption).apply(this);
-
-
   }
 
   @Override
