@@ -119,24 +119,78 @@ public class PPMProjectController implements ImageProjectController {
           }
           break;
         case "new-project":
-          new NewProject(sc.nextInt(), sc.nextInt()).run(this.model);
+          if (!sc.hasNextInt()) {
+            this.displayInvalidArgs();
+            break;
+          }
+          int height = sc.nextInt();
+          if (!sc.hasNextInt()) {
+            this.displayInvalidArgs();
+            break;
+          }
+          int width = sc.nextInt();
+          new NewProject(height, width).run(this.model);
           break;
         case "load-project":
+          if (!sc.hasNext()) {
+            this.displayInvalidArgs();
+            break;
+          }
           new LoadProject(sc.next()).run(this.model);
           break;
         case "save-project":
+          if (!sc.hasNext()) {
+            this.displayInvalidArgs();
+            break;
+          }
           new SaveProject(sc.next()).run(this.model);
           break;
         case "add-layer":
+          if (!sc.hasNext()) {
+            this.displayInvalidArgs();
+            break;
+          }
           new AddLayer(sc.next()).run(this.model);
           break;
         case "add-image-to-layer":
-          new AddImageToLayer(sc.next(), sc.next(), sc.nextInt(), sc.nextInt()).run(this.model);
+          if (!sc.hasNext()) {
+            this.displayInvalidArgs();
+            break;
+          }
+          String layer = sc.next();
+          if (!sc.hasNext()) {
+            this.displayInvalidArgs();
+            break;
+          }
+          String image = sc.next();
+          if (!sc.hasNextInt()) {
+            this.displayInvalidArgs();
+            break;
+          }
+          int x = sc.nextInt();
+          if (!sc.hasNextInt()) {
+            this.displayInvalidArgs();
+            break;
+          }
+          new AddImageToLayer(layer, image, x, sc.nextInt()).run(this.model);
           break;
         case "set-filter":
-          new SetFilter(sc.next(), sc.next()).run(this.model);
+          if (!sc.hasNext()) {
+            this.displayInvalidArgs();
+            break;
+          }
+          String layerName = sc.next();
+          if (!sc.hasNext()) {
+            this.displayInvalidArgs();
+            break;
+          }
+          new SetFilter(layerName, sc.next()).run(this.model);
           break;
         case "save-image":
+          if (!sc.hasNext()) {
+            this.displayInvalidArgs();
+            break;
+          }
           new SaveImage(sc.next()).run(this.model);
           break;
         default:
@@ -149,6 +203,14 @@ public class PPMProjectController implements ImageProjectController {
     }
 
 
+  }
+
+  private void displayInvalidArgs() {
+    try {
+      this.view.renderMessage("Invalid Arguments");
+    } catch (IOException io) {
+      //do nothing
+    }
   }
 
 
