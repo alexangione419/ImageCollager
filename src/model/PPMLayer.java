@@ -133,12 +133,28 @@ public final class PPMLayer implements Layer {
     int height = sc.nextInt();
     int maxValue = sc.nextInt();
 
+    // ensures the image will not out of the bounds of the layer
+    if (x + width > this.project.getWidth()) {
+      width = this.project.getWidth();
+    }
+    if (y + height > this.project.getHeight()) {
+      height = this.project.getHeight();
+    }
+
     for (int r = x; r < height; r++) {
       for (int c = y; c < width; c++) {
-        this.currentLayer[(((r + 1) * this.project.getWidth()) - (this.project.getWidth() - (c + 1))) - 1][0] = sc.nextInt();
-        this.currentLayer[(((r + 1) * this.project.getWidth()) - (this.project.getWidth() - (c + 1))) - 1][1] = sc.nextInt();
-        this.currentLayer[(((r + 1) * this.project.getWidth()) - (this.project.getWidth() - (c + 1))) - 1][2] = sc.nextInt();
-        this.currentLayer[(((r + 1) * this.project.getWidth()) - (this.project.getWidth() - (c + 1))) - 1][3] = 0;
+        int conversion = (((r + 1) * this.project.getWidth())
+                - (this.project.getWidth() - (c + 1))) - 1;
+
+        this.currentLayer[conversion][0] = sc.nextInt();
+        this.currentLayer[conversion][1] = sc.nextInt();
+        this.currentLayer[conversion][2] = sc.nextInt();
+        this.currentLayer[conversion][3] = 255;
+
+        this.unfilteredLayer[conversion][0] = this.currentLayer[conversion][0];
+        this.unfilteredLayer[conversion][1] = this.currentLayer[conversion][1];
+        this.unfilteredLayer[conversion][2] = this.currentLayer[conversion][2];
+        this.unfilteredLayer[conversion][3] = 255;
       }
     }
 

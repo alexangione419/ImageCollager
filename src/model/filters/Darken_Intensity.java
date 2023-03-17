@@ -13,7 +13,7 @@ public class Darken_Intensity implements Filter {
       int sum = layerToModify[i][0] + layerToModify[i][1] + layerToModify[i][2];
       int ave = sum / 3;
 
-      for (int j = 0; j < layerToModify.length - 1; j++) {
+      for (int j = 0; j < 3; j++) {
         //adds max value to pixel without going over the cap
         if (layerToModify[i][j] - ave < 0) {
           layerToModify[i][j] = 0;
