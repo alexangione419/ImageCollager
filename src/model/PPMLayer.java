@@ -47,7 +47,8 @@ public final class PPMLayer implements Layer {
     this.project = project;
     this.currentLayer = new int[project.getHeight() * project.getWidth()][4];
 
-    this.unfilteredLayer = this.currentLayer.clone();
+    this.unfilteredLayer = new int[project.getHeight() * project.getWidth()][4];
+
 
     this.currentFiler = "normal"; // filter is normal by default
 
@@ -106,8 +107,7 @@ public final class PPMLayer implements Layer {
     try {
       sc = new Scanner(new FileInputStream(imageFilename));
     } catch (FileNotFoundException e) {
-      System.out.println("File " + imageFilename + " not found!");
-      return;
+      throw new IllegalArgumentException("File not found");
     }
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines
@@ -168,6 +168,12 @@ public final class PPMLayer implements Layer {
         [2] = b;
     this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1))) - 1]
         [3] = a;
+  }
+
+  @Override
+  public void clearLayer() {
+    this.currentLayer = new int[project.getHeight() * project.getWidth()][4];
+    this.unfilteredLayer = new int[project.getHeight() * project.getWidth()][4];
   }
 
 }

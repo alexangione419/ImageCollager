@@ -98,7 +98,6 @@ public class PPMProjectTextView implements ImageProjectView {
 
 
       double[] finalColor = new double[4];
-      finalColor[3] = 0;
       //for each layer
       for (int i = 0; i < this.model.getNumberOfLayers(); i++) {
         this.model.setActiveLayer(i);
@@ -124,21 +123,21 @@ public class PPMProjectTextView implements ImageProjectView {
 
           finalColor[3] = (alphaPercentage * maxPixelVal);
 
-//          finalColor[0] = (((curAlpha / maxPixelVal * curRed + backgroundRed * (backgroundAlpha / maxPixelVal))
-//              * (1 - curAlpha / maxPixelVal)) * (1 / finalColor[3]));
-//          System.out.println(finalColor[0]);
-//
-//          finalColor[1] = (((curAlpha / maxPixelVal * curGreen + backgroundGreen * (backgroundAlpha / maxPixelVal))
-//              * (1 - curAlpha / maxPixelVal))  * (1 / finalColor[3]));
-//          System.out.println(finalColor[1]);
-//
-//          finalColor[2] = (((curAlpha / maxPixelVal * curBlue + backgroundBlue * (backgroundAlpha / maxPixelVal))
-//              * (1 - curAlpha / maxPixelVal))  * (1 / finalColor[3]));
-//          System.out.println(finalColor[2]);
+          finalColor[0] = (((curAlpha / maxPixelVal * curRed + backgroundRed * (backgroundAlpha / maxPixelVal))
+              * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
+          System.out.println(finalColor[0]);
 
-          finalColor[0] = Math.abs((curRed * curAlpha) + (backgroundRed * (1 - curAlpha))) / maxPixelVal;
-          finalColor[1] = Math.abs((curGreen * curAlpha) + (backgroundGreen * (1 - curAlpha))) / maxPixelVal;
-          finalColor[2] = Math.abs((curBlue * curAlpha) + (backgroundBlue * (1 - curAlpha))) / maxPixelVal;
+          finalColor[1] = (((curAlpha / maxPixelVal * curGreen + backgroundGreen * (backgroundAlpha / maxPixelVal))
+              * (1 - curAlpha / maxPixelVal))  * (1 / alphaPercentage));
+          System.out.println(finalColor[1]);
+
+          finalColor[2] = (((curAlpha / maxPixelVal * curBlue + backgroundBlue * (backgroundAlpha / maxPixelVal))
+              * (1 - curAlpha / maxPixelVal))  * (1 / alphaPercentage));
+          System.out.println(finalColor[2]);
+
+          //finalColor[0] = Math.abs((curRed * curAlpha) + (backgroundRed * (1 - curAlpha))) / maxPixelVal;
+          //finalColor[1] = Math.abs((curGreen * curAlpha) + (backgroundGreen * (1 - curAlpha))) / maxPixelVal;
+          //finalColor[2] = Math.abs((curBlue * curAlpha) + (backgroundBlue * (1 - curAlpha))) / maxPixelVal;
 
 
         }

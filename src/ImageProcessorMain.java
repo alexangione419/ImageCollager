@@ -14,7 +14,7 @@ public class ImageProcessorMain {
     ImageProjectView view = new PPMProjectTextView(project, System.out);
     ImageProjectController controller = new PPMProjectController(project, view, rd);
 
-
+    controller.start();
 
 
 
