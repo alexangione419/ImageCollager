@@ -1,10 +1,12 @@
 package model;
 
 
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
+
 import model.filters.Blue_Component;
 import model.filters.Brighten_Intensity;
 import model.filters.Brighten_Luma;
@@ -39,6 +41,7 @@ public final class PPMLayer implements Layer {
     if (project == null || name == null) {
       throw new IllegalArgumentException("Layer must have a valid name and project");
     }
+
 
     this.name = name;
     this.project = project;
@@ -113,33 +116,24 @@ public final class PPMLayer implements Layer {
         builder.append(s).append(System.lineSeparator());
       }
     }
-
     //now set up the scanner to read from the string we just built
     sc = new Scanner(builder.toString());
 
-    for (int r = x; r < this.project.getWidth(); r++) {
-      for (int c = y; c < this.project.getHeight(); c++) {
-        String token;
-        token = sc.next();
-        if (!token.equals("P3")) {
-          throw new IllegalArgumentException("Invalid PPM file");
-        }
-        int width = sc.nextInt();
-        int height = sc.nextInt();
-        int maxValue = sc.nextInt();
+    String token;
+    token = sc.next();
+    if (!token.equals("P3")) {
+      throw new IllegalArgumentException("Invalid PPM file");
+    }
+    int width = sc.nextInt();
+    int height = sc.nextInt();
+    int maxValue = sc.nextInt();
 
-        for (int i = 0; i < height; i++) {
-          for (int j = 0; j < width; j++) {
-            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth()
-                - c)][0] = sc.nextInt();
-            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth()
-                - c)][1] = sc.nextInt();
-            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth()
-                - c)][2] = sc.nextInt();
-            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth()
-                - c)][3] = sc.nextInt();
-          }
-        }
+    for (int r = x; r < height; r++) {
+      for (int c = y; c < width; c++) {
+        this.currentLayer[(((r + 1) * this.project.getWidth()) - (this.project.getWidth() - (c + 1))) - 1][0] = sc.nextInt();
+        this.currentLayer[(((r + 1) * this.project.getWidth()) - (this.project.getWidth() - (c + 1))) - 1][1] = sc.nextInt();
+        this.currentLayer[(((r + 1) * this.project.getWidth()) - (this.project.getWidth() - (c + 1))) - 1][2] = sc.nextInt();
+        this.currentLayer[(((r + 1) * this.project.getWidth()) - (this.project.getWidth() - (c + 1))) - 1][3] = 0;
       }
     }
 

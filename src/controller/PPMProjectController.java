@@ -56,6 +56,10 @@ public class PPMProjectController implements ImageProjectController {
 
   @Override
   public void start() throws IllegalStateException {
-
+    try {
+      System.out.println(this.view.currentCanvas());
+    } catch (Exception e) {
+      //pass
+    }
   }
 }
