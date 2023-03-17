@@ -77,12 +77,21 @@ public interface ImageProject {
   int getMaxPixelValue();
 
   /**
-   * Sets the active layer to the Layer whose name matches the given String.
+   * Sets the active layer to the {@code Layer} whose name matches the given String.
    * @param layerName the name of the layer to set as active
    * @throws IllegalArgumentException if the name is an empty String or null,
-   * @throws IllegalStateException
+   * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
   void setActiveLayer(String layerName) throws IllegalArgumentException, IllegalStateException;
+
+  /**
+   * Sets the active layer to the {@code Layer} at the given layer index.
+   * @param layerIndex the name of the layer to set as active
+   * @throws IllegalArgumentException if the layer index is greater than the number of layers
+   *                                  or less than 0.
+   * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
+   */
+  void setActiveLayer(int layerIndex) throws IllegalArgumentException, IllegalStateException;
 
   /**
    * Adds a new layer to this project with the specified name. The active layer of this

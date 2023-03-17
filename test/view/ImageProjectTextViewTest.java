@@ -2,7 +2,9 @@ package view;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import model.ImageProject;
+import model.PPMProject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,6 +18,8 @@ public class ImageProjectTextViewTest {
 
   @Before
   public void init() {
+    this.a = new StringBuilder();
+    this.model = new PPMProject();
     this.view = new ImageProjectTextView(model, a);
   }
 
@@ -38,6 +42,20 @@ public class ImageProjectTextViewTest {
     }
 
 
+  }
+
+  @Test
+  public void currentCanvas() {
+    this.model.createNewProject(4, 4);
+    try {
+      assertEquals("0 0 0 0  0 0 0 0  0 0 0 0  0 0 0 0  \n"
+          + "0 0 0 0  0 0 0 0  0 0 0 0  0 0 0 0  \n"
+          + "0 0 0 0  0 0 0 0  0 0 0 0  0 0 0 0  \n"
+          + "0 0 0 0  0 0 0 0  0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
+    }
+    catch (IOException e) {
+
+    }
   }
 
   @Test

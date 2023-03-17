@@ -319,6 +319,8 @@ public class PPMProjectTest {
   public void validGetActiveLayer() {
     this.project.createNewProject(32, 32);
     assertEquals("Layer 1", this.project.getActiveLayer().getName());
+    this.project.addLayer("Layer 2");
+    assertEquals("Layer 2", this.project.getActiveLayer().getName());
   }
 
   @Test
@@ -345,6 +347,12 @@ public class PPMProjectTest {
     assertEquals("Layer 3", this.project.getActiveLayer().getName());
     this.project.setActiveLayer("Layer 2");
     assertEquals("Layer 2", this.project.getActiveLayer().getName());
+
+    this.project.setActiveLayer(3);
+    assertEquals("Layer 4", this.project.getActiveLayer().getName());
+    this.project.setActiveLayer(0);
+    assertEquals("Layer 1", this.project.getActiveLayer().getName());
+
   }
 
   @Test
@@ -363,6 +371,25 @@ public class PPMProjectTest {
       fail("Null was passed as a argument");
     } catch (IllegalArgumentException e) {
       assertEquals("Layer name cannot be null.",
+          e.getMessage());
+    }
+
+    this.init();
+
+    try {
+      this.project.setActiveLayer(1);
+      fail("Tried to get the active layer with no loaded Project");
+    } catch (IllegalStateException e) {
+      assertEquals("There's currently no open project.",
+          e.getMessage());
+    }
+
+    try {
+      this.project.createNewProject(32, 32);
+      this.project.setActiveLayer(1);
+      fail("Layer index is out of bounds.");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Layer index is out of bounds.",
           e.getMessage());
     }
   }

@@ -40,8 +40,40 @@ public class ImageProjectTextView implements ImageProjectView {
   }
 
   @Override
-  public void currentCanvas() throws IOException {
+  public String currentCanvas() throws IOException {
+    String results = "";
 
+    for (int i = 0; i < this.model.getNumberOfLayers(); i++) {
+      this.model.setActiveLayer(i);
+
+      int[][] temp = this.model.getActiveLayer().getLayerData();
+
+      int endOfLineCounter = 0;
+      int linesPassedCounter = 0;
+
+      for (int l = 0; l < this.model.getWidth() * this.model.getHeight(); l++) {
+
+        for (int c = 0; c < 4; c++) {
+          results = results.concat(String.valueOf(temp[l][c]));
+          results = results.concat(" ");
+        }
+
+        if (endOfLineCounter != this.model.getWidth()) {
+          results = results.concat(" ");
+        }
+
+        endOfLineCounter++;
+
+        if ((endOfLineCounter == this.model.getWidth()) &&
+            (linesPassedCounter != (this.model.getHeight() - 1))) {
+          endOfLineCounter = 0;
+          linesPassedCounter++;
+          results = results.concat("\n");
+        }
+      }
+    }
+
+    return results;
   }
 
   @Override

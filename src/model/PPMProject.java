@@ -54,7 +54,7 @@ public class PPMProject implements ImageProject {
   }
 
   //In the controller, make it so that if this method is called after a project is opened, it asks
-  //if
+  //if the user wants to save their previously opened project
   @Override
   public void loadProject(String filePath) throws IOException, IllegalStateException {
     if (filePath == null) {
@@ -138,6 +138,21 @@ public class PPMProject implements ImageProject {
     else {
       this.activeLayer = this.layers.indexOf(this.getLayer(layerName));
     }
+  }
+
+  @Override
+  public void setActiveLayer(int layerIndex)
+      throws IllegalArgumentException, IllegalStateException {
+    if (!hasAOpenProject) {
+      throw new IllegalStateException("There's currently no open project.");
+    }
+
+    if (layerIndex < 0 || layerIndex >= this.getNumberOfLayers()) {
+      throw new IllegalArgumentException("Layer index is out of bounds.");
+    }
+
+    this.activeLayer = layerIndex;
+
   }
 
   @Override

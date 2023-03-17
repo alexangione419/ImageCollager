@@ -9,10 +9,10 @@ public interface ImageProjectView {
 
 
   /**
-   * Outputs what the current canvas looks like.
+   * Outputs a String that represents what the current canvas looks like.
    * @throws IOException if the transmission of the message to the data output fails
    */
-  void currentCanvas() throws IOException;
+  String currentCanvas() throws IOException;
 
   /**
    * Renders a given message to the data output in the implementation.
