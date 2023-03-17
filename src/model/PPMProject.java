@@ -34,18 +34,14 @@ public class PPMProject implements ImageProject {
   }
 
   @Override
-  public void saveImage(String filePath, String name) throws IOException, IllegalStateException {
+  public void saveImage(String filePath) throws IllegalStateException {
     if (filePath == null) {
       throw new IllegalArgumentException("Filepath cannot be null.");
     }
   }
 
   @Override
-  public void saveProject(String filePath, String name) throws IOException, IllegalStateException {
-    if (filePath == null) {
-      throw new IllegalArgumentException("Filepath cannot be null.");
-    }
-
+  public void saveProject(String name) throws IllegalStateException {
     if (!hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
     }
@@ -223,6 +219,15 @@ public class PPMProject implements ImageProject {
     } catch (IllegalArgumentException a) {
       throw new IllegalArgumentException("Invalid filter");
     }
+  }
+
+  @Override
+  public void addImageToLayer(String layerName, String imageFile) {
+    if (!this.doesLayerExist(layerName)) {
+      throw new IllegalArgumentException("Layer not found in current project.");
+    }
+    this.setActiveLayer(layerName);
+    this.getActiveLayer().addImageToLayer(imageFile, 0, 0);
   }
 
   /**

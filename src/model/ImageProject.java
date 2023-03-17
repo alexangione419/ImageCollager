@@ -14,16 +14,15 @@ public interface ImageProject {
    * @throws IOException           if the file path is invalid.
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
-  void saveImage(String filePath, String name) throws IOException, IllegalStateException;
+  void saveImage(String filePath) throws IllegalStateException;
 
   /**
    * Saves this project to a specified file path as a .collage file.
    *
-   * @param filePath the file path to save the image
    * @throws IOException           if the file path is invalid.
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
-  void saveProject(String filePath, String name) throws IOException, IllegalStateException;
+  void saveProject(String name) throws IllegalStateException;
 
   /**
    * Loads a project at a given file path.
@@ -133,4 +132,11 @@ public interface ImageProject {
    */
   void setFilter(String filterName, String layerName)
       throws IllegalArgumentException, IllegalStateException;
+
+  /**
+   * Adds the image at the given file to the given layer.
+   * @param layerName the layer to add the image to
+   * @param imageFile the file of the image to add
+   */
+  void addImageToLayer(String layerName, String imageFile);
 }
