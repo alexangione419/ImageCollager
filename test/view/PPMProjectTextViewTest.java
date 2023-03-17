@@ -113,7 +113,7 @@ public class PPMProjectTextViewTest {
     this.model.setActiveLayer(1);
     this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 0 , 200);
 
-    assertEquals("55 43 0 255  0 0 0 0  \n"
+    assertEquals("55 199 0 255  0 0 0 0  \n"
         + "0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
   }
 

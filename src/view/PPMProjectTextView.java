@@ -136,6 +136,10 @@ public class PPMProjectTextView implements ImageProjectView {
 //          finalColor[1] = Math.abs((curGreen * curAlpha) + (backgroundGreen * (1 - curAlpha))) / maxPixelVal;
 //          finalColor[2] = Math.abs((curBlue * curAlpha) + (backgroundBlue * (1 - curAlpha))) / maxPixelVal;
 
+//          finalColor[0] = backgroundRed * (1 - finalColor[3]) + curRed * finalColor[3];
+//          finalColor[1] = backgroundGreen * (1 - finalColor[3]) + curGreen * finalColor[3];
+//          finalColor[2] = backgroundBlue * (1 - finalColor[3]) + curBlue * finalColor[3];
+
 
         }
         else if ((i == 0) && (curAlpha != 0)) {
