@@ -79,6 +79,7 @@ public class PPMLayerTest {
   // - BEFORE AND AFTER FILTER IS APPLIED
   @Test
   public void testGetLayerData() {
+    // initial blank transparent layer
     int[][] withinDefault = new int[300000][4];
     int[][] separateDefault = new int[120000][4];
 
@@ -86,6 +87,9 @@ public class PPMLayerTest {
 
     Layer pineapple = new PPMLayer("pineappleLayer", this.createSeparate);
     assertArrayEquals(separateDefault, pineapple.getLayerData());
+
+    this.createWithin.getActiveLayer().addImageToLayer("tako.ppm", 0, 0);
+    assertArrayEquals(separateDefault, this.createWithin.getActiveLayer().getLayerData());
   }
 
   // ADD MORE TESTING FOR WHEN

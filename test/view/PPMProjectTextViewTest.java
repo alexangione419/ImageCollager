@@ -54,7 +54,7 @@ public class PPMProjectTextViewTest {
           + "0 0 0 0  0 0 0 0  0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
     }
     catch (IOException e) {
-
+      //pass
     }
   }
 
