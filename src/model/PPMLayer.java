@@ -47,10 +47,6 @@ public final class PPMLayer implements Layer {
     this.project = project;
     this.currentLayer = new int[project.getHeight() * project.getWidth()][4];
 
-    for (int[] i : this.currentLayer) {
-      i[3] = this.getMaxPixel();
-    }
-
     this.unfilteredLayer = this.currentLayer.clone();
 
     this.currentFiler = "normal"; // filter is normal by default

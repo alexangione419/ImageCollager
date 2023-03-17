@@ -125,8 +125,8 @@ public class PPMLayerTest {
 
     ImageProjectView view = new PPMProjectTextView(this.createWithin);
 
-    assertEquals("255 255 255 255  0 0 0 255  \n"
-        + "0 0 0 255  0 0 0 255  ", view.currentCanvas());
+    assertEquals("255 255 255 255  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  ", view.currentCanvas());
   }
 
 }

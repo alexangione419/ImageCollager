@@ -48,10 +48,10 @@ public class PPMProjectTextViewTest {
     this.model.createNewProject(4, 4);
     assertEquals("Layer 1", this.model.getActiveLayer().getName());
 
-    assertEquals("0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  \n"
-        + "0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  \n"
-        + "0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  \n"
-        + "0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  ", this.view.currentCanvas());
+    assertEquals("0 0 0 0  0 0 0 0  0 0 0 0  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  0 0 0 0  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  0 0 0 0  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
 
     assertEquals("Layer 1", this.model.getActiveLayer().getName());
 
@@ -60,6 +60,26 @@ public class PPMProjectTextViewTest {
     this.model.setActiveLayer(0);
     assertEquals("Layer 1", this.model.getActiveLayer().getName());
 
+  }
+
+  @Test
+  public void currentCanvas4x2() {
+    this.model.createNewProject(4, 2);
+    assertEquals("Layer 1", this.model.getActiveLayer().getName());
+
+    assertEquals("0 0 0 0  0 0 0 0  0 0 0 0  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
+  }
+
+  @Test
+  public void currentCanvas3x4() {
+    this.model.createNewProject(3, 4);
+    assertEquals("Layer 1", this.model.getActiveLayer().getName());
+
+    assertEquals("0 0 0 0  0 0 0 0  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
   }
 
   @Test
@@ -67,8 +87,8 @@ public class PPMProjectTextViewTest {
     this.model.createNewProject(2, 2);
     assertEquals("Layer 1", this.model.getActiveLayer().getName());
 
-    assertEquals("0 0 0 255  0 0 0 255  \n"
-        + "0 0 0 255  0 0 0 255  ", this.view.currentCanvas());
+    assertEquals("0 0 0 0  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
 
     assertEquals("Layer 1", this.model.getActiveLayer().getName());
 
@@ -79,29 +99,29 @@ public class PPMProjectTextViewTest {
 
   }
 
+
   @Test
   public void currentCanvasWithOpacityBlend() {
-    this.model.createNewProject(4, 4);
+    this.model.createNewProject(2, 2);
     assertEquals("Layer 1", this.model.getActiveLayer().getName());
 
-    assertEquals("0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  \n"
-        + "0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  \n"
-        + "0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  \n"
-        + "0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  ", this.view.currentCanvas());
+    assertEquals("0 0 0 0  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
 
-    assertEquals("Layer 1", this.model.getActiveLayer().getName());
-
-    this.model.addLayer("Layer 2");
-    assertEquals("Layer 2", this.model.getActiveLayer().getName());
+    this.model.addLayer("Blue");
+    this.model.addLayer("Green");
     this.model.setActiveLayer(0);
-    assertEquals("Layer 1", this.model.getActiveLayer().getName());
+    this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0 , 255);
+    this.model.setActiveLayer(1);
+    this.model.getActiveLayer().setPixelColor(0, 0, 0, 0, 255 , 128);
 
-    assertEquals("0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  \n"
-        + "0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  \n"
-        + "0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  \n"
-        + "0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  ", this.view.currentCanvas());
+    assertEquals("127 0 128 255  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
+    this.model.setActiveLayer(2);
+    this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 0,200);
 
-    assertEquals("Layer 1", this.model.getActiveLayer().getName());
+    assertEquals("28 200 28 255  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
 
   }
 
