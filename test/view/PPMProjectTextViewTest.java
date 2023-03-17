@@ -8,7 +8,7 @@ import model.PPMProject;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ImageProjectTextViewTest {
+public class PPMProjectTextViewTest {
 
   private ImageProjectView view;
   private ImageProject model;
@@ -20,13 +20,13 @@ public class ImageProjectTextViewTest {
   public void init() {
     this.a = new StringBuilder();
     this.model = new PPMProject();
-    this.view = new ImageProjectTextView(model, a);
+    this.view = new PPMProjectTextView(model, a);
   }
 
   @Test
   public void badConstructors() {
     try {
-      this.view = new ImageProjectTextView(null);
+      this.view = new PPMProjectTextView(null);
       fail("Model is null");
     }
     catch (IllegalArgumentException e) {
@@ -34,7 +34,7 @@ public class ImageProjectTextViewTest {
     }
 
     try {
-      this.view = new ImageProjectTextView(null, null);
+      this.view = new PPMProjectTextView(null, null);
       fail("Model and Appendable is null");
     }
     catch (IllegalArgumentException e) {

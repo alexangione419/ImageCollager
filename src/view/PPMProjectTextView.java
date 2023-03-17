@@ -7,16 +7,16 @@ import model.ImageProject;
  * A text-based implementation of {@code ImageProjectView}. This class allows anyone to view
  * a {@code ImageProject} model.
  */
-public class ImageProjectTextView implements ImageProjectView {
+public class PPMProjectTextView implements ImageProjectView {
 
   private ImageProject model;
   private Appendable output;
 
   /**
-   * Constructs a {@code ImageProjectTextView} and sets output to {@code System.out}.
+   * Constructs a {@code PPMProjectTextView} and sets output to {@code System.out}.
    * @param m the {@code ImageProject} to view
    */
-  public ImageProjectTextView(ImageProject m) {
+  public PPMProjectTextView(ImageProject m) {
     if (m == null) {
       throw new IllegalArgumentException("ImageProject cannot be null.");
     }
@@ -26,11 +26,11 @@ public class ImageProjectTextView implements ImageProjectView {
   }
 
   /**
-   * Constructs a new {@code ImageProjectTextView} with a specified {@code Appendable}.
+   * Constructs a new {@code PPMProjectTextView} with a specified {@code Appendable}.
    * @param m the {@code ImageProject} to view
    * @param a the {@code Appendable} to write to
    */
-  public ImageProjectTextView(ImageProject m, Appendable a) {
+  public PPMProjectTextView(ImageProject m, Appendable a) {
     if ((m == null) || (a == null)) {
       throw new IllegalArgumentException("ImageProject and/or Appendable cannot be null.");
     }
