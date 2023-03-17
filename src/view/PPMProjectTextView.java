@@ -95,9 +95,11 @@ public class PPMProjectTextView implements ImageProjectView {
     //for every pixel
     for (int p = 0; p < this.model.getWidth() * this.model.getHeight(); p++) {
 
-
-
       double[] finalColor = new double[4];
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8a79cff422f8ac96b7541f4b04f50ad5156fbceb
       //for each layer
       for (int i = 0; i < this.model.getNumberOfLayers(); i++) {
         this.model.setActiveLayer(i);
@@ -110,7 +112,8 @@ public class PPMProjectTextView implements ImageProjectView {
         double curBlue = curLayerData[p][2];
         double curAlpha = curLayerData[p][3];
 
-        if ((this.model.getNumberOfLayers() != 1) && (curAlpha != 0)){
+
+        if ((i != 0) && (curAlpha != 0)){
 
           double backgroundRed = finalColor[0];
           double backgroundGreen = finalColor[1];
@@ -119,12 +122,13 @@ public class PPMProjectTextView implements ImageProjectView {
 
           double maxPixelVal = this.model.getMaxPixelValue();
 
-          double alphaPercentage = (curAlpha / maxPixelVal + backgroundAlpha / maxPixelVal * (1 - (curAlpha / maxPixelVal)));
+          double alphaPercentage = ((curAlpha / maxPixelVal) + backgroundAlpha / maxPixelVal * (1 - (curAlpha / maxPixelVal)));
 
           finalColor[3] = (alphaPercentage * maxPixelVal);
 
           finalColor[0] = (((curAlpha / maxPixelVal * curRed + backgroundRed * (backgroundAlpha / maxPixelVal))
               * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
+<<<<<<< HEAD
           System.out.println(finalColor[0]);
 
           finalColor[1] = (((curAlpha / maxPixelVal * curGreen + backgroundGreen * (backgroundAlpha / maxPixelVal))
@@ -138,10 +142,22 @@ public class PPMProjectTextView implements ImageProjectView {
           //finalColor[0] = Math.abs((curRed * curAlpha) + (backgroundRed * (1 - curAlpha))) / maxPixelVal;
           //finalColor[1] = Math.abs((curGreen * curAlpha) + (backgroundGreen * (1 - curAlpha))) / maxPixelVal;
           //finalColor[2] = Math.abs((curBlue * curAlpha) + (backgroundBlue * (1 - curAlpha))) / maxPixelVal;
+=======
+
+          finalColor[1] = (((curAlpha / maxPixelVal * curGreen + backgroundGreen * (backgroundAlpha / maxPixelVal))
+              * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
+
+          finalColor[2] = (((curAlpha / maxPixelVal * curBlue + backgroundBlue * (backgroundAlpha / maxPixelVal))
+              * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
+
+//          finalColor[0] = Math.abs((curRed * curAlpha) + (backgroundRed * (1 - curAlpha))) / maxPixelVal;
+//          finalColor[1] = Math.abs((curGreen * curAlpha) + (backgroundGreen * (1 - curAlpha))) / maxPixelVal;
+//          finalColor[2] = Math.abs((curBlue * curAlpha) + (backgroundBlue * (1 - curAlpha))) / maxPixelVal;
+>>>>>>> 8a79cff422f8ac96b7541f4b04f50ad5156fbceb
 
 
         }
-        else if (this.model.getNumberOfLayers() == 1) {
+        else if ((i == 0) && (curAlpha != 0)) {
           finalColor[0] = curRed;
           finalColor[1] = curGreen;
           finalColor[2] = curBlue;
