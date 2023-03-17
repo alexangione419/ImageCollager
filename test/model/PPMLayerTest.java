@@ -6,6 +6,8 @@ import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
+import view.ImageProjectView;
+import view.PPMProjectTextView;
 
 public class PPMLayerTest {
 
@@ -114,6 +116,17 @@ public class PPMLayerTest {
 
     Layer yellow = new PPMLayer("yellow", this.createSeparate);
     assertEquals(255, yellow.getMaxPixel());
+  }
+
+  @Test
+  public void testSetPixelColor() {
+    this.createWithin.createNewProject(2, 2);
+    this.createWithin.getActiveLayer().setPixelColor(0, 0, 255, 255, 255, 255);
+
+    ImageProjectView view = new PPMProjectTextView(this.createWithin);
+
+    assertEquals("255 255 255 255  0 0 0 255  \n"
+        + "0 0 0 255  0 0 0 255  ", view.currentCanvas());
   }
 
 }

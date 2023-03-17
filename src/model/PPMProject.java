@@ -16,7 +16,7 @@ public class PPMProject implements ImageProject {
   // represents the maximum value allowed in any pixel value
   private int maxPixelValue;
   private int activeLayer;
-  private final List<Layer> layers;
+  private List<Layer> layers;
 
   //should be false if loadProject() or createNewProject() hasn't been called
   private boolean hasAOpenProject;
@@ -73,6 +73,7 @@ public class PPMProject implements ImageProject {
     this.height = height;
     this.activeLayer = 0;
     this.hasAOpenProject = true;
+    this.layers = new ArrayList<Layer>();
     this.layers.add(new PPMLayer("Layer 1", this)); // make this white
   }
 

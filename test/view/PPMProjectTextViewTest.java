@@ -44,7 +44,43 @@ public class PPMProjectTextViewTest {
   }
 
   @Test
-  public void currentCanvas() {
+  public void currentCanvas4x4() {
+    this.model.createNewProject(4, 4);
+    assertEquals("Layer 1", this.model.getActiveLayer().getName());
+
+    assertEquals("0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  \n"
+        + "0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  \n"
+        + "0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  \n"
+        + "0 0 0 255  0 0 0 255  0 0 0 255  0 0 0 255  ", this.view.currentCanvas());
+
+    assertEquals("Layer 1", this.model.getActiveLayer().getName());
+
+    this.model.addLayer("Layer 2");
+    assertEquals("Layer 2", this.model.getActiveLayer().getName());
+    this.model.setActiveLayer(0);
+    assertEquals("Layer 1", this.model.getActiveLayer().getName());
+
+  }
+
+  @Test
+  public void currentCanvas2x2() {
+    this.model.createNewProject(2, 2);
+    assertEquals("Layer 1", this.model.getActiveLayer().getName());
+
+    assertEquals("0 0 0 255  0 0 0 255  \n"
+        + "0 0 0 255  0 0 0 255  ", this.view.currentCanvas());
+
+    assertEquals("Layer 1", this.model.getActiveLayer().getName());
+
+    this.model.addLayer("Layer 2");
+    assertEquals("Layer 2", this.model.getActiveLayer().getName());
+    this.model.setActiveLayer(0);
+    assertEquals("Layer 1", this.model.getActiveLayer().getName());
+
+  }
+
+  @Test
+  public void currentCanvasWithOpacityBlend() {
     this.model.createNewProject(4, 4);
     assertEquals("Layer 1", this.model.getActiveLayer().getName());
 

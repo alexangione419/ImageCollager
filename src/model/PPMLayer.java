@@ -48,7 +48,7 @@ public final class PPMLayer implements Layer {
     this.currentLayer = new int[project.getHeight() * project.getWidth()][4];
 
     for (int[] i : this.currentLayer) {
-      i[4] = this.getMaxPixel();
+      i[3] = this.getMaxPixel();
     }
 
     this.unfilteredLayer = this.currentLayer.clone();
@@ -147,6 +147,15 @@ public final class PPMLayer implements Layer {
   @Override
   public void setPixelColor(int x, int y, int r, int g, int b, int a) {
     // (y * w) - (w - x)
+
+    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1))) - 1]
+        [0] = r;
+    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1))) - 1]
+        [1] = g;
+    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1))) - 1]
+        [2] = b;
+    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1))) - 1]
+        [3] = a;
   }
 
 }
