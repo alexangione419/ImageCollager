@@ -1,12 +1,10 @@
 package model;
 
 
-import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
-
 import model.filters.Blue_Component;
 import model.filters.Brighten_Intensity;
 import model.filters.Brighten_Luma;
@@ -41,7 +39,6 @@ public final class PPMLayer implements Layer {
     if (project == null || name == null) {
       throw new IllegalArgumentException("Layer must have a valid name and project");
     }
-
 
     this.name = name;
     this.project = project;
@@ -104,8 +101,7 @@ public final class PPMLayer implements Layer {
 
     try {
       sc = new Scanner(new FileInputStream(imageFilename));
-    }
-    catch (FileNotFoundException e) {
+    } catch (FileNotFoundException e) {
       System.out.println("File " + imageFilename + " not found!");
       return;
     }
@@ -113,10 +109,11 @@ public final class PPMLayer implements Layer {
     //read the file line by line, and populate a string. This will throw away any comment lines
     while (sc.hasNextLine()) {
       String s = sc.nextLine();
-      if (s.charAt(0)!='#') {
+      if (s.charAt(0) != '#') {
         builder.append(s).append(System.lineSeparator());
       }
     }
+
     //now set up the scanner to read from the string we just built
     sc = new Scanner(builder.toString());
 
@@ -133,11 +130,14 @@ public final class PPMLayer implements Layer {
 
         for (int i = 0; i < height; i++) {
           for (int j = 0; j < width; j++) {
-            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth() - c)][0] = sc.nextInt();
-            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth() - c)][1] = sc.nextInt();
-            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth() - c)][2] = sc.nextInt();
-            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth() - c)][3] = sc.nextInt();
-
+            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth()
+                - c)][0] = sc.nextInt();
+            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth()
+                - c)][1] = sc.nextInt();
+            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth()
+                - c)][2] = sc.nextInt();
+            this.currentLayer[(r * this.project.getWidth()) - (this.project.getWidth()
+                - c)][3] = sc.nextInt();
           }
         }
       }

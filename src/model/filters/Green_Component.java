@@ -2,7 +2,8 @@ package model.filters;
 
 import model.Layer;
 
-public class Green_Component implements Filter{
+public class Green_Component implements Filter {
+
   @Override
   public int[][] apply(Layer layer) {
     int[][] layerToModify = layer.getLayerData();

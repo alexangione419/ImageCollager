@@ -4,8 +4,8 @@ import java.io.IOException;
 import model.ImageProject;
 
 /**
- * A text-based implementation of {@code ImageProjectView}. This class allows anyone to view
- * a {@code ImageProject} model.
+ * A text-based implementation of {@code ImageProjectView}. This class allows anyone to view a
+ * {@code ImageProject} model.
  */
 public class PPMProjectTextView implements ImageProjectView {
 
@@ -14,6 +14,7 @@ public class PPMProjectTextView implements ImageProjectView {
 
   /**
    * Constructs a {@code PPMProjectTextView} and sets output to {@code System.out}.
+   *
    * @param m the {@code ImageProject} to view
    */
   public PPMProjectTextView(ImageProject m) {
@@ -27,6 +28,7 @@ public class PPMProjectTextView implements ImageProjectView {
 
   /**
    * Constructs a new {@code PPMProjectTextView} with a specified {@code Appendable}.
+   *
    * @param m the {@code ImageProject} to view
    * @param a the {@code Appendable} to write to
    */
@@ -40,16 +42,21 @@ public class PPMProjectTextView implements ImageProjectView {
   }
 
   @Override
-  public String currentCanvas() throws IOException {
+  public String currentCanvas() {
     String results = "";
 
+    String prevActiveLayer = this.model.getActiveLayer().getName();
+
+    //for each layer
     for (int i = 0; i < this.model.getNumberOfLayers(); i++) {
       this.model.setActiveLayer(i);
 
+      //get the data on the current active layer
       int[][] temp = this.model.getActiveLayer().getLayerData();
 
       int endOfLineCounter = 0;
       int linesPassedCounter = 0;
+
 
       for (int l = 0; l < this.model.getWidth() * this.model.getHeight(); l++) {
 
@@ -73,6 +80,7 @@ public class PPMProjectTextView implements ImageProjectView {
       }
     }
 
+    this.model.setActiveLayer(prevActiveLayer);
     return results;
   }
 

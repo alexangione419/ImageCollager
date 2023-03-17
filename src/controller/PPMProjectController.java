@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import model.ImageProject;
-import model.PPMProject;
 import view.ImageProjectView;
-import view.PPMProjectTextView;
 
 /**
  * A controller for manipulating a {@code PPMProject}.
@@ -20,13 +18,14 @@ public class PPMProjectController implements ImageProjectController {
 
   /**
    * Constructs a new {@code PPMProjectController}.
-   * @param model the model to control
-   * @param view the view of the model
+   *
+   * @param model  the model to control
+   * @param view   the view of the model
    * @param output the Readable from which to read input from
    * @throws IllegalArgumentException if any of the given arguments are null
    */
   public PPMProjectController(ImageProject model, ImageProjectView view, Readable output)
-    throws IllegalArgumentException {
+      throws IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("PPMProject for the PPMProjectController "
           + "cannot be null.");

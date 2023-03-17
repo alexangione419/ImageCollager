@@ -52,8 +52,7 @@ public class PPMProjectTest {
     try {
       this.project.loadProject(null);
       fail("Null passed as an argument");
-    }
-    catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals("Filepath cannot be null.", e.getMessage());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -65,8 +64,7 @@ public class PPMProjectTest {
     try {
       this.project.saveProject(null, null);
       fail("Null passed as an argument");
-    }
-    catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals("Filepath cannot be null.", e.getMessage());
     } catch (IOException e) {
       throw new RuntimeException(e);
@@ -76,10 +74,9 @@ public class PPMProjectTest {
   @Test
   public void badSaveImagePPM() {
     try {
-      this.project.saveImagePPM(null, null);
+      this.project.saveImage(null, null);
       fail("Null passed as an argument");
-    }
-    catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException e) {
       assertEquals("Filepath cannot be null.", e.getMessage());
     } catch (IOException e) {
       throw new RuntimeException(e);

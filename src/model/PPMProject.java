@@ -22,8 +22,8 @@ public class PPMProject implements ImageProject {
   private boolean hasAOpenProject;
 
   /**
-   * Constructs a new PPMProject and initializes layers to an ArrayList of {@code Layer}s
-   * and sets the name to "New Project".
+   * Constructs a new PPMProject and initializes layers to an ArrayList of {@code Layer}s and sets
+   * the name to "New Project".
    */
   public PPMProject() {
     this.layers = new ArrayList<Layer>();
@@ -35,7 +35,7 @@ public class PPMProject implements ImageProject {
   }
 
   @Override
-  public void saveImagePPM(String filePath, String name) throws IOException, IllegalStateException {
+  public void saveImage(String filePath, String name) throws IOException, IllegalStateException {
     if (filePath == null) {
       throw new IllegalArgumentException("Filepath cannot be null.");
     }
@@ -121,7 +121,8 @@ public class PPMProject implements ImageProject {
   }
 
   @Override
-  public void setActiveLayer(String layerName) throws IllegalArgumentException, IllegalStateException {
+  public void setActiveLayer(String layerName)
+      throws IllegalArgumentException, IllegalStateException {
     if (!hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
     }
@@ -133,9 +134,7 @@ public class PPMProject implements ImageProject {
     if (!this.doesLayerExist(layerName)) {
       throw new IllegalArgumentException("The layer " + layerName + " does not exist in "
           + "this project");
-    }
-
-    else {
+    } else {
       this.activeLayer = this.layers.indexOf(this.getLayer(layerName));
     }
   }
@@ -189,10 +188,10 @@ public class PPMProject implements ImageProject {
     }
 
     if (!this.doesLayerExist(layerName)) {
-      throw new IllegalArgumentException("Tried to remove layer \"Layer \" but that layer doesn't exist "
-          + "in this project.");
-    }
-    else {
+      throw new IllegalArgumentException(
+          "Tried to remove layer \"Layer \" but that layer doesn't exist "
+              + "in this project.");
+    } else {
       //adjusts activeLayer if this the index of the layer that's being removed
       //is greater than activeLayer
       if (this.activeLayer >= this.layers.indexOf(this.getLayer(layerName))) {
@@ -228,6 +227,7 @@ public class PPMProject implements ImageProject {
 
   /**
    * Returns whether a {@code Layer} whose name is the given String exists in this project.
+   *
    * @param layerName the name of the layer to look for
    * @return true if the layer exists; otherwise false.
    */
@@ -248,9 +248,10 @@ public class PPMProject implements ImageProject {
 
   /**
    * Returns the {@code Layer} whose name matches the given String.
+   *
    * @param layerName the name of the layer to look for
-   * @return the {@code Layer} with the given layerName; otherwise, this method
-   *         throws an IllegalArgumentException.
+   * @return the {@code Layer} with the given layerName; otherwise, this method throws an
+   * IllegalArgumentException.
    */
   private Layer getLayer(String layerName) {
     Layer result = null;
@@ -264,9 +265,7 @@ public class PPMProject implements ImageProject {
           break;
         }
       }
-    }
-
-    else {
+    } else {
       throw new IllegalArgumentException("The layer " + layerName + " does not exist in "
           + "this project");
     }

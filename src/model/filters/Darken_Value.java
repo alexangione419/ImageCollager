@@ -2,7 +2,8 @@ package model.filters;
 
 import model.Layer;
 
-public class Darken_Value implements Filter{
+public class Darken_Value implements Filter {
+
   @Override
   public int[][] apply(Layer layer) {
     int[][] layerToModify = layer.getLayerData();

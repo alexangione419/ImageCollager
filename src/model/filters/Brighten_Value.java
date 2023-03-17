@@ -3,6 +3,7 @@ package model.filters;
 import model.Layer;
 
 public class Brighten_Value implements Filter {
+
   @Override
   public int[][] apply(Layer layer) {
     int[][] layerToModify = layer.getLayerData();

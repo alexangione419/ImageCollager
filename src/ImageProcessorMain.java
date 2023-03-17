@@ -7,6 +7,7 @@ import view.ImageProjectView;
 import view.PPMProjectTextView;
 
 public class ImageProcessorMain {
+
   public static void main(String[] args) {
 
     Readable rd = new InputStreamReader(System.in);
@@ -16,7 +17,7 @@ public class ImageProcessorMain {
 
     controller.start();
 
-//    project.createNewProject(800, 800);
-//    project.getActiveLayer().addImageToLayer("take.ppm", 0, 0);
+    //project.createNewProject(800, 800);
+    //project.getActiveLayer().addImageToLayer("take.ppm", 0, 0);
   }
 }
