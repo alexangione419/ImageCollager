@@ -61,6 +61,7 @@ public class PPMProjectTest {
 
   @Test
   public void badSaveProject() {
+    this.project.createNewProject(4, 4);
     try {
       this.project.saveProject( null);
       fail("Null passed as an argument");
@@ -257,7 +258,7 @@ public class PPMProjectTest {
     this.project.removeLayer("Test Layer 2");
     assertEquals("Test Layer 1", this.project.getActiveLayer().getName());
     this.project.removeLayer("Test Layer 1");
-    this.project.removeLayer("Layer 1");
+    this.project.removeLayer("Layer1");
     assertEquals("Test Layer 0", this.project.getActiveLayer().getName());
     this.project.removeLayer("Test Layer 0");
     assertEquals("Test Layer 4", this.project.getActiveLayer().getName());
@@ -311,7 +312,7 @@ public class PPMProjectTest {
   @Test
   public void validGetActiveLayer() {
     this.project.createNewProject(32, 32);
-    assertEquals("Layer 1", this.project.getActiveLayer().getName());
+    assertEquals("Layer1", this.project.getActiveLayer().getName());
     this.project.addLayer("Layer 2");
     assertEquals("Layer 2", this.project.getActiveLayer().getName());
   }
@@ -330,7 +331,7 @@ public class PPMProjectTest {
   @Test
   public void validSetActiveLayer() {
     this.project.createNewProject(32, 32);
-    assertEquals("Layer 1", this.project.getActiveLayer().getName());
+    assertEquals("Layer1", this.project.getActiveLayer().getName());
     this.project.addLayer("Layer 2");
     this.project.addLayer("Layer 3");
     this.project.addLayer("Layer 4");
@@ -344,7 +345,7 @@ public class PPMProjectTest {
     this.project.setActiveLayer(3);
     assertEquals("Layer 4", this.project.getActiveLayer().getName());
     this.project.setActiveLayer(0);
-    assertEquals("Layer 1", this.project.getActiveLayer().getName());
+    assertEquals("Layer1", this.project.getActiveLayer().getName());
 
   }
 

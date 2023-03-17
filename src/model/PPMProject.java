@@ -46,6 +46,10 @@ public class PPMProject implements ImageProject {
       throw new IllegalStateException("There's currently no open project.");
     }
 
+    if (name == null || name.isEmpty()) {
+      throw new IllegalArgumentException("Filepath cannot be null.");
+    }
+
   }
 
   //In the controller, make it so that if this method is called after a project is opened, it asks
@@ -69,7 +73,7 @@ public class PPMProject implements ImageProject {
     this.activeLayer = 0;
     this.hasAOpenProject = true;
     this.layers = new ArrayList<Layer>();
-    this.layers.add(new PPMLayer("Layer 1", this)); // make this white
+    this.layers.add(new PPMLayer("Layer1", this)); // make this white
   }
 
   @Override
@@ -222,12 +226,12 @@ public class PPMProject implements ImageProject {
   }
 
   @Override
-  public void addImageToLayer(String layerName, String imageFile) {
+  public void addImageToLayer(String layerName, String imageFile, int x, int y) {
     if (!this.doesLayerExist(layerName)) {
       throw new IllegalArgumentException("Layer not found in current project.");
     }
     this.setActiveLayer(layerName);
-    this.getActiveLayer().addImageToLayer(imageFile, 0, 0);
+    this.getActiveLayer().addImageToLayer(imageFile, x, y);
   }
 
   /**

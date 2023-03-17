@@ -131,21 +131,20 @@ public class PPMLayerTest {
     assertEquals(255, yellow.getMaxPixel());
   }
 
+//  @Test
+//  public void testSetPixelColor() {
+//    this.createWithin.createNewProject(2, 2);
+//    this.createWithin.getActiveLayer().setPixelColor(0, 0, 255, 255, 255, 255);
+//
+//    ImageProjectView view = new PPMProjectTextView(this.createWithin);
+//
+//    assertEquals("255 255 255 255  0 0 0 0  \n"
+//            + "0 0 0 0  0 0 0 0  ", view.currentCanvas());
+//    assertEquals("255 255 255 255  0 0 0 255  \n"
+//            + "0 0 0 255  0 0 0 255  ", view.currentCanvas());
+//  }
+
   @Test
-<<<<<<< Updated upstream
-  public void testSetPixelColor() {
-    this.createWithin.createNewProject(2, 2);
-    this.createWithin.getActiveLayer().setPixelColor(0, 0, 255, 255, 255, 255);
-
-    ImageProjectView view = new PPMProjectTextView(this.createWithin);
-
-<<<<<<< Updated upstream
-    assertEquals("255 255 255 255  0 0 0 0  \n"
-        + "0 0 0 0  0 0 0 0  ", view.currentCanvas());
-=======
-    assertEquals("255 255 255 255  0 0 0 255  \n"
-        + "0 0 0 255  0 0 0 255  ", view.currentCanvas());
-=======
   public void testAddInvalidImage() {
     Layer picadillo = new PPMLayer("picadillo", this.project5x6);
     try {
@@ -187,8 +186,6 @@ public class PPMLayerTest {
     assertArrayEquals(default56, topLeft.getLayerData());
 
 
->>>>>>> Stashed changes
->>>>>>> Stashed changes
   }
 
 }

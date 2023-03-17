@@ -137,6 +137,8 @@ public interface ImageProject {
    * Adds the image at the given file to the given layer.
    * @param layerName the layer to add the image to
    * @param imageFile the file of the image to add
+   * @param x the x position to place the picture at
+   * @param y the y position to place the picture at
    */
-  void addImageToLayer(String layerName, String imageFile);
+  void addImageToLayer(String layerName, String imageFile, int x, int y);
 }

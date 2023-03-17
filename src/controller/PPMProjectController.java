@@ -131,13 +131,20 @@ public class PPMProjectController implements ImageProjectController {
           new AddLayer(sc.next()).run(this.model);
           break;
         case "add-image-to-layer":
-          new AddImageToLayer(sc.next(), sc.next()).run(this.model);
+          new AddImageToLayer(sc.next(), sc.next(), sc.nextInt(), sc.nextInt()).run(this.model);
           break;
         case "set-filter":
           new SetFilter(sc.next(), sc.next()).run(this.model);
           break;
         case "save-image":
           new SaveImage(sc.next()).run(this.model);
+          break;
+        default:
+          try {
+            this.view.renderMessage("Invalid Command\n");
+          } catch (IOException io) {
+            //pass
+          }
       }
     }
 
