@@ -27,12 +27,12 @@ public class ImageUtil {
     }
     StringBuilder builder = new StringBuilder();
     //read the file line by line, and populate a string. This will throw away any comment lines
-    while (sc.hasNextLine()) {
-      String s = sc.nextLine();
-      if (s.charAt(0) != '#') {
-        builder.append(s).append(System.lineSeparator());
-      }
-    }
+//    while (sc.hasNextLine()) {
+//      String s = sc.nextLine();
+//      if (s.charAt(0) != '#') {
+//        builder.append(s).append(System.lineSeparator());
+//      }
+//    }
 
     //now set up the scanner to read from the string we just built
     sc = new Scanner(builder.toString());
@@ -55,9 +55,8 @@ public class ImageUtil {
         int r = sc.nextInt();
         int g = sc.nextInt();
         int b = sc.nextInt();
-        int a = sc.nextInt();
         System.out.println("Color of pixel (" + j + " ," + i + "):" +
-            " " + r + ", " + g + ", " + b + ", " + a);
+            " " + r + ", " + g + ", " + b);
       }
     }
   }
@@ -69,7 +68,7 @@ public class ImageUtil {
     if (args.length > 0) {
       filename = args[0];
     } else {
-      filename = "sample.ppm";
+      filename = "tako.ppm";
     }
 
     ImageUtil.readPPM(filename);

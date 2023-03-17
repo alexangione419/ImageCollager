@@ -28,7 +28,6 @@ public class PPMProject implements ImageProject {
   public PPMProject() {
     this.layers = new ArrayList<Layer>();
 
-    // This shouldn't be hardcoded, but I'm not sure how to get it otherwise atm
     this.maxPixelValue = 255;
     this.activeLayer = 0;
     this.hasAOpenProject = false;
