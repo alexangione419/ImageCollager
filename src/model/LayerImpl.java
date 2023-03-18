@@ -82,12 +82,12 @@ public final class LayerImpl implements Layer {
 
   @Override
   public int[][] getLayerData() {
-    return this.currentLayer.clone();
+    return this.currentLayer;
   }
 
   @Override
   public int[][] getUnfilteredLayer() {
-    return this.unfilteredLayer.clone();
+    return this.unfilteredLayer;
   }
 
   @Override
@@ -101,6 +101,7 @@ public final class LayerImpl implements Layer {
       throw new IllegalArgumentException("Unsupported filter");
     }
     this.currentLayer = this.supportedFilters.get(filterOption).apply(this);
+    this.currentFiler = filterOption;
   }
 
   @Override
