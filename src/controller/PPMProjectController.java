@@ -54,13 +54,6 @@ public class PPMProjectController implements ImageProjectController {
   }
 
 
-  /**
-   * Adds in all the possible commands that the controller supports
-   */
-  private void initCommands() {
-
-  }
-
   @Override
   public void start() throws IllegalStateException {
     try {
