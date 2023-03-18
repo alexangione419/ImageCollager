@@ -25,7 +25,7 @@ public class LayerImplTest {
   @Test
   public void testInvalidLayerCreation() {
     try {
-      Layer lay = new LayerImpl("bad project", null);
+      Layer lay = new LayerImpl("bad model", null);
       fail("Project cannot be null");
     } catch (IllegalArgumentException a) {
       // pass
@@ -49,7 +49,7 @@ public class LayerImplTest {
 
   @Test
   public void testValidLayerCreation() {
-    // creation separate from a project
+    // creation separate from a model
     Layer funLayer = new LayerImpl("layer", project3x4);
     assertEquals("layer", funLayer.getName());
     assertEquals(255, funLayer.getMaxPixel());

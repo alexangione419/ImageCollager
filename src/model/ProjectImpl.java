@@ -281,7 +281,7 @@ public class ProjectImpl implements ImageProject {
   public void createNewProject(int width, int height) throws IllegalArgumentException {
     if (width <= 0 || height <= 0) {
       throw new IllegalArgumentException("A project's width or height cannot be less than or equal"
-          + "to zero.");
+          + " to zero.");
     }
 
     this.width = width;
@@ -410,7 +410,7 @@ public class ProjectImpl implements ImageProject {
 
     if (!this.doesLayerExist(layerName)) {
       throw new IllegalArgumentException(
-          "Tried to remove layer \"Layer \" but that layer doesn't exist "
+          "Tried to remove layer \"Layer\" but that layer doesn't exist "
               + "in this project.");
     } else {
       //adjusts activeLayer if this the index of the layer that's being removed

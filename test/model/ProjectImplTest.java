@@ -7,7 +7,6 @@ import static org.junit.Assert.fail;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -16,48 +15,48 @@ import org.junit.Test;
 
 public class ProjectImplTest {
 
-  ImageProject project;
+  ImageProject model;
 
   @Before
   public void init() {
-    this.project = new ProjectImpl();
+    this.model = new ProjectImpl();
   }
 
   @Test
   public void badCreateNewProject() {
     try {
-      this.project.createNewProject(0, 0);
+      this.model.createNewProject(0, 0);
     } catch (IllegalArgumentException e) {
       assertEquals("A project's width or height cannot be less than or equal"
-          + "to zero.", e.getMessage());
+          + " to zero.", e.getMessage());
     }
 
     try {
-      this.project.createNewProject(-3, 2);
+      this.model.createNewProject(-3, 2);
     } catch (IllegalArgumentException e) {
       assertEquals("A project's width or height cannot be less than or equal"
-          + "to zero.", e.getMessage());
+          + " to zero.", e.getMessage());
     }
 
     try {
-      this.project.createNewProject(-3, -2);
+      this.model.createNewProject(-3, -2);
     } catch (IllegalArgumentException e) {
       assertEquals("A project's width or height cannot be less than or equal"
-          + "to zero.", e.getMessage());
+          + " to zero.", e.getMessage());
     }
 
     try {
-      this.project.createNewProject(30, -20);
+      this.model.createNewProject(30, -20);
     } catch (IllegalArgumentException e) {
       assertEquals("A project's width or height cannot be less than or equal"
-          + "to zero.", e.getMessage());
+          + " to zero.", e.getMessage());
     }
   }
 
   @Test
   public void badLoadProject() {
     try {
-      this.project.loadProject(null);
+      this.model.loadProject(null);
       fail("Null passed as an argument");
     } catch (IllegalArgumentException e) {
       assertEquals("Filepath cannot be null.", e.getMessage());
@@ -68,9 +67,9 @@ public class ProjectImplTest {
 
   @Test
   public void badSaveProject() {
-    this.project.createNewProject(4, 4);
+    this.model.createNewProject(4, 4);
     try {
-      this.project.saveProject(null);
+      this.model.saveProject(null);
       fail("Null passed as an argument");
     } catch (IllegalArgumentException e) {
       assertEquals("Filepath cannot be null.", e.getMessage());
@@ -81,10 +80,10 @@ public class ProjectImplTest {
 
   @Test
   public void testSaveProject(){
-    this.project.createNewProject(3, 5);
-    this.project.addImageToLayer("Layer1", "smol.ppm", 0, 0);
+    this.model.createNewProject(3, 5);
+    this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
     try {
-      this.project.saveProject("P1.txt");
+      this.model.saveProject("P1.txt");
     } catch (IOException io) {
       fail(io.getMessage());
     }
@@ -124,12 +123,31 @@ public class ProjectImplTest {
 
   }
 
+  @Test
+  public void validSaveImage() {
+    this.model.createNewProject(2, 2);
+    this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
+
+    try {
+      this.model.saveImage("P1.ppm");
+    } catch (IOException io) {
+      fail(io.getMessage());
+    }
+
+    Scanner sc = null;
+    try {
+      sc = new Scanner(new FileInputStream("P1.txt"));
+    } catch (FileNotFoundException fnf) {
+      fail("File not found");
+    }
+
+  }
 
   @Test
-  public void badSaveImagePPM() {
+  public void badSaveImage() {
     try {
       try {
-        this.project.saveImage(null);
+        this.model.saveImage(null);
       }
       catch (IOException e) {
 
@@ -140,19 +158,20 @@ public class ProjectImplTest {
     }
   }
 
+
   @Test
   public void validGetMaxPixelValue() {
-    this.project.createNewProject(32, 32);
-    assertEquals(255, this.project.getMaxPixelValue());
+    this.model.createNewProject(32, 32);
+    assertEquals(255, this.model.getMaxPixelValue());
 
-    this.project.createNewProject(302, 2);
-    assertEquals(255, this.project.getMaxPixelValue());
+    this.model.createNewProject(302, 2);
+    assertEquals(255, this.model.getMaxPixelValue());
   }
 
   @Test
   public void badGetMaxPixelValue() {
     try {
-      this.project.getMaxPixelValue();
+      this.model.getMaxPixelValue();
       fail("Tried to access the width with no loaded Project");
     } catch (IllegalStateException e) {
       assertEquals("There's currently no open project.", e.getMessage());
@@ -162,7 +181,7 @@ public class ProjectImplTest {
   @Test
   public void badGetWidth() {
     try {
-      this.project.getWidth();
+      this.model.getWidth();
       fail("Tried to access the width with no loaded Project");
     } catch (IllegalStateException e) {
       assertEquals("There's currently no open project.", e.getMessage());
@@ -171,26 +190,26 @@ public class ProjectImplTest {
 
   @Test
   public void validGetWidth() {
-    this.project.createNewProject(32, 32);
-    assertEquals(32, this.project.getWidth());
+    this.model.createNewProject(32, 32);
+    assertEquals(32, this.model.getWidth());
 
-    this.project.createNewProject(320, 32);
-    assertEquals(320, this.project.getWidth());
+    this.model.createNewProject(320, 32);
+    assertEquals(320, this.model.getWidth());
   }
 
   @Test
   public void validGetHeight() {
-    this.project.createNewProject(32, 64);
-    assertEquals(64, this.project.getHeight());
+    this.model.createNewProject(32, 64);
+    assertEquals(64, this.model.getHeight());
 
-    this.project.createNewProject(100, 100);
-    assertEquals(100, this.project.getHeight());
+    this.model.createNewProject(100, 100);
+    assertEquals(100, this.model.getHeight());
   }
 
   @Test
   public void badGetHeight() {
     try {
-      this.project.getHeight();
+      this.model.getHeight();
       fail("Tried to access the width with no loaded Project");
     } catch (IllegalStateException e) {
       assertEquals("There's currently no open project.", e.getMessage());
@@ -199,17 +218,17 @@ public class ProjectImplTest {
 
   @Test
   public void validGetLayerNumber() {
-    this.project.createNewProject(32, 32);
+    this.model.createNewProject(32, 32);
     for (int i = 1; i <= 100; i++) {
-      this.project.addLayer("Test Layer " + i);
+      this.model.addLayer("Test Layer " + i);
     }
-    assertEquals(101, this.project.getNumberOfLayers());
+    assertEquals(101, this.model.getNumberOfLayers());
   }
 
   @Test
   public void badLayerNumber() {
     try {
-      this.project.getNumberOfLayers();
+      this.model.getNumberOfLayers();
       fail("Tried to access the width with no loaded Project");
     } catch (IllegalStateException e) {
       assertEquals("There's currently no open project.", e.getMessage());
@@ -218,22 +237,22 @@ public class ProjectImplTest {
 
   @Test
   public void validAddLayer() {
-    this.project.createNewProject(32, 32);
-    this.project.addLayer("Test Layer");
-    assertEquals(2, this.project.getNumberOfLayers());
+    this.model.createNewProject(32, 32);
+    this.model.addLayer("Test Layer");
+    assertEquals(2, this.model.getNumberOfLayers());
 
     for (int i = 0; i < 32; i++) {
-      this.project.addLayer("Test Layer " + i);
-      assertEquals(3 + i, this.project.getNumberOfLayers());
+      this.model.addLayer("Test Layer " + i);
+      assertEquals(3 + i, this.model.getNumberOfLayers());
     }
 
-    assertEquals(34, this.project.getNumberOfLayers());
+    assertEquals(34, this.model.getNumberOfLayers());
   }
 
   @Test
   public void badAddLayer() {
     try {
-      this.project.addLayer("Layer 2");
+      this.model.addLayer("Layer 2");
       fail("Tried to add a layer with no loaded Project");
     } catch (IllegalStateException e) {
       assertEquals("There's currently no open project.",
@@ -243,8 +262,8 @@ public class ProjectImplTest {
     this.init();
 
     try {
-      this.project.createNewProject(32, 32);
-      this.project.addLayer("");
+      this.model.createNewProject(32, 32);
+      this.model.addLayer("");
       fail("Tried to create a Layer with an empty string as the name");
     } catch (IllegalArgumentException e) {
       assertEquals("A layer name cannot be an empty string or just whitespace.",
@@ -254,8 +273,8 @@ public class ProjectImplTest {
     this.init();
 
     try {
-      this.project.createNewProject(32, 32);
-      this.project.addLayer("     ");
+      this.model.createNewProject(32, 32);
+      this.model.addLayer("     ");
       fail("Tried to create a Layer with just whitespace as the name");
     } catch (IllegalArgumentException e) {
       assertEquals("A layer name cannot be an empty string or just whitespace.",
@@ -265,8 +284,8 @@ public class ProjectImplTest {
     this.init();
 
     try {
-      this.project.createNewProject(32, 32);
-      this.project.addLayer("\n");
+      this.model.createNewProject(32, 32);
+      this.model.addLayer("\n");
       fail("Tried to create a Layer with just a newline as the name");
     } catch (IllegalArgumentException e) {
       assertEquals("A layer name cannot be an empty string or just whitespace.",
@@ -276,8 +295,8 @@ public class ProjectImplTest {
     this.init();
 
     try {
-      this.project.createNewProject(32, 32);
-      this.project.addLayer(System.lineSeparator());
+      this.model.createNewProject(32, 32);
+      this.model.addLayer(System.lineSeparator());
       fail("Tried to create a Layer with a lineSeparator as the name");
     } catch (IllegalArgumentException e) {
       assertEquals("A layer name cannot be an empty string or just whitespace.",
@@ -285,8 +304,8 @@ public class ProjectImplTest {
     }
 
     try {
-      this.project.createNewProject(32, 32);
-      this.project.addLayer(null);
+      this.model.createNewProject(32, 32);
+      this.model.addLayer(null);
       fail("Null was passed as a argument");
     } catch (IllegalArgumentException e) {
       assertEquals("Layer name cannot be null.",
@@ -296,39 +315,39 @@ public class ProjectImplTest {
 
   @Test
   public void validRemoveLayer() {
-    this.project.createNewProject(32, 32);
+    this.model.createNewProject(32, 32);
 
     for (int i = 0; i < 32; i++) {
-      this.project.addLayer("Test Layer " + i);
-      assertEquals(2 + i, this.project.getNumberOfLayers());
-      assertEquals("Test Layer " + i, this.project.getActiveLayer().getName());
+      this.model.addLayer("Test Layer " + i);
+      assertEquals(2 + i, this.model.getNumberOfLayers());
+      assertEquals("Test Layer " + i, this.model.getActiveLayer().getName());
     }
 
-    assertEquals(33, this.project.getNumberOfLayers());
-    assertEquals("Test Layer 31", this.project.getActiveLayer().getName());
-    this.project.setActiveLayer("Test Layer 3");
+    assertEquals(33, this.model.getNumberOfLayers());
+    assertEquals("Test Layer 31", this.model.getActiveLayer().getName());
+    this.model.setActiveLayer("Test Layer 3");
 
-    this.project.removeLayer("Test Layer 3");
-    this.project.removeLayer("Test Layer 7");
-    this.project.removeLayer("Test Layer 17");
+    this.model.removeLayer("Test Layer 3");
+    this.model.removeLayer("Test Layer 7");
+    this.model.removeLayer("Test Layer 17");
 
-    assertEquals(30, this.project.getNumberOfLayers());
+    assertEquals(30, this.model.getNumberOfLayers());
 
-    assertEquals("Test Layer 2", this.project.getActiveLayer().getName());
-    this.project.removeLayer("Test Layer 2");
-    assertEquals("Test Layer 1", this.project.getActiveLayer().getName());
-    this.project.removeLayer("Test Layer 1");
-    this.project.removeLayer("Layer1");
-    assertEquals("Test Layer 0", this.project.getActiveLayer().getName());
-    this.project.removeLayer("Test Layer 0");
-    assertEquals("Test Layer 4", this.project.getActiveLayer().getName());
+    assertEquals("Test Layer 2", this.model.getActiveLayer().getName());
+    this.model.removeLayer("Test Layer 2");
+    assertEquals("Test Layer 1", this.model.getActiveLayer().getName());
+    this.model.removeLayer("Test Layer 1");
+    this.model.removeLayer("Layer1");
+    assertEquals("Test Layer 0", this.model.getActiveLayer().getName());
+    this.model.removeLayer("Test Layer 0");
+    assertEquals("Test Layer 4", this.model.getActiveLayer().getName());
 
   }
 
   @Test
   public void badRemoveLayer() {
     try {
-      this.project.removeLayer("Layer 1");
+      this.model.removeLayer("Layer 1");
       fail("Tried to remove a layer with no loaded Project");
     } catch (IllegalStateException e) {
       assertEquals("There's currently no open project.",
@@ -338,9 +357,9 @@ public class ProjectImplTest {
     this.init();
 
     try {
-      this.project.createNewProject(32, 32);
-      this.project.removeLayer("Layer 1");
-      fail("Tried to remove the only layer off this project");
+      this.model.createNewProject(32, 32);
+      this.model.removeLayer("Layer 1");
+      fail("Tried to remove the only layer off this model");
     } catch (IllegalStateException e) {
       assertEquals("There is only 1 layer. Operation cannot be done.",
           e.getMessage());
@@ -349,19 +368,19 @@ public class ProjectImplTest {
     this.init();
 
     try {
-      this.project.createNewProject(32, 32);
-      this.project.addLayer("Layer 2");
-      this.project.removeLayer("Layer ");
+      this.model.createNewProject(32, 32);
+      this.model.addLayer("Layer 2");
+      this.model.removeLayer("Layer ");
       fail("Tried to remove a layer that doesn't exist");
     } catch (IllegalArgumentException e) {
-      assertEquals("Tried to remove layer \"Layer \" but that layer doesn't exist "
+      assertEquals("Tried to remove layer \"Layer\" but that layer doesn't exist "
               + "in this project.",
           e.getMessage());
     }
 
     try {
-      this.project.createNewProject(32, 32);
-      this.project.removeLayer(null);
+      this.model.createNewProject(32, 32);
+      this.model.removeLayer(null);
       fail("Null was passed as a argument");
     } catch (IllegalArgumentException e) {
       assertEquals("Layer name cannot be null.",
@@ -371,16 +390,16 @@ public class ProjectImplTest {
 
   @Test
   public void validGetActiveLayer() {
-    this.project.createNewProject(32, 32);
-    assertEquals("Layer1", this.project.getActiveLayer().getName());
-    this.project.addLayer("Layer 2");
-    assertEquals("Layer 2", this.project.getActiveLayer().getName());
+    this.model.createNewProject(32, 32);
+    assertEquals("Layer1", this.model.getActiveLayer().getName());
+    this.model.addLayer("Layer 2");
+    assertEquals("Layer 2", this.model.getActiveLayer().getName());
   }
 
   @Test
   public void badGetActiveLayer() {
     try {
-      this.project.getActiveLayer();
+      this.model.getActiveLayer();
       fail("Tried to get the active layer with no loaded Project");
     } catch (IllegalStateException e) {
       assertEquals("There's currently no open project.",
@@ -390,29 +409,29 @@ public class ProjectImplTest {
 
   @Test
   public void validSetActiveLayer() {
-    this.project.createNewProject(32, 32);
-    assertEquals("Layer1", this.project.getActiveLayer().getName());
-    this.project.addLayer("Layer 2");
-    this.project.addLayer("Layer 3");
-    this.project.addLayer("Layer 4");
-    assertEquals("Layer 4", this.project.getActiveLayer().getName());
+    this.model.createNewProject(32, 32);
+    assertEquals("Layer1", this.model.getActiveLayer().getName());
+    this.model.addLayer("Layer 2");
+    this.model.addLayer("Layer 3");
+    this.model.addLayer("Layer 4");
+    assertEquals("Layer 4", this.model.getActiveLayer().getName());
 
-    this.project.setActiveLayer("Layer 3");
-    assertEquals("Layer 3", this.project.getActiveLayer().getName());
-    this.project.setActiveLayer("Layer 2");
-    assertEquals("Layer 2", this.project.getActiveLayer().getName());
+    this.model.setActiveLayer("Layer 3");
+    assertEquals("Layer 3", this.model.getActiveLayer().getName());
+    this.model.setActiveLayer("Layer 2");
+    assertEquals("Layer 2", this.model.getActiveLayer().getName());
 
-    this.project.setActiveLayer(3);
-    assertEquals("Layer 4", this.project.getActiveLayer().getName());
-    this.project.setActiveLayer(0);
-    assertEquals("Layer1", this.project.getActiveLayer().getName());
+    this.model.setActiveLayer(3);
+    assertEquals("Layer 4", this.model.getActiveLayer().getName());
+    this.model.setActiveLayer(0);
+    assertEquals("Layer1", this.model.getActiveLayer().getName());
 
   }
 
   @Test
   public void badSetActiveLayer() {
     try {
-      this.project.setActiveLayer("Layer 1");
+      this.model.setActiveLayer("Layer 1");
       fail("Tried to get the active layer with no loaded Project");
     } catch (IllegalStateException e) {
       assertEquals("There's currently no open project.",
@@ -420,8 +439,8 @@ public class ProjectImplTest {
     }
 
     try {
-      this.project.createNewProject(32, 32);
-      this.project.setActiveLayer(null);
+      this.model.createNewProject(32, 32);
+      this.model.setActiveLayer(null);
       fail("Null was passed as a argument");
     } catch (IllegalArgumentException e) {
       assertEquals("Layer name cannot be null.",
@@ -431,7 +450,7 @@ public class ProjectImplTest {
     this.init();
 
     try {
-      this.project.setActiveLayer(1);
+      this.model.setActiveLayer(1);
       fail("Tried to get the active layer with no loaded Project");
     } catch (IllegalStateException e) {
       assertEquals("There's currently no open project.",
@@ -439,8 +458,8 @@ public class ProjectImplTest {
     }
 
     try {
-      this.project.createNewProject(32, 32);
-      this.project.setActiveLayer(1);
+      this.model.createNewProject(32, 32);
+      this.model.setActiveLayer(1);
       fail("Layer index is out of bounds.");
     } catch (IllegalArgumentException e) {
       assertEquals("Layer index is out of bounds.",
@@ -451,7 +470,7 @@ public class ProjectImplTest {
   @Test
   public void badSetFilter() {
     try {
-      this.project.setFilter("Some Filter", "Layer1");
+      this.model.setFilter("Some Filter", "Layer1");
       fail("No loaded Project");
     } catch (IllegalStateException e) {
       assertEquals("There's currently no open project.",
@@ -461,31 +480,31 @@ public class ProjectImplTest {
     this.init();
 
     try {
-      this.project.createNewProject(32, 32);
-      this.project.setFilter(null, null);
+      this.model.createNewProject(32, 32);
+      this.model.setFilter(null, null);
       fail("Null was passed as a argument");
     } catch (IllegalArgumentException e) {
       assertEquals("Layer name and/or Filter name cannot be null.",
           e.getMessage());
     }
 
-    this.project.createNewProject(5, 5);
+    this.model.createNewProject(5, 5);
     try {
-      this.project.setFilter("orange-component", "Layer1");
+      this.model.setFilter("orange-component", "Layer1");
       fail("Invalid Filter");
     } catch (IllegalArgumentException a)  {
       //do nothing
     }
 
     try {
-      this.project.setFilter("red-component", "hello");
+      this.model.setFilter("red-component", "hello");
       fail("Unknown filter");
     } catch (IllegalArgumentException a) {
       //do nothing
     }
 
     try {
-      this.project.setFilter(null, null);
+      this.model.setFilter(null, null);
       fail("Null is bad");
     } catch (IllegalArgumentException a) {
       //do nothing
@@ -494,28 +513,135 @@ public class ProjectImplTest {
 
   @Test
   public void testSetFilter() {
-    this.project.createNewProject(3, 4);
-    this.project.addImageToLayer("Layer1", "smolLow.ppm", 0, 0);
+    this.model.createNewProject(3, 4);
+    this.model.addImageToLayer("Layer1", "smolLow.ppm", 0, 0);
 
-    this.project.setFilter("red-component", "Layer1");
+    this.model.setFilter("red-component", "Layer1");
     int[][] afterRed = {{119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
             {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
             {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
             {119, 0, 0, 255}};
-    assertArrayEquals(afterRed, this.project.getActiveLayer().getLayerData());
+    assertArrayEquals(afterRed, this.model.getActiveLayer().getLayerData());
   }
 
   @Test
   public void testAddImageToLayer() {
-    this.project.createNewProject(3, 4);
-    assertArrayEquals(new int[12][4], this.project.getActiveLayer().getLayerData());
-    this.project.addImageToLayer("Layer1", "smol.ppm", 0, 0);
+    this.model.createNewProject(3, 4);
+    assertArrayEquals(new int[12][4], this.model.getActiveLayer().getLayerData());
+    this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
     int[][] withImage = {{225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
             {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
             {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
             {225, 225, 225, 255}};
-    assertArrayEquals(withImage, this.project.getActiveLayer().getLayerData());
+    assertArrayEquals(withImage, this.model.getActiveLayer().getLayerData());
 
+  }
+
+  @Test
+  public void currentCanvas4x4() {
+    this.model.createNewProject(4, 4);
+    assertEquals("Layer1", this.model.getActiveLayer().getName());
+
+    assertEquals("000 000 000 000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+
+    assertEquals("Layer1", this.model.getActiveLayer().getName());
+
+    this.model.addLayer("Layer 2");
+    assertEquals("Layer 2", this.model.getActiveLayer().getName());
+    this.model.setActiveLayer(0);
+    assertEquals("Layer1", this.model.getActiveLayer().getName());
+
+  }
+
+  @Test
+  public void currentCanvas4x2() {
+    this.model.createNewProject(4, 2);
+    assertEquals("Layer1", this.model.getActiveLayer().getName());
+
+    assertEquals("000 000 000 000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+  }
+
+  @Test
+  public void currentCanvas3x4() {
+    this.model.createNewProject(3, 4);
+    assertEquals("Layer1", this.model.getActiveLayer().getName());
+
+    assertEquals("000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+  }
+
+  @Test
+  public void currentCanvas2x2() {
+    this.model.createNewProject(2, 2);
+    assertEquals("Layer1", this.model.getActiveLayer().getName());
+
+    assertEquals("000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+
+    assertEquals("Layer1", this.model.getActiveLayer().getName());
+
+    this.model.addLayer("Layer 2");
+    assertEquals("Layer 2", this.model.getActiveLayer().getName());
+    this.model.setActiveLayer(0);
+    assertEquals("Layer1", this.model.getActiveLayer().getName());
+
+  }
+
+  @Test
+  public void currentCanvasWithOpacityBlend() {
+    this.model.createNewProject(2, 2);
+    assertEquals("Layer1", this.model.getActiveLayer().getName());
+
+    assertEquals("000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+
+    this.model.addLayer("Blue");
+    this.model.addLayer("Green");
+    this.model.setActiveLayer(0);
+    this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0 , 255);
+    this.model.setActiveLayer(1);
+    this.model.getActiveLayer().setPixelColor(0, 0, 0, 0, 255 , 128);
+
+    assertEquals("127 000 063 000 000 000 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+    this.model.setActiveLayer(2);
+    this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 0,200);
+
+    assertEquals("027 043 013 000 000 000 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+
+  }
+
+  @Test
+  public void currentCanvasWithOpacityBlend2() {
+    this.model.createNewProject(2, 2);
+    assertEquals("Layer1", this.model.getActiveLayer().getName());
+
+    assertEquals("000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+
+    this.model.addLayer("Purple");
+    this.model.setActiveLayer(0);
+    this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 255, 255);
+    assertEquals("000 255 255 000 000 000 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+
+    this.model.setActiveLayer(1);
+    this.model.getActiveLayer().setPixelColor(1, 0, 255, 0, 255, 128);
+
+    assertEquals("000 255 255 063 000 063 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals(2, this.model.getNumberOfLayers());
+    this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 255, 128);
+
+    assertEquals("063 127 190 063 000 063 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
   }
 
 }
