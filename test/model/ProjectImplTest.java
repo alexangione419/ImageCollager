@@ -7,13 +7,13 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PPMProjectTest {
+public class ProjectImplTest {
 
   ImageProject project;
 
   @Before
   public void init() {
-    this.project = new PPMProject();
+    this.project = new ProjectImpl();
   }
 
   @Test

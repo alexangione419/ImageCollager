@@ -11,7 +11,7 @@ import java.util.List;
  * columns, each containing the red, green, and blue values for each pixel in an image. The PPM
  * files that this class takes in also contain the alpha value of an image.
  */
-public class PPMProject implements ImageProject {
+public class ProjectImpl implements ImageProject {
 
   private int width;
   private int height;
@@ -29,7 +29,7 @@ public class PPMProject implements ImageProject {
    * Constructs a new PPMProject and initializes layers to an ArrayList of {@code Layer}s and sets
    * the name to "New Project".
    */
-  public PPMProject() {
+  public ProjectImpl() {
     this.layers = new ArrayList<Layer>();
 
     this.maxPixelValue = 255;
@@ -113,7 +113,7 @@ public class PPMProject implements ImageProject {
     this.activeLayer = 0;
     this.hasAOpenProject = true;
     this.layers = new ArrayList<Layer>();
-    this.layers.add(new PPMLayer("Layer1", this)); // make this white
+    this.layers.add(new LayerImpl("Layer1", this)); // make this white
   }
 
   @Override
@@ -209,7 +209,7 @@ public class PPMProject implements ImageProject {
           + "just whitespace.");
     }
 
-    this.layers.add(new PPMLayer(layerName, this));
+    this.layers.add(new LayerImpl(layerName, this));
     this.activeLayer = this.layers.size() - 1;
   }
 

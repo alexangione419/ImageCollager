@@ -23,7 +23,7 @@ import model.filters.Red_Component;
  * columns, each containing the red, green, and blue values for each pixel in an image. The PPM
  * files that this class takes in also contain the alpha value of an image.
  */
-public final class PPMLayer implements Layer {
+public final class LayerImpl implements Layer {
 
   private final String name;
   private final ImageProject project; // the Project that this Layer is in
@@ -35,7 +35,7 @@ public final class PPMLayer implements Layer {
   /**
    * Constructs a new {@code PPMLayer}.
    */
-  public PPMLayer(String name, ImageProject project) throws IllegalArgumentException {
+  public LayerImpl(String name, ImageProject project) throws IllegalArgumentException {
     if (project == null || name == null) {
       throw new IllegalArgumentException("Layer must have a valid name and project");
     }
@@ -105,6 +105,11 @@ public final class PPMLayer implements Layer {
 
   @Override
   public void addImageToLayer(String imageFilename, int x, int y) throws IllegalArgumentException {
+    if (x < 0 || x > this.project.getWidth() || y < 0 || y > this.project.getHeight()) {
+      throw new IllegalArgumentException("Invalid Coordinates given");
+    }
+
+
     Scanner sc;
 
     try {
@@ -132,18 +137,21 @@ public final class PPMLayer implements Layer {
     int height = sc.nextInt();
     int maxValue = sc.nextInt();
 
+    int xLim = x + width;
+    int yLim = y + height;
     // ensures the image will not out of the bounds of the layer
     if (x + width > this.project.getWidth()) {
-      width = this.project.getWidth();
+      xLim = this.project.getWidth();
     }
     if (y + height > this.project.getHeight()) {
-      height = this.project.getHeight();
+      yLim = this.project.getHeight();
     }
 
-    for (int r = x; r < height; r++) {
-      for (int c = y; c < width; c++) {
-        int conversion = (((r + 1) * this.project.getWidth())
-                - (this.project.getWidth() - (c + 1))) - 1;
+
+    for (int r = x; r < xLim; r++) {
+      for (int c = y; c < yLim; c++) {
+        int conversion = (((c + 1) * this.project.getWidth())
+                - (this.project.getWidth() - (r + 1))) - 1;
 
         this.currentLayer[conversion][0] = sc.nextInt();
         this.currentLayer[conversion][1] = sc.nextInt();

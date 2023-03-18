@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import model.ImageProject;
-import model.PPMProject;
+import model.ProjectImpl;
 import org.junit.Test;
 import view.ImageProjectView;
 import view.PPMProjectTextView;
@@ -12,7 +12,7 @@ import view.PPMProjectTextView;
 /**
  * A testing class for the {@code PPMProjectController}.
  */
-public class PPMProjectControllerTest {
+public class ProjectImplControllerTest {
 
   protected ImageProjectController controller;
   protected ImageProjectView view;
@@ -30,7 +30,7 @@ public class PPMProjectControllerTest {
     }
 
     try {
-      this.g = new PPMProject();
+      this.g = new ProjectImpl();
       this.controller = new PPMProjectController(this.g, null, null);
       fail("View is null");
     } catch (IllegalArgumentException e) {
@@ -39,7 +39,7 @@ public class PPMProjectControllerTest {
     }
 
     try {
-      this.g = new PPMProject();
+      this.g = new ProjectImpl();
       this.view = new PPMProjectTextView(this.g, System.out);
       this.controller = new PPMProjectController(this.g, this.view, null);
       fail("Output is null");

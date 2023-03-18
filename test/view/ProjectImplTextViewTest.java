@@ -4,11 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import model.ImageProject;
-import model.PPMProject;
+import model.ProjectImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PPMProjectTextViewTest {
+public class ProjectImplTextViewTest {
 
   private ImageProjectView view;
   private ImageProject model;
@@ -19,7 +19,7 @@ public class PPMProjectTextViewTest {
   @Before
   public void init() {
     this.a = new StringBuilder();
-    this.model = new PPMProject();
+    this.model = new ProjectImpl();
     this.view = new PPMProjectTextView(model, a);
   }
 

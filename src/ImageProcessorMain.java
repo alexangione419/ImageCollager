@@ -2,7 +2,7 @@ import controller.ImageProjectController;
 import controller.PPMProjectController;
 import java.io.InputStreamReader;
 import model.ImageProject;
-import model.PPMProject;
+import model.ProjectImpl;
 import view.ImageProjectView;
 import view.PPMProjectTextView;
 
@@ -10,7 +10,7 @@ public class ImageProcessorMain {
   public static void main(String[] args) {
 
     Readable rd = new InputStreamReader(System.in);
-    ImageProject project = new PPMProject();
+    ImageProject project = new ProjectImpl();
     ImageProjectView view = new PPMProjectTextView(project, System.out);
     ImageProjectController controller = new PPMProjectController(project, view, rd);
 
