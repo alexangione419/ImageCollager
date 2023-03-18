@@ -1,9 +1,16 @@
 package model;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -71,6 +78,52 @@ public class ProjectImplTest {
       throw new RuntimeException(e);
     }
   }
+
+  @Test
+  public void testSaveProject(){
+    this.project.createNewProject(3, 5);
+    this.project.addImageToLayer("Layer1", "smol.ppm", 0, 0);
+    try {
+      this.project.saveProject("P1.txt");
+    } catch (IOException io) {
+      fail(io.getMessage());
+    }
+
+    Scanner sc = null;
+    try {
+      sc = new Scanner(new FileInputStream("P1.txt"));
+    } catch (FileNotFoundException fnf) {
+      fail("File not found");
+    }
+    assertNotNull(sc);
+
+    assertEquals("P1", sc.next());
+    assertEquals("3", sc.next());
+    assertEquals("5", sc.next());
+    assertEquals("Layer1", sc.next());
+    assertEquals("normal", sc.next());
+    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("0 0 0 0", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("0 0 0 0", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("0 0 0 0", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+
+
+
+
+
+  }
+
 
   @Test
   public void badSaveImagePPM() {
@@ -393,7 +446,7 @@ public class ProjectImplTest {
   @Test
   public void badSetFilter() {
     try {
-      this.project.setFilter("Some Filter", "Layer 1");
+      this.project.setFilter("Some Filter", "Layer1");
       fail("No loaded Project");
     } catch (IllegalStateException e) {
       assertEquals("There's currently no open project.",
@@ -410,5 +463,54 @@ public class ProjectImplTest {
       assertEquals("Layer name and/or Filter name cannot be null.",
           e.getMessage());
     }
+
+    this.project.createNewProject(5, 5);
+    try {
+      this.project.setFilter("orange-component", "Layer1");
+      fail("Invalid Filter");
+    } catch (IllegalArgumentException a)  {
+      //do nothing
+    }
+
+    try {
+      this.project.setFilter("red-component", "hello");
+      fail("Unknown filter");
+    } catch (IllegalArgumentException a) {
+      //do nothing
+    }
+
+    try {
+      this.project.setFilter(null, null);
+      fail("Null is bad");
+    } catch (IllegalArgumentException a) {
+      //do nothing
+    }
   }
+
+  @Test
+  public void testSetFilter() {
+    this.project.createNewProject(3, 4);
+    this.project.addImageToLayer("Layer1", "smolLow.ppm", 0, 0);
+
+    this.project.setFilter("red-component", "Layer1");
+    int[][] afterRed = {{119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
+            {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
+            {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
+            {119, 0, 0, 255}};
+    assertArrayEquals(afterRed, this.project.getActiveLayer().getLayerData());
+  }
+
+  @Test
+  public void testAddImageToLayer() {
+    this.project.createNewProject(3, 4);
+    assertArrayEquals(new int[12][4], this.project.getActiveLayer().getLayerData());
+    this.project.addImageToLayer("Layer1", "smol.ppm", 0, 0);
+    int[][] withImage = {{225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
+            {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
+            {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
+            {225, 225, 225, 255}};
+    assertArrayEquals(withImage, this.project.getActiveLayer().getLayerData());
+
+  }
+
 }

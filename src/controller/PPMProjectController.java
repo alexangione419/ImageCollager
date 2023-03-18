@@ -13,17 +13,15 @@ import java.util.Scanner;
 import model.ImageProject;
 import view.ImageProjectView;
 
-
 /**
  * A controller for manipulating a {@code PPMProject}.
  */
 public class PPMProjectController implements ImageProjectController {
-
   boolean running;
   private final ImageProject model;
   private final ImageProjectView view;
   private final Scanner sc;
-  private final ArrayList<String> commands;
+
 
   /**
    * Constructs a new {@code PPMProjectController}.
@@ -34,15 +32,15 @@ public class PPMProjectController implements ImageProjectController {
    * @throws IllegalArgumentException if any of the given arguments are null
    */
   public PPMProjectController(ImageProject model, ImageProjectView view, Readable input)
-      throws IllegalArgumentException {
+          throws IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("PPMProject for the PPMProjectController "
-          + "cannot be null.");
+              + "cannot be null.");
     }
 
     if (view == null) {
       throw new IllegalArgumentException(
-          "PPMProjectTextView for the PPMProjectController cannot be null.");
+              "PPMProjectTextView for the PPMProjectController cannot be null.");
     }
 
     if (input == null) {
@@ -52,16 +50,15 @@ public class PPMProjectController implements ImageProjectController {
     this.model = model;
     this.view = view;
     this.sc = new Scanner(input);
-    //this.commands = new HashMap<String, Command>();
-    this.commands = new ArrayList<>();
-    this.commands.add("new-project");
-    this.commands.add("load-project");
-    this.commands.add("save-project");
-    this.commands.add("add-layer");
-    this.commands.add("add-image-to-layer");
-    this.commands.add("set-filter");
-    this.commands.add("save-image");
-    this.commands.add("quit");
+
+  }
+
+
+  /**
+   * Adds in all the possible commands that the controller supports
+   */
+  private void initCommands() {
+
   }
 
   @Override
@@ -91,7 +88,7 @@ public class PPMProjectController implements ImageProjectController {
         case "quit":
           try {
             this.view.renderMessage("WARNING: Quitting will delete any" +
-                " unsaved progress. Confirm? (y/n)\n");
+                    " unsaved progress. Confirm? (y/n)\n");
           } catch (IOException io) {
             //pass
           }
