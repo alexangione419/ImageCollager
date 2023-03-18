@@ -124,9 +124,12 @@ public class ProjectImplTest {
   }
 
   @Test
-  public void validSaveImage() {
+  public void validSaveImage() throws IOException {
     this.model.createNewProject(2, 2);
+    this.model.saveImage("test");
+
     this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
+
 
     try {
       this.model.saveImage("P1.ppm");
@@ -157,7 +160,6 @@ public class ProjectImplTest {
       assertEquals("Filepath cannot be null.", e.getMessage());
     }
   }
-
 
   @Test
   public void validGetMaxPixelValue() {
@@ -542,10 +544,10 @@ public class ProjectImplTest {
     this.model.createNewProject(4, 4);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
-    assertEquals("000 000 000 000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("0 0 0 0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 0 0 0 ", this.model.currentCanvas());
 
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
@@ -561,8 +563,8 @@ public class ProjectImplTest {
     this.model.createNewProject(4, 2);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
-    assertEquals("000 000 000 000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("0 0 0 0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 0 0 0 ", this.model.currentCanvas());
   }
 
   @Test
@@ -570,10 +572,10 @@ public class ProjectImplTest {
     this.model.createNewProject(3, 4);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
-    assertEquals("000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 ", this.model.currentCanvas());
   }
 
   @Test
@@ -581,8 +583,8 @@ public class ProjectImplTest {
     this.model.createNewProject(2, 2);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
-    assertEquals("000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 ", this.model.currentCanvas());
 
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
@@ -598,8 +600,8 @@ public class ProjectImplTest {
     this.model.createNewProject(2, 2);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
-    assertEquals("000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 ", this.model.currentCanvas());
 
     this.model.addLayer("Blue");
     this.model.addLayer("Green");
@@ -608,13 +610,13 @@ public class ProjectImplTest {
     this.model.setActiveLayer(1);
     this.model.getActiveLayer().setPixelColor(0, 0, 0, 0, 255 , 128);
 
-    assertEquals("127 000 063 000 000 000 \n"
-        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("127 0 63 0 0 0 \n"
+        + "0 0 0 0 0 0 ", this.model.currentCanvas());
     this.model.setActiveLayer(2);
     this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 0,200);
 
-    assertEquals("027 043 013 000 000 000 \n"
-        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("27 43 13 0 0 0 \n"
+        + "0 0 0 0 0 0 ", this.model.currentCanvas());
 
   }
 
@@ -623,25 +625,25 @@ public class ProjectImplTest {
     this.model.createNewProject(2, 2);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
-    assertEquals("000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 ", this.model.currentCanvas());
 
     this.model.addLayer("Purple");
     this.model.setActiveLayer(0);
     this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 255, 255);
-    assertEquals("000 255 255 000 000 000 \n"
-        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("0 255 255 0 0 0 \n"
+        + "0 0 0 0 0 0 ", this.model.currentCanvas());
 
     this.model.setActiveLayer(1);
     this.model.getActiveLayer().setPixelColor(1, 0, 255, 0, 255, 128);
 
-    assertEquals("000 255 255 063 000 063 \n"
-        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("0 255 255 63 0 63 \n"
+        + "0 0 0 0 0 0 ", this.model.currentCanvas());
     assertEquals(2, this.model.getNumberOfLayers());
     this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 255, 128);
 
-    assertEquals("063 127 190 063 000 063 \n"
-        + "000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("63 127 190 63 0 63 \n"
+        + "0 0 0 0 0 0 ", this.model.currentCanvas());
   }
 
 }
