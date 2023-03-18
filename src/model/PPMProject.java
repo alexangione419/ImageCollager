@@ -99,6 +99,7 @@ public class PPMProject implements ImageProject {
     if (filePath == null) {
       throw new IllegalArgumentException("Filepath cannot be null.");
     }
+
   }
 
   @Override
