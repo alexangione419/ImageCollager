@@ -1,19 +1,15 @@
 package controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-
 import controller.commands.AddImageToLayer;
 import controller.commands.AddLayer;
-import controller.commands.Command;
 import controller.commands.LoadProject;
 import controller.commands.NewProject;
 import controller.commands.SaveImage;
 import controller.commands.SaveProject;
 import controller.commands.SetFilter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 import model.ImageProject;
 import view.ImageProjectView;
 

@@ -67,6 +67,8 @@ public class PPMProjectTest {
       fail("Null passed as an argument");
     } catch (IllegalArgumentException e) {
       assertEquals("Filepath cannot be null.", e.getMessage());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 

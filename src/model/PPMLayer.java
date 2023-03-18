@@ -1,12 +1,10 @@
 package model;
 
 
-import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
-
 import model.filters.Blue_Component;
 import model.filters.Brighten_Intensity;
 import model.filters.Brighten_Luma;

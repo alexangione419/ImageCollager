@@ -2,7 +2,6 @@ package view;
 
 import java.io.IOException;
 import model.ImageProject;
-import model.PPMLayer;
 
 /**
  * A text-based implementation of {@code ImageProjectView}. This class allows anyone to view a
@@ -123,23 +122,12 @@ public class PPMProjectTextView implements ImageProjectView {
 
           finalColor[3] = (alphaPercentage * maxPixelVal);
 
-          finalColor[0] = (((curAlpha / maxPixelVal * curRed + backgroundRed * (backgroundAlpha / maxPixelVal))
-              * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
-
-          System.out.println(finalColor[0]);
-
-          finalColor[1] = (((curAlpha / maxPixelVal * curGreen + backgroundGreen * (backgroundAlpha / maxPixelVal))
-              * (1 - curAlpha / maxPixelVal))  * (1 / alphaPercentage));
-          System.out.println(finalColor[1]);
-
-          finalColor[2] = (((curAlpha / maxPixelVal * curBlue + backgroundBlue * (backgroundAlpha / maxPixelVal))
-              * (1 - curAlpha / maxPixelVal))  * (1 / alphaPercentage));
-          System.out.println(finalColor[2]);
-
           //finalColor[0] = Math.abs((curRed * curAlpha) + (backgroundRed * (1 - curAlpha))) / maxPixelVal;
           //finalColor[1] = Math.abs((curGreen * curAlpha) + (backgroundGreen * (1 - curAlpha))) / maxPixelVal;
           //finalColor[2] = Math.abs((curBlue * curAlpha) + (backgroundBlue * (1 - curAlpha))) / maxPixelVal;
 
+          finalColor[0] = (((curAlpha / maxPixelVal * curRed + backgroundRed * (backgroundAlpha / maxPixelVal))
+              * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
 
           finalColor[1] = (((curAlpha / maxPixelVal * curGreen + backgroundGreen * (backgroundAlpha / maxPixelVal))
               * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
@@ -150,9 +138,6 @@ public class PPMProjectTextView implements ImageProjectView {
 //          finalColor[0] = Math.abs((curRed * curAlpha) + (backgroundRed * (1 - curAlpha))) / maxPixelVal;
 //          finalColor[1] = Math.abs((curGreen * curAlpha) + (backgroundGreen * (1 - curAlpha))) / maxPixelVal;
 //          finalColor[2] = Math.abs((curBlue * curAlpha) + (backgroundBlue * (1 - curAlpha))) / maxPixelVal;
-
-
-
         }
         else if ((i == 0) && (curAlpha != 0)) {
           finalColor[0] = curRed;

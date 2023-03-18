@@ -89,7 +89,6 @@ public class PPMProject implements ImageProject {
       }
     }
     writer.close();
-
   }
 
   //In the controller, make it so that if this method is called after a project is opened, it asks
