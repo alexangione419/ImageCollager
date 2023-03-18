@@ -1,5 +1,6 @@
 package controller.commands;
 
+import java.io.IOException;
 import model.ImageProject;
 
 public class SaveImage implements Command {
@@ -16,7 +17,12 @@ public class SaveImage implements Command {
 
   @Override
   public void run(ImageProject p) {
-    p.saveImage(fileName);
+    try {
+      p.saveImage(fileName);
+    }
+    catch (IOException e) {
+
+    }
   }
 
 }

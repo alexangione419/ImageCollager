@@ -128,7 +128,12 @@ public class ProjectImplTest {
   @Test
   public void badSaveImagePPM() {
     try {
-      this.project.saveImage(null);
+      try {
+        this.project.saveImage(null);
+      }
+      catch (IOException e) {
+
+      }
       fail("Null passed as an argument");
     } catch (IllegalArgumentException e) {
       assertEquals("Filepath cannot be null.", e.getMessage());

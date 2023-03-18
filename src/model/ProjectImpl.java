@@ -40,7 +40,7 @@ public class ProjectImpl implements ImageProject {
   }
 
   @Override
-  public void saveImage(String name) throws IllegalStateException {
+  public void saveImage(String name) throws IllegalStateException, IOException {
     if (name == null) {
       throw new IllegalArgumentException("Filepath cannot be null.");
     }
@@ -48,40 +48,28 @@ public class ProjectImpl implements ImageProject {
     String currentCanvas = this.currentCanvas();
 
     String output = "P3\n"
-        + this.getWidth() + " " + this.getHeight()
-        + "\n" + this.getMaxPixelValue()
+        + this.getWidth() + " " + this.getHeight() + "\n"
+        + this.getMaxPixelValue() + "\n"
         + currentCanvas + "\n";
 
     FileWriter writer;
 
-//    try {
-//      writer = new FileWriter(name);
-//    } catch (IOException io) {
-//      throw new IOException("File writer error encountered");
-//    }
-//
-//    try {
-//      writer.write(name.substring(0, name.lastIndexOf(".")) + "\n");
-//      writer.write(this.width + " " + this.height + "\n");
-//    } catch (IOException io) {
-//      throw new IOException("File writer error encountered");
-//    }
-//    for (Layer currLayer : this.layers) {
-//      try {
-//        writer.write(currLayer.getName() + " " + currLayer.getFilter() + "\n");
-//        for (int[] row : currLayer.getLayerData()) {
-//          writer.write(row[0] + " " + row[1] + " " + row[2] + " " + row[3] + "\n");
-//        }
-//      } catch (IOException io) {
-//        throw new IOException("File writer error encountered");
-//      }
-//    }
-//    writer.close();
+    try {
+      writer = new FileWriter(name);
+    } catch (IOException io) {
+      throw new IOException("File writer error encountered");
+    }
 
-
+    try {
+      writer.write(output);
+    } catch (IOException io) {
+      throw new IOException("File writer error encountered");
+    }
+    writer.close();
   }
 
 
+  @Override
   public String currentCanvas() throws IllegalStateException {
     if (!this.hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
@@ -108,6 +96,35 @@ public class ProjectImpl implements ImageProject {
 
     return results;
   }
+
+//  private String removeAlpha(String color) {
+//    String curCanvas = this.currentCanvas();
+//
+//    //creates an array of string, where each string contains the R G B A values of each
+//    //pixel
+//    ArrayList<String> temp = new ArrayList<String>();
+//
+//    for (int p = 0; p < this.getWidth() * this.getHeight(); p++) {
+//      temp.add(curCanvas.substring(p * 16, (p * 16) + 16));
+//    }
+//
+//    String finalCanvas = "";
+//
+//    for (int i = 0; i < temp.size(); i++) {
+//      String c = temp.get(i);
+//
+//      int alpha = Integer.parseInt(c.substring(12, 15));
+//      int red = Integer.parseInt(c.substring(0, 2)) * (alpha / this.maxPixelValue);
+//      int green = Integer.parseInt(c.substring(4, 6)) * (alpha / this.maxPixelValue);
+//      int blue = Integer.parseInt(c.substring(8, 10)) * (alpha / this.maxPixelValue);
+//      double[] tempColor = new double[] {red, green, blue};
+//      temp.set(i, this.formatColor(tempColor))
+//    }
+//
+//    for ()
+//
+//    return null;
+//  }
 
   /**
    * Loops every layer to return back the color that will be displayed in the final image.
@@ -165,7 +182,12 @@ public class ProjectImpl implements ImageProject {
     }
 
     this.setActiveLayer(curActiveLayer);
-    return finalColor;
+
+    return new double[] {
+         (finalColor[0] *  (finalColor[3] / this.maxPixelValue)),
+         (finalColor[1] *  (finalColor[3] / this.maxPixelValue)),
+         (finalColor[2] *  (finalColor[3] / this.maxPixelValue))
+     };
   }
 
   /**
@@ -176,7 +198,8 @@ public class ProjectImpl implements ImageProject {
   private String formatColor(double[] color) {
     String results = "";
 
-    for (int c = 0; c < 4; c++) {
+
+    for (int c = 0; c < color.length; c++) {
 
       String componentRep = "";
 
@@ -285,6 +308,11 @@ public class ProjectImpl implements ImageProject {
     }
 
     return this.height;
+  }
+
+  @Override
+  public boolean supportsAlpha() {
+    return false;
   }
 
   @Override

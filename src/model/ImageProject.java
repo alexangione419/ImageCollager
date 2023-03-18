@@ -14,7 +14,7 @@ public interface ImageProject {
    * @throws IOException           if the file path is invalid.
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
-  void saveImage(String name) throws IllegalStateException;
+  void saveImage(String name) throws IllegalStateException, IOException;
 
   /**
    * Saves this project to a specified file path as a .collage file.
@@ -64,6 +64,12 @@ public interface ImageProject {
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
   int getHeight() throws IllegalStateException;
+
+  /**
+   * Returns whether this {@code ImageProject} supports the alpha channel (tra1.nsparency)
+   * @return true if this {@code ImageProject} supports alpha, false otherwise
+   */
+  boolean supportsAlpha();
 
   /**
    * Returns the number of layers this {@code ImageProject} has.

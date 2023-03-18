@@ -47,10 +47,10 @@ public class ProjectImplTextViewTest {
     this.model.createNewProject(4, 4);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
-    assertEquals("000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("000 000 000 000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
 
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
@@ -66,8 +66,8 @@ public class ProjectImplTextViewTest {
     this.model.createNewProject(4, 2);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
-    assertEquals("000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("000 000 000 000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
   }
 
   @Test
@@ -75,10 +75,10 @@ public class ProjectImplTextViewTest {
     this.model.createNewProject(3, 4);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
-    assertEquals("000 000 000 000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
   }
 
   @Test
@@ -86,8 +86,8 @@ public class ProjectImplTextViewTest {
     this.model.createNewProject(2, 2);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
-    assertEquals("000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
 
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
@@ -103,8 +103,8 @@ public class ProjectImplTextViewTest {
     this.model.createNewProject(2, 2);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
-    assertEquals("000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
 
     this.model.addLayer("Blue");
     this.model.addLayer("Green");
@@ -113,13 +113,13 @@ public class ProjectImplTextViewTest {
     this.model.setActiveLayer(1);
     this.model.getActiveLayer().setPixelColor(0, 0, 0, 0, 255 , 128);
 
-    assertEquals("127 000 063 255 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("127 000 063 000 000 000 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
     this.model.setActiveLayer(2);
     this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 0,200);
 
-    assertEquals("027 043 013 255 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("027 043 013 000 000 000 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
 
   }
 
@@ -128,25 +128,25 @@ public class ProjectImplTextViewTest {
     this.model.createNewProject(2, 2);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
-    assertEquals("000 000 000 000 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("000 000 000 000 000 000 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
 
     this.model.addLayer("Purple");
     this.model.setActiveLayer(0);
     this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 255, 255);
-    assertEquals("000 255 255 255 000 000 000 000 \n"
-        + "000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("000 255 255 000 000 000 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
 
     this.model.setActiveLayer(1);
     this.model.getActiveLayer().setPixelColor(1, 0, 255, 0, 255, 128);
 
-    assertEquals("000 255 255 255 127 000 127 128 \n"
-        + "000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("000 255 255 063 000 063 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
     assertEquals(2, this.model.getNumberOfLayers());
     this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 255, 128);
 
-    assertEquals("063 127 190 255 127 000 127 128 \n"
-        + "000 000 000 000 000 000 000 000 ", this.model.currentCanvas());
+    assertEquals("063 127 190 063 000 063 \n"
+        + "000 000 000 000 000 000 ", this.model.currentCanvas());
   }
 
   @Test
