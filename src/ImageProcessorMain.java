@@ -7,6 +7,7 @@ import view.ImageProjectView;
 import view.PPMProjectTextView;
 
 public class ImageProcessorMain {
+
   public static void main(String[] args) {
 
     Readable rd = new InputStreamReader(System.in);

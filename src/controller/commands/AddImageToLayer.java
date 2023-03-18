@@ -1,13 +1,14 @@
 package controller.commands;
 
-import controller.commands.Command;
 import model.ImageProject;
 
 public class AddImageToLayer implements Command {
+
   private final String layerName;
   private final String imageFile;
   private final int x;
   private final int y;
+
   public AddImageToLayer(String layerName, String imageFile, int x, int y) {
     if (layerName.isEmpty() || imageFile.isEmpty()) {
       throw new IllegalArgumentException("Invalid input: Cannot be empty");

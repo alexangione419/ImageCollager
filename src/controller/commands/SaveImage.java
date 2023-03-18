@@ -3,6 +3,7 @@ package controller.commands;
 import model.ImageProject;
 
 public class SaveImage implements Command {
+
   private final String fileName;
 
   public SaveImage(String fileName) {

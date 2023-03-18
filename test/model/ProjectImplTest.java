@@ -70,7 +70,7 @@ public class ProjectImplTest {
   public void badSaveProject() {
     this.project.createNewProject(4, 4);
     try {
-      this.project.saveProject( null);
+      this.project.saveProject(null);
       fail("Null passed as an argument");
     } catch (IllegalArgumentException e) {
       assertEquals("Filepath cannot be null.", e.getMessage());
@@ -128,7 +128,7 @@ public class ProjectImplTest {
   @Test
   public void badSaveImagePPM() {
     try {
-      this.project.saveImage( null);
+      this.project.saveImage(null);
       fail("Null passed as an argument");
     } catch (IllegalArgumentException e) {
       assertEquals("Filepath cannot be null.", e.getMessage());
