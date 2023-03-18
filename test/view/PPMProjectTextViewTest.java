@@ -3,6 +3,7 @@ package view;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.awt.Color;
 import java.io.IOException;
 import model.ImageProject;
 import model.PPMProject;
@@ -111,9 +112,9 @@ public class PPMProjectTextViewTest {
     this.model.setActiveLayer(0);
     this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0 , 255);
     this.model.setActiveLayer(1);
-    this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 0 , 200);
+    this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 0 , 128);
 
-    assertEquals("55 199 0 255  0 0 0 0  \n"
+    assertEquals("127 128 0 255  0 0 0 0  \n"
         + "0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
   }
 
@@ -140,6 +141,24 @@ public class PPMProjectTextViewTest {
     assertEquals("27 43 13 255  0 0 0 0  \n"
         + "0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
 
+  }
+
+  @Test
+  public void currentCanvasWithOpacityBlend3() {
+    this.model.createNewProject(2, 2);
+    assertEquals("Layer 1", this.model.getActiveLayer().getName());
+
+    assertEquals("0 0 0 0  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
+
+    this.model.addLayer("Purple");
+    this.model.setActiveLayer(0);
+    this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 255, 255);
+    this.model.setActiveLayer(1);
+    this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 255 , 128);
+
+    assertEquals("127 128 255 255  0 0 0 0  \n"
+        + "0 0 0 0  0 0 0 0  ", this.view.currentCanvas());
   }
 
   @Test

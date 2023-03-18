@@ -127,7 +127,7 @@ public class PPMProjectTextView implements ImageProjectView {
               * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
 
           finalColor[1] = (((curAlpha / maxPixelVal * curGreen + backgroundGreen * (backgroundAlpha / maxPixelVal))
-              * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
+              * (1 - curAlpha / maxPixelVal))  * (1 / alphaPercentage));
 
           finalColor[2] = (((curAlpha / maxPixelVal * curBlue + backgroundBlue * (backgroundAlpha / maxPixelVal))
               * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
@@ -139,7 +139,6 @@ public class PPMProjectTextView implements ImageProjectView {
 //          finalColor[0] = backgroundRed * (1 - finalColor[3]) + curRed * finalColor[3];
 //          finalColor[1] = backgroundGreen * (1 - finalColor[3]) + curGreen * finalColor[3];
 //          finalColor[2] = backgroundBlue * (1 - finalColor[3]) + curBlue * finalColor[3];
-
 
         }
         else if ((i == 0) && (curAlpha != 0)) {
