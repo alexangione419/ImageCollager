@@ -108,7 +108,7 @@ public final class PPMLayer implements Layer {
     Scanner sc;
 
     try {
-      sc = new Scanner(new FileInputStream(imageFilename));
+      sc = new Scanner(new FileInputStream("./res/"+imageFilename));
     } catch (FileNotFoundException e) {
       throw new IllegalArgumentException("File not found");
     }
