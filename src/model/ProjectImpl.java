@@ -184,9 +184,9 @@ public class ProjectImpl implements ImageProject {
     this.setActiveLayer(curActiveLayer);
 
     return new double[] {
-         (finalColor[0] *  (finalColor[3] / this.maxPixelValue)),
-         (finalColor[1] *  (finalColor[3] / this.maxPixelValue)),
-         (finalColor[2] *  (finalColor[3] / this.maxPixelValue))
+            (finalColor[0] *  (finalColor[3] / this.maxPixelValue)),
+            (finalColor[1] *  (finalColor[3] / this.maxPixelValue)),
+            (finalColor[2] *  (finalColor[3] / this.maxPixelValue))
      };
   }
 
@@ -203,15 +203,8 @@ public class ProjectImpl implements ImageProject {
 
       String componentRep = "";
 
-      if (color[c] > 100) {
-        componentRep = String.valueOf((int) color[c]);
-      }
-      else if ((color[c] < 100) && (color[c] >= 10)) {
-        componentRep = String.valueOf("0" + (int) color[c]);
-      }
-      else if (color[c] < 10){
-        componentRep = String.valueOf("00" + (int) color[c]);
-      }
+      componentRep = String.valueOf((int) color[c]);
+
 
       results = results.concat(componentRep);
       results = results.concat(" ");
