@@ -259,5 +259,36 @@ public class LayerImplTest {
     }
   }
 
+  @Test
+  public void testApplyFilters() {
+    Layer filterMe = new LayerImpl("filterTest", this.project3x4);
+    filterMe.addImageToLayer("smolLow.ppm", 0, 0);
+    int[][] beforeAll = {{119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
+            {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
+            {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
+            {119, 119, 119, 255}};
+    assertArrayEquals(beforeAll, filterMe.getLayerData());
+    int[][] afterRed = {{119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
+            {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
+            {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
+            {119, 0, 0, 255}};
+    filterMe.applyFilter("red-component");
+    assertArrayEquals(afterRed, filterMe.getLayerData());
+    filterMe.applyFilter("normal");
+    assertArrayEquals(beforeAll, filterMe.getLayerData());
+
+  }
+
+  @Test
+  public void testBadApplyFilters() {
+    Layer fail = new LayerImpl("fail", this.project5x6);
+    try {
+      fail.applyFilter("dne");
+      fail("Filter does not exist");
+    } catch (IllegalArgumentException a) {
+      //do nothing
+    }
+  }
+
 
 }

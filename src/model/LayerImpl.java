@@ -137,6 +137,7 @@ public final class LayerImpl implements Layer {
     int height = sc.nextInt();
     int maxValue = sc.nextInt();
 
+
     int xLim = x + width;
     int yLim = y + height;
     // ensures the image will not out of the bounds of the layer
@@ -156,12 +157,12 @@ public final class LayerImpl implements Layer {
         this.currentLayer[conversion][0] = sc.nextInt();
         this.currentLayer[conversion][1] = sc.nextInt();
         this.currentLayer[conversion][2] = sc.nextInt();
-        this.currentLayer[conversion][3] = 255;
+        this.currentLayer[conversion][3] = this.getMaxPixel();
 
         this.unfilteredLayer[conversion][0] = this.currentLayer[conversion][0];
         this.unfilteredLayer[conversion][1] = this.currentLayer[conversion][1];
         this.unfilteredLayer[conversion][2] = this.currentLayer[conversion][2];
-        this.unfilteredLayer[conversion][3] = 255;
+        this.unfilteredLayer[conversion][3] = this.getMaxPixel();
       }
     }
 

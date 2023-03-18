@@ -21,8 +21,7 @@ public class PPMProjectController implements ImageProjectController {
   private final ImageProject model;
   private final ImageProjectView view;
   private final Scanner sc;
-  //private final Map<String, Command> commands;
-  private final ArrayList<String> commands;
+
 
   /**
    * Constructs a new {@code PPMProjectController}.
@@ -51,16 +50,7 @@ public class PPMProjectController implements ImageProjectController {
     this.model = model;
     this.view = view;
     this.sc = new Scanner(input);
-    //this.commands = new HashMap<String, Command>();
-    this.commands = new ArrayList<>();
-    this.commands.add("new-project");
-    this.commands.add("load-project");
-    this.commands.add("save-project");
-    this.commands.add("add-layer");
-    this.commands.add("add-image-to-layer");
-    this.commands.add("set-filter");
-    this.commands.add("save-image");
-    this.commands.add("quit");
+
   }
 
 
