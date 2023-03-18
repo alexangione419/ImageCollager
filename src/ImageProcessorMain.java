@@ -16,8 +16,5 @@ public class ImageProcessorMain {
 
     controller.start();
 
-
-
-
   }
 }

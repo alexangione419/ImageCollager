@@ -143,7 +143,12 @@ public class PPMProjectController implements ImageProjectController {
             this.displayInvalidArgs();
             break;
           }
-          new SaveProject(sc.next()).run(this.model);
+          try {
+            new SaveProject(sc.next()).run(this.model);
+          } catch (IOException io) {
+            throw new IllegalStateException(io);
+          }
+
           break;
         case "add-layer":
           if (!sc.hasNext()) {
@@ -201,7 +206,6 @@ public class PPMProjectController implements ImageProjectController {
           }
       }
     }
-
 
   }
 

@@ -22,7 +22,7 @@ public interface ImageProject {
    * @throws IOException           if the file path is invalid.
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
-  void saveProject(String name) throws IllegalStateException;
+  void saveProject(String name) throws IllegalStateException, IOException;
 
   /**
    * Loads a project at a given file path.

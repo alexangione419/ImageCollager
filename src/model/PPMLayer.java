@@ -78,6 +78,11 @@ public final class PPMLayer implements Layer {
   }
 
   @Override
+  public String getFilter() {
+    return this.currentFiler;
+  }
+
+  @Override
   public int[][] getLayerData() {
     return this.currentLayer.clone();
   }

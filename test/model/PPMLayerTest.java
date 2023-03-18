@@ -6,10 +6,6 @@ import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
-import view.ImageProjectView;
-import view.PPMProjectTextView;
-
-import java.io.FileNotFoundException;
 
 public class PPMLayerTest {
 

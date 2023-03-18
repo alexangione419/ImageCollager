@@ -20,6 +20,12 @@ public interface Layer {
   int getTotalPixels();
 
   /**
+   * Gets the name of the currently applied layer.
+   * @return the name of the currently applied layer
+   */
+  String getFilter();
+
+  /**
    * Returns a copy of the pixel data contained on this {@code Layer}.
    *
    * @return a 2D array of each pixel's data on this {@code Layer}

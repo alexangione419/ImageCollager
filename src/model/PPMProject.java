@@ -1,5 +1,7 @@
 package model;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,8 @@ public class PPMProject implements ImageProject {
   //should be false if loadProject() or createNewProject() hasn't been called
   private boolean hasAOpenProject;
 
+  private File projectFile;
+
   /**
    * Constructs a new PPMProject and initializes layers to an ArrayList of {@code Layer}s and sets
    * the name to "New Project".
@@ -41,7 +45,7 @@ public class PPMProject implements ImageProject {
   }
 
   @Override
-  public void saveProject(String name) throws IllegalStateException {
+  public void saveProject(String name) throws IllegalStateException, IOException {
     if (!hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
     }
@@ -49,6 +53,42 @@ public class PPMProject implements ImageProject {
     if (name == null || name.isEmpty()) {
       throw new IllegalArgumentException("Filepath cannot be null.");
     }
+
+    if (!name.matches(".+\\..{2,}")) {
+      throw new IllegalArgumentException("Name must be valid filename with valid suffix");
+    }
+
+    try {
+      this.projectFile = new File(name);
+      this.projectFile.createNewFile();
+    } catch (IOException io) {
+      throw new IOException("File error occurred");
+    }
+
+    FileWriter writer = null;
+    try {
+      writer = new FileWriter(name);
+    } catch (IOException io) {
+      throw new IOException("File writer error encountered");
+    }
+
+    try {
+      writer.write(name.substring(0, name.lastIndexOf(".")) + "\n");
+      writer.write(this.width + " " + this.height + "\n");
+    } catch (IOException io) {
+      throw new IOException("File writer error encountered");
+    }
+    for (Layer currLayer : this.layers) {
+      try {
+        writer.write(currLayer.getName() + " " + currLayer.getFilter() + "\n");
+        for (int[] row : currLayer.getLayerData()) {
+          writer.write(row[0] + " " + row[1] + " " + row[2] + " " + row[3] + "\n");
+        }
+      } catch (IOException io) {
+        throw new IOException("File writer error encountered");
+      }
+    }
+    writer.close();
 
   }
 

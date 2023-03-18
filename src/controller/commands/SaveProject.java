@@ -14,7 +14,11 @@ public class SaveProject implements Command{
     this.name = name;
   }
   @Override
-  public void run(ImageProject p) {
-    p.saveProject(this.name);
+  public void run(ImageProject p) throws IOException {
+    try {
+      p.saveProject(this.name);
+    } catch (IOException io) {
+      throw new IOException(io);
+    }
   }
 }
