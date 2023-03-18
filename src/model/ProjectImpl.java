@@ -45,27 +45,7 @@ public class ProjectImpl implements ImageProject {
       throw new IllegalArgumentException("Filepath cannot be null.");
     }
 
-    String currentCanvas = new PPMProjectTextView(this).currentCanvas();
-    /*
-    int endOfLineCounter = 0;
-    int linesPassedCounter = 0;
-
-    for (int p = 0; p < this.getWidth() * this.getHeight(); p++) {
-      output = output.concat(this.finalColorAt(p));
-
-      if (endOfLineCounter != this.getWidth()) {
-        output = output.concat(" ");
-      }
-
-      endOfLineCounter++;
-
-      if ((endOfLineCounter == this.getWidth()) && (linesPassedCounter != (this.getHeight() - 1))) {
-        endOfLineCounter = 0;
-        linesPassedCounter++;
-        output = output.concat("\n");
-      }
-    }
-    */
+    String currentCanvas = this.currentCanvas();
 
     String output = "P3\n"
         + this.getWidth() + " " + this.getHeight()
@@ -101,12 +81,40 @@ public class ProjectImpl implements ImageProject {
 
   }
 
+
+  public String currentCanvas() throws IllegalStateException {
+    if (!this.hasAOpenProject) {
+      throw new IllegalStateException("There's currently no open project.");
+    }
+
+    String results = "";
+
+    int endOfLineCounter = 0;
+    int linesPassedCounter = 0;
+
+    //for every pixel
+    for (int p = 0; p < this.getWidth() * this.getHeight(); p++) {
+      results = results.concat(this.formatColor(this.finalColorAt(p)));
+
+      endOfLineCounter++;
+
+      if ((endOfLineCounter == this.getWidth()) &&
+          (linesPassedCounter != (this.getHeight() - 1))) {
+        endOfLineCounter = 0;
+        linesPassedCounter++;
+        results = results.concat("\n");
+      }
+    }
+
+    return results;
+  }
+
   /**
    * Loops every layer to return back the color that will be displayed in the final image.
    * @param pixel the pixel to look at
    * @return a String of the R G B A values of the final color
    */
-  private String finalColorAt(int pixel) {
+  private double[] finalColorAt(int pixel) {
     String results = "";
     int curActiveLayer = this.activeLayer;
     double[] finalColor = new double[4];
@@ -156,12 +164,36 @@ public class ProjectImpl implements ImageProject {
 
     }
 
+    this.setActiveLayer(curActiveLayer);
+    return finalColor;
+  }
+
+  /**
+   * Formats the given int[] (which represents a color in the RGBA format) into a String.
+   * The method gives each RGBA component zero padded ("4" -> "004").
+   * @return a formatted String that displays the RGBA values.
+   */
+  private String formatColor(double[] color) {
+    String results = "";
+
     for (int c = 0; c < 4; c++) {
-      results = results.concat(String.valueOf((int) finalColor[c]));
+
+      String componentRep = "";
+
+      if (color[c] > 100) {
+        componentRep = String.valueOf((int) color[c]);
+      }
+      else if ((color[c] < 100) && (color[c] >= 10)) {
+        componentRep = String.valueOf("0" + (int) color[c]);
+      }
+      else if (color[c] < 10){
+        componentRep = String.valueOf("00" + (int) color[c]);
+      }
+
+      results = results.concat(componentRep);
       results = results.concat(" ");
     }
 
-    this.setActiveLayer(curActiveLayer);
     return results;
   }
 

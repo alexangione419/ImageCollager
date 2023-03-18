@@ -7,12 +7,6 @@ import java.io.IOException;
  */
 public interface ImageProjectView {
 
-
-  /**
-   * Outputs a String that represents what the current canvas looks like.
-   */
-  String currentCanvas();
-
   /**
    * Renders a given message to the data output in the implementation.
    *

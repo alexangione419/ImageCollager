@@ -29,8 +29,16 @@ public interface ImageProject {
    *
    * @param filePath the file path of the file being loaded
    * @throws IOException if the file path is invalid OR is not a .collage file.
+   * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
   void loadProject(String filePath) throws IOException, IllegalStateException;
+
+  /**
+   * Outputs a String that represents what the current canvas looks like.
+   * @return a String that represents the current canvas
+   * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
+   */
+  String currentCanvas() throws IllegalStateException;
 
   /**
    * Creates a new project with the specified width and height.
