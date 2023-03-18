@@ -8,13 +8,13 @@ import java.io.IOException;
 public interface ImageProject {
 
   /**
-   * Saves the final image created from all the layers to a specified file path as an image file.
+   * Saves the final image created from all the layers with the given name as an image file.
    *
-   * @param filePath the file path to save the image
+   * @param name the file path to save the image
    * @throws IOException           if the file path is invalid.
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
-  void saveImage(String filePath) throws IllegalStateException;
+  void saveImage(String name) throws IllegalStateException;
 
   /**
    * Saves this project to a specified file path as a .collage file.
@@ -135,10 +135,11 @@ public interface ImageProject {
 
   /**
    * Adds the image at the given file to the given layer.
+   *
    * @param layerName the layer to add the image to
    * @param imageFile the file of the image to add
-   * @param x the x position to place the picture at
-   * @param y the y position to place the picture at
+   * @param x         the x position to place the picture at
+   * @param y         the y position to place the picture at
    */
   void addImageToLayer(String layerName, String imageFile, int x, int y);
 }

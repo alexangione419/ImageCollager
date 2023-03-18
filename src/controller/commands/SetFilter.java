@@ -3,6 +3,7 @@ package controller.commands;
 import model.ImageProject;
 
 public class SetFilter implements Command {
+
   private final String layerName;
   private final String filter;
 
@@ -13,6 +14,7 @@ public class SetFilter implements Command {
     this.layerName = layerName;
     this.filter = filter;
   }
+
   @Override
   public void run(ImageProject p) {
     p.setFilter(filter, layerName);

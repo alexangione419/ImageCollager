@@ -41,55 +41,13 @@ public class PPMProjectTextView implements ImageProjectView {
     this.output = a;
   }
 
-//  public String currentCanvas1() {
-//    String results = "";
-//
-//    String prevActiveLayer = this.model.getActiveLayer().getName();
-//
-//    //for each layer
-//    for (int i = 0; i < this.model.getNumberOfLayers(); i++) {
-//      this.model.setActiveLayer(i);
-//
-//      //get the data on the current active layer
-//      int[][] temp = this.model.getActiveLayer().getLayerData();
-//
-//      int endOfLineCounter = 0;
-//      int linesPassedCounter = 0;
-//
-//
-//      for (int l = 0; l < this.model.getWidth() * this.model.getHeight(); l++) {
-//
-//        for (int c = 0; c < 4; c++) {
-//          results = results.concat(String.valueOf(temp[l][c]));
-//          results = results.concat(" ");
-//        }
-//
-//        if (endOfLineCounter != this.model.getWidth()) {
-//          results = results.concat(" ");
-//        }
-//
-//        endOfLineCounter++;
-//
-//        if ((endOfLineCounter == this.model.getWidth()) &&
-//            (linesPassedCounter != (this.model.getHeight() - 1))) {
-//          endOfLineCounter = 0;
-//          linesPassedCounter++;
-//          results = results.concat("\n");
-//        }
-//      }
-//    }
-//
-//    this.model.setActiveLayer(prevActiveLayer);
-//    return results;
-//  }
-
-
   @Override
   public String currentCanvas() {
     String results = "";
 
     int endOfLineCounter = 0;
     int linesPassedCounter = 0;
+    String prevActiveLayer = this.model.getActiveLayer().getName();
 
     //for every pixel
     for (int p = 0; p < this.model.getWidth() * this.model.getHeight(); p++) {
@@ -108,8 +66,7 @@ public class PPMProjectTextView implements ImageProjectView {
         double curBlue = curLayerData[p][2];
         double curAlpha = curLayerData[p][3];
 
-
-        if ((i != 0) && (curAlpha != 0)){
+        if ((i != 0) && (curAlpha != 0)) {
 
           double backgroundRed = finalColor[0];
           double backgroundGreen = finalColor[1];
@@ -118,28 +75,26 @@ public class PPMProjectTextView implements ImageProjectView {
 
           double maxPixelVal = this.model.getMaxPixelValue();
 
-          double alphaPercentage = ((curAlpha / maxPixelVal) + backgroundAlpha / maxPixelVal * (1 - (curAlpha / maxPixelVal)));
+          double alphaPercentage = ((curAlpha / maxPixelVal) + backgroundAlpha / maxPixelVal * (1
+              - (curAlpha / maxPixelVal)));
 
           finalColor[3] = (alphaPercentage * maxPixelVal);
 
-          //finalColor[0] = Math.abs((curRed * curAlpha) + (backgroundRed * (1 - curAlpha))) / maxPixelVal;
-          //finalColor[1] = Math.abs((curGreen * curAlpha) + (backgroundGreen * (1 - curAlpha))) / maxPixelVal;
-          //finalColor[2] = Math.abs((curBlue * curAlpha) + (backgroundBlue * (1 - curAlpha))) / maxPixelVal;
 
-          finalColor[0] = (((curAlpha / maxPixelVal * curRed + backgroundRed * (backgroundAlpha / maxPixelVal))
+          finalColor[0] = (
+              ((curAlpha / maxPixelVal * curRed + backgroundRed * (backgroundAlpha / maxPixelVal))
+                  * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
+
+          finalColor[1] = (((curAlpha / maxPixelVal * curGreen + backgroundGreen * (backgroundAlpha
+              / maxPixelVal))
               * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
 
-          finalColor[1] = (((curAlpha / maxPixelVal * curGreen + backgroundGreen * (backgroundAlpha / maxPixelVal))
-              * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
+          finalColor[2] = (
+              ((curAlpha / maxPixelVal * curBlue + backgroundBlue * (backgroundAlpha / maxPixelVal))
+                  * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
 
-          finalColor[2] = (((curAlpha / maxPixelVal * curBlue + backgroundBlue * (backgroundAlpha / maxPixelVal))
-              * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
 
-//          finalColor[0] = Math.abs((curRed * curAlpha) + (backgroundRed * (1 - curAlpha))) / maxPixelVal;
-//          finalColor[1] = Math.abs((curGreen * curAlpha) + (backgroundGreen * (1 - curAlpha))) / maxPixelVal;
-//          finalColor[2] = Math.abs((curBlue * curAlpha) + (backgroundBlue * (1 - curAlpha))) / maxPixelVal;
-        }
-        else if ((i == 0) && (curAlpha != 0)) {
+        } else if ((i == 0) && (curAlpha != 0)) {
           finalColor[0] = curRed;
           finalColor[1] = curGreen;
           finalColor[2] = curBlue;
@@ -148,13 +103,26 @@ public class PPMProjectTextView implements ImageProjectView {
       }
 
       for (int c = 0; c < 4; c++) {
-        results = results.concat(String.valueOf((int)finalColor[c]));
+
+        String componentRep = "";
+
+        if (finalColor[c] > 100) {
+          componentRep = String.valueOf((int) finalColor[c]);
+        }
+        else if ((finalColor[c] < 100) && (finalColor[c] >= 10)) {
+          componentRep = String.valueOf("0" + (int) finalColor[c]);
+        }
+        else if (finalColor[c] < 10){
+          componentRep = String.valueOf("00" + (int) finalColor[c]);
+        }
+
+        results = results.concat(componentRep);
         results = results.concat(" ");
       }
 
-      if (endOfLineCounter != this.model.getWidth()) {
-        results = results.concat(" ");
-      }
+//      if (endOfLineCounter != this.model.getWidth()) {
+//        results = results.concat(" ");
+//      }
 
       endOfLineCounter++;
 
@@ -166,6 +134,7 @@ public class PPMProjectTextView implements ImageProjectView {
       }
     }
 
+    this.model.setActiveLayer(prevActiveLayer);
     return results;
   }
 

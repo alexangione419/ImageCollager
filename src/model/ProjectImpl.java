@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import view.ImageProjectView;
+import view.PPMProjectTextView;
 
 /**
  * A class that represents a PPM Image Project. PPM is an image file format that contains rows and
@@ -38,10 +40,129 @@ public class ProjectImpl implements ImageProject {
   }
 
   @Override
-  public void saveImage(String filePath) throws IllegalStateException {
-    if (filePath == null) {
+  public void saveImage(String name) throws IllegalStateException {
+    if (name == null) {
       throw new IllegalArgumentException("Filepath cannot be null.");
     }
+
+    String currentCanvas = new PPMProjectTextView(this).currentCanvas();
+    /*
+    int endOfLineCounter = 0;
+    int linesPassedCounter = 0;
+
+    for (int p = 0; p < this.getWidth() * this.getHeight(); p++) {
+      output = output.concat(this.finalColorAt(p));
+
+      if (endOfLineCounter != this.getWidth()) {
+        output = output.concat(" ");
+      }
+
+      endOfLineCounter++;
+
+      if ((endOfLineCounter == this.getWidth()) && (linesPassedCounter != (this.getHeight() - 1))) {
+        endOfLineCounter = 0;
+        linesPassedCounter++;
+        output = output.concat("\n");
+      }
+    }
+    */
+
+    String output = "P3\n"
+        + this.getWidth() + " " + this.getHeight()
+        + "\n" + this.getMaxPixelValue()
+        + currentCanvas + "\n";
+
+    FileWriter writer;
+
+//    try {
+//      writer = new FileWriter(name);
+//    } catch (IOException io) {
+//      throw new IOException("File writer error encountered");
+//    }
+//
+//    try {
+//      writer.write(name.substring(0, name.lastIndexOf(".")) + "\n");
+//      writer.write(this.width + " " + this.height + "\n");
+//    } catch (IOException io) {
+//      throw new IOException("File writer error encountered");
+//    }
+//    for (Layer currLayer : this.layers) {
+//      try {
+//        writer.write(currLayer.getName() + " " + currLayer.getFilter() + "\n");
+//        for (int[] row : currLayer.getLayerData()) {
+//          writer.write(row[0] + " " + row[1] + " " + row[2] + " " + row[3] + "\n");
+//        }
+//      } catch (IOException io) {
+//        throw new IOException("File writer error encountered");
+//      }
+//    }
+//    writer.close();
+
+
+  }
+
+  /**
+   * Loops every layer to return back the color that will be displayed in the final image.
+   * @param pixel the pixel to look at
+   * @return a String of the R G B A values of the final color
+   */
+  private String finalColorAt(int pixel) {
+    String results = "";
+    int curActiveLayer = this.activeLayer;
+    double[] finalColor = new double[4];
+
+    //((y + 1) * w) - (w - (x + 1)) formula to get pixels from getLayerData
+
+    for (Layer layer : this.layers) {
+      this.setActiveLayer(layer.getName());
+
+      int[][] curLayerData = layer.getLayerData();
+
+      double curRed = curLayerData[pixel][0];
+      double curGreen = curLayerData[pixel][1];
+      double curBlue = curLayerData[pixel][2];
+      double curAlpha = curLayerData[pixel][3];
+
+      if ((this.activeLayer != 0) && (curAlpha != 0)) {
+        double backgroundRed = finalColor[0];
+        double backgroundGreen = finalColor[1];
+        double backgroundBlue = finalColor[2];
+        double backgroundAlpha = finalColor[3];
+
+        double maxPixelVal = this.getMaxPixelValue();
+
+        double alphaPercentage = ((curAlpha / maxPixelVal) + backgroundAlpha / maxPixelVal * (1
+            - (curAlpha / maxPixelVal)));
+
+        finalColor[3] = (alphaPercentage * maxPixelVal);
+
+        finalColor[0] = (
+            ((curAlpha / maxPixelVal * curRed + backgroundRed * (backgroundAlpha / maxPixelVal))
+                * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
+
+        finalColor[1] = (((curAlpha / maxPixelVal * curGreen + backgroundGreen * (backgroundAlpha
+            / maxPixelVal))
+            * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
+
+        finalColor[2] = (
+            ((curAlpha / maxPixelVal * curBlue + backgroundBlue * (backgroundAlpha / maxPixelVal))
+                * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
+      } else if ((this.activeLayer == 0) && (curAlpha != 0)) {
+        finalColor[0] = curRed;
+        finalColor[1] = curGreen;
+        finalColor[2] = curBlue;
+        finalColor[3] = curAlpha;
+      }
+
+    }
+
+    for (int c = 0; c < 4; c++) {
+      results = results.concat(String.valueOf((int) finalColor[c]));
+      results = results.concat(" ");
+    }
+
+    this.setActiveLayer(curActiveLayer);
+    return results;
   }
 
   @Override

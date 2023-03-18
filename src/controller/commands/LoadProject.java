@@ -3,8 +3,10 @@ package controller.commands;
 import java.io.IOException;
 import model.ImageProject;
 
-public class LoadProject implements Command{
+public class LoadProject implements Command {
+
   private final String projectPath;
+
   public LoadProject(String pPath) {
     this.projectPath = pPath;
   }

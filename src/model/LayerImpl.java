@@ -40,13 +40,11 @@ public final class LayerImpl implements Layer {
       throw new IllegalArgumentException("Layer must have a valid name and project");
     }
 
-
     this.name = name;
     this.project = project;
     this.currentLayer = new int[project.getHeight() * project.getWidth()][4];
 
     this.unfilteredLayer = new int[project.getHeight() * project.getWidth()][4];
-
 
     this.currentFiler = "normal"; // filter is normal by default
 
@@ -109,11 +107,10 @@ public final class LayerImpl implements Layer {
       throw new IllegalArgumentException("Invalid Coordinates given");
     }
 
-
     Scanner sc;
 
     try {
-      sc = new Scanner(new FileInputStream("./res/"+imageFilename));
+      sc = new Scanner(new FileInputStream("./res/" + imageFilename));
     } catch (FileNotFoundException e) {
       throw new IllegalArgumentException("File not found");
     }
@@ -147,11 +144,10 @@ public final class LayerImpl implements Layer {
       yLim = this.project.getHeight();
     }
 
-
     for (int r = x; r < xLim; r++) {
       for (int c = y; c < yLim; c++) {
         int conversion = (((c + 1) * this.project.getWidth())
-                - (this.project.getWidth() - (r + 1))) - 1;
+            - (this.project.getWidth() - (r + 1))) - 1;
 
         this.currentLayer[conversion][0] = sc.nextInt();
         this.currentLayer[conversion][1] = sc.nextInt();
@@ -171,13 +167,17 @@ public final class LayerImpl implements Layer {
   public void setPixelColor(int x, int y, int r, int g, int b, int a) {
     // (y * w) - (w - x)
 
-    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1))) - 1]
+    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1)))
+        - 1]
         [0] = r;
-    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1))) - 1]
+    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1)))
+        - 1]
         [1] = g;
-    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1))) - 1]
+    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1)))
+        - 1]
         [2] = b;
-    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1))) - 1]
+    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1)))
+        - 1]
         [3] = a;
   }
 

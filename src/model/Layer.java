@@ -21,6 +21,7 @@ public interface Layer {
 
   /**
    * Gets the name of the currently applied layer.
+   *
    * @return the name of the currently applied layer
    */
   String getFilter();
