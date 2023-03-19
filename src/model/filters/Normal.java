@@ -2,6 +2,9 @@ package model.filters;
 
 import model.Layer;
 
+/**
+ * A filter that undoes any filters added.
+ */
 public class Normal implements Filter {
 
   @Override

@@ -9,10 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import controller.ImageProjectController;
-import view.ImageProjectView;
-import view.PPMProjectTextView;
-
 /**
  * A class that represents a PPM Image Project. PPM is an image file format that contains rows and
  * columns, each containing the red, green, and blue values for each pixel in an image. The PPM

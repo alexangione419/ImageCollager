@@ -8,6 +8,9 @@ import model.ProjectImpl;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * A testing class
+ */
 public class ProjectImplTextViewTest {
 
   private ImageProjectView view;

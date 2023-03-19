@@ -79,7 +79,7 @@ public interface Layer {
   void setPixelColor(int x, int y, int r, int g, int b, int a);
 
   /**
-   * Clears the current layer making it black and translucent
+   * Clears the current layer making it black and translucent.
    */
   void clearLayer();
 

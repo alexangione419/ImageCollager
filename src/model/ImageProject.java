@@ -66,7 +66,7 @@ public interface ImageProject {
   int getHeight() throws IllegalStateException;
 
   /**
-   * Returns whether this {@code ImageProject} supports the alpha channel (tra1.nsparency)
+   * Returns whether this {@code ImageProject} supports the alpha channel (transparency).
    *
    * @return true if this {@code ImageProject} supports alpha, false otherwise
    */
@@ -89,7 +89,7 @@ public interface ImageProject {
   Layer getActiveLayer() throws IllegalStateException;
 
   /**
-   * Returns the maximum value allowed for a pixel
+   * Returns the maximum value allowed for a pixel.
    *
    * @return the maximum value of a pixel
    */

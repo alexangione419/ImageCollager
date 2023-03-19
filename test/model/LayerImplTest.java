@@ -7,6 +7,9 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * A testing class for {@code Layer}s.
+ */
 public class LayerImplTest {
 
   ImageProject project5x6;
