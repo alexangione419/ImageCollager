@@ -126,7 +126,7 @@ public class ProjectImplTest {
   @Test
   public void validSaveImage() throws IOException {
     this.model.createNewProject(2, 2);
-    this.model.saveImage("test");
+    this.model.saveImage("test.ppm");
 
     this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
 
@@ -610,12 +610,12 @@ public class ProjectImplTest {
     this.model.setActiveLayer(1);
     this.model.getActiveLayer().setPixelColor(0, 0, 0, 0, 255 , 128);
 
-    assertEquals("127 0 63 0 0 0 \n"
+    assertEquals("127 0 128 0 0 0 \n"
         + "0 0 0 0 0 0 ", this.model.currentCanvas());
     this.model.setActiveLayer(2);
     this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 0,200);
 
-    assertEquals("27 43 13 0 0 0 \n"
+    assertEquals("27 200 27 0 0 0 \n"
         + "0 0 0 0 0 0 ", this.model.currentCanvas());
 
   }
@@ -637,13 +637,108 @@ public class ProjectImplTest {
     this.model.setActiveLayer(1);
     this.model.getActiveLayer().setPixelColor(1, 0, 255, 0, 255, 128);
 
-    assertEquals("0 255 255 63 0 63 \n"
+    assertEquals("0 255 255 128 0 128 \n"
         + "0 0 0 0 0 0 ", this.model.currentCanvas());
     assertEquals(2, this.model.getNumberOfLayers());
     this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 255, 128);
 
-    assertEquals("63 127 190 63 0 63 \n"
+    assertEquals("128 127 255 128 0 128 \n"
         + "0 0 0 0 0 0 ", this.model.currentCanvas());
+  }
+
+  @Test
+  public void testBadSaveImage() {
+    try {
+      this.model.saveProject("name");
+      fail("no project open");
+    } catch (IllegalStateException s) {
+      //pass
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    this.model.createNewProject(3, 4);
+
+    try {
+      this.model.saveProject(null);
+      fail("null argument");
+    } catch (IllegalArgumentException | IOException a) {
+      //do nothing
+    }
+
+    try {
+      this.model.saveProject(".ppm");
+      fail("invalid name");
+    } catch (IllegalArgumentException | IOException a) {
+      //do nothing
+    }
+    try {
+      this.model.saveProject("file");
+      fail("invalid name-> needs suffix");
+    } catch (IllegalArgumentException | IOException a) {
+      //do nothing
+    }
+
+  }
+
+  @Test
+  public void testSaveImageOneLayer() {
+    this.model.createNewProject(3, 4 );
+    this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
+
+    try {
+      this.model.saveImage("testSaveImage.ppm");
+    } catch (IOException io) {
+      // welp
+    }
+
+    Scanner sc = null;
+    try {
+      sc = new Scanner(new FileInputStream("testSaveImage.ppm"));
+    } catch (FileNotFoundException fnf) {
+      fail("File not found");
+    }
+
+
+    assertNotNull(sc);
+    assertEquals("P3", sc.next());
+    assertEquals("3", sc.next());
+    assertEquals("4", sc.next());
+    assertEquals("255", sc.next());
+    for (int i = 0; i < 12; i++) {
+      assertEquals(sc.nextInt(), 225);
+    }
+
+  }
+
+  @Test
+  public void testSaveImageMultipleLayers() {
+    this.model.createNewProject(3, 4);
+    this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
+    this.model.addLayer("Layer2");
+    this.model.addImageToLayer("Layer2", "smolLow.ppm", 0, 0);
+
+    try {
+      this.model.saveImage("testSaveImage.ppm");
+    } catch (IOException io) {
+      // welp
+    }
+
+    Scanner sc = null;
+    try {
+      sc = new Scanner(new FileInputStream("testSaveImage.ppm"));
+    } catch (FileNotFoundException fnf) {
+      fail("File not found");
+    }
+
+
+    assertNotNull(sc);
+    assertEquals("P3", sc.next());
+    assertEquals("3", sc.next());
+    assertEquals("4", sc.next());
+    assertEquals("255", sc.next());
+    for (int i = 0; i < 12; i++) {
+      assertEquals(sc.nextInt(), 119);
+    }
   }
 
 }

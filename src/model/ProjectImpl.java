@@ -97,35 +97,6 @@ public class ProjectImpl implements ImageProject {
     return results;
   }
 
-//  private String removeAlpha(String color) {
-//    String curCanvas = this.currentCanvas();
-//
-//    //creates an array of string, where each string contains the R G B A values of each
-//    //pixel
-//    ArrayList<String> temp = new ArrayList<String>();
-//
-//    for (int p = 0; p < this.getWidth() * this.getHeight(); p++) {
-//      temp.add(curCanvas.substring(p * 16, (p * 16) + 16));
-//    }
-//
-//    String finalCanvas = "";
-//
-//    for (int i = 0; i < temp.size(); i++) {
-//      String c = temp.get(i);
-//
-//      int alpha = Integer.parseInt(c.substring(12, 15));
-//      int red = Integer.parseInt(c.substring(0, 2)) * (alpha / this.maxPixelValue);
-//      int green = Integer.parseInt(c.substring(4, 6)) * (alpha / this.maxPixelValue);
-//      int blue = Integer.parseInt(c.substring(8, 10)) * (alpha / this.maxPixelValue);
-//      double[] tempColor = new double[] {red, green, blue};
-//      temp.set(i, this.formatColor(tempColor))
-//    }
-//
-//    for ()
-//
-//    return null;
-//  }
-
   /**
    * Loops every layer to return back the color that will be displayed in the final image.
    * @param pixel the pixel to look at
@@ -161,17 +132,14 @@ public class ProjectImpl implements ImageProject {
 
         finalColor[3] = (alphaPercentage * maxPixelVal);
 
-        finalColor[0] = (
-            ((curAlpha / maxPixelVal * curRed + backgroundRed * (backgroundAlpha / maxPixelVal))
-                * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
+        finalColor[0] = (curAlpha / maxPixelVal * curRed + backgroundRed *
+                (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
 
-        finalColor[1] = (((curAlpha / maxPixelVal * curGreen + backgroundGreen * (backgroundAlpha
-            / maxPixelVal))
-            * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
+        finalColor[1] = (curAlpha / maxPixelVal * curGreen + backgroundGreen *
+                (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
 
-        finalColor[2] = (
-            ((curAlpha / maxPixelVal * curBlue + backgroundBlue * (backgroundAlpha / maxPixelVal))
-                * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage));
+        finalColor[2] = (curAlpha / maxPixelVal * curBlue + backgroundBlue *
+                (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
       } else if ((this.activeLayer == 0) && (curAlpha != 0)) {
         finalColor[0] = curRed;
         finalColor[1] = curGreen;
