@@ -8,7 +8,6 @@ import controller.commands.SaveImage;
 import controller.commands.SaveProject;
 import controller.commands.SetFilter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 import model.ImageProject;
 import view.ImageProjectView;

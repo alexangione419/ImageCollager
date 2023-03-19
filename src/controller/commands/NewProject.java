@@ -3,7 +3,7 @@ package controller.commands;
 import model.ImageProject;
 
 /**
- * Command for making a new project.
+ * A command for making a new project.
  */
 public class NewProject implements Command {
 
