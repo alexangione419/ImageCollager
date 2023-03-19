@@ -7,14 +7,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< HEAD
 import java.util.Scanner;
 
 import controller.ImageProjectController;
 import view.ImageProjectView;
 import view.PPMProjectTextView;
-=======
->>>>>>> d84bdde1043071781a91ec874c86ba7672558ab4
 
 /**
  * A class that represents a PPM Image Project. PPM is an image file format that contains rows and
@@ -107,6 +104,7 @@ public class ProjectImpl implements ImageProject {
 
   /**
    * Loops every layer to return back the color that will be displayed in the final image.
+   *
    * @param pixel the pixel to look at
    * @return a String of the R G B A values of the final color
    */
@@ -141,13 +139,13 @@ public class ProjectImpl implements ImageProject {
         finalColor[3] = (alphaPercentage * maxPixelVal);
 
         finalColor[0] = (curAlpha / maxPixelVal * curRed + backgroundRed *
-                (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
+            (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
 
         finalColor[1] = (curAlpha / maxPixelVal * curGreen + backgroundGreen *
-                (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
+            (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
 
         finalColor[2] = (curAlpha / maxPixelVal * curBlue + backgroundBlue *
-                (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
+            (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
       } else if ((this.activeLayer == 0) && (curAlpha != 0)) {
         finalColor[0] = curRed;
         finalColor[1] = curGreen;
@@ -159,28 +157,27 @@ public class ProjectImpl implements ImageProject {
 
     this.setActiveLayer(curActiveLayer);
 
-    return new double[] {
-            (finalColor[0] *  (finalColor[3] / this.maxPixelValue)),
-            (finalColor[1] *  (finalColor[3] / this.maxPixelValue)),
-            (finalColor[2] *  (finalColor[3] / this.maxPixelValue))
-     };
+    return new double[]{
+        (finalColor[0] * (finalColor[3] / this.maxPixelValue)),
+        (finalColor[1] * (finalColor[3] / this.maxPixelValue)),
+        (finalColor[2] * (finalColor[3] / this.maxPixelValue))
+    };
   }
 
   /**
-   * Formats the given int[] (which represents a color in the RGBA format) into a String.
-   * The method gives each RGBA component zero padded ("4" -> "004").
+   * Formats the given int[] (which represents a color in the RGBA format) into a String. The method
+   * gives each RGBA component zero padded ("4" -> "004").
+   *
    * @return a formatted String that displays the RGBA values.
    */
   private String formatColor(double[] color) {
     String results = "";
-
 
     for (int c = 0; c < color.length; c++) {
 
       String componentRep = "";
 
       componentRep = String.valueOf((int) color[c]);
-
 
       results = results.concat(componentRep);
       results = results.concat(" ");
@@ -266,7 +263,7 @@ public class ProjectImpl implements ImageProject {
       String newLayer = sc.next();
       checkNext(sc);
       String filter = sc.next();
-      int[][] newLayerData = new int[height*width][4];
+      int[][] newLayerData = new int[height * width][4];
 
       for (int i = 0; i < width * height; i++) {
         checkNext(sc);

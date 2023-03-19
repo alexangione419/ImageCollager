@@ -26,6 +26,7 @@ public interface ImageProject {
 
   /**
    * Loads a project at a given file path.
+   *
    * @param filePath the file path of the file being loaded
    * @throws IllegalArgumentException if provided project location doesn't exist
    */
@@ -33,6 +34,7 @@ public interface ImageProject {
 
   /**
    * Outputs a String that represents what the current canvas looks like.
+   *
    * @return a String that represents the current canvas
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
@@ -65,6 +67,7 @@ public interface ImageProject {
 
   /**
    * Returns whether this {@code ImageProject} supports the alpha channel (tra1.nsparency)
+   *
    * @return true if this {@code ImageProject} supports alpha, false otherwise
    */
   boolean supportsAlpha();

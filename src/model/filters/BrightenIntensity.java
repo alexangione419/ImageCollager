@@ -2,7 +2,10 @@ package model.filters;
 
 import model.Layer;
 
-public class Darken_Value implements Filter {
+/**
+ * A filter that brightens a {@code ImageProject} based on each pixel's intensity.
+ */
+public class BrightenIntensity implements Filter {
 
   @Override
   public int[][] apply(Layer layer) {
@@ -10,17 +13,20 @@ public class Darken_Value implements Filter {
 
     // modifies every pixel in the layer
     for (int i = 0; i < layer.getTotalPixels(); i++) {
-      int max = Math.max(layerToModify[i][0], Math.max(layerToModify[i][1], layerToModify[i][2]));
+      int sum = layerToModify[i][0] + layerToModify[i][1] + layerToModify[i][2];
+      int ave = sum / 3;
+
       for (int j = 0; j < 3; j++) {
         //adds max value to pixel without going over the cap
-        if (layerToModify[i][j] - max < 0) {
-          layerToModify[i][j] = 0;
+        if (layerToModify[i][j] + ave > layer.getMaxPixel()) {
+          layerToModify[i][j] = layer.getMaxPixel();
         } else {
-          layerToModify[i][j] -= max;
+          layerToModify[i][j] += ave;
         }
       }
     }
 
     return layerToModify;
   }
+
 }

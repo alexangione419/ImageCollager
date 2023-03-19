@@ -12,6 +12,7 @@ public class SaveProject implements Command {
 
   /**
    * Constructs a new {@code SaveProject} command object.
+   *
    * @param name the name to give the project file
    */
   public SaveProject(String name) {

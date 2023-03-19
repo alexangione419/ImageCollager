@@ -13,6 +13,7 @@ public class ImageProcessorMain {
 
   /**
    * The main method of the program.
+   *
    * @param args arguments to give
    */
   public static void main(String[] args) {

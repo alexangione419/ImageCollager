@@ -12,8 +12,9 @@ public class SetFilter implements Command {
 
   /**
    * Constructs a new {@code SetFilter} command object.
+   *
    * @param layerName the name of the Layer to set to
-   * @param filter the name of the filter to add
+   * @param filter    the name of the filter to add
    */
   public SetFilter(String layerName, String filter) {
     if (layerName.isEmpty() || filter.isEmpty()) {
