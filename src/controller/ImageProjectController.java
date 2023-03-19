@@ -1,5 +1,9 @@
 package controller;
 
+/**
+ * A controller for {@code ImageProject}s. This interface allows users to
+ * manipulate {@code ImageProject}s.
+ */
 public interface ImageProjectController {
 
   /**

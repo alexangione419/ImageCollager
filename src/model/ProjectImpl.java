@@ -5,8 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import view.ImageProjectView;
-import view.PPMProjectTextView;
 
 /**
  * A class that represents a PPM Image Project. PPM is an image file format that contains rows and

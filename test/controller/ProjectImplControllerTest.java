@@ -197,7 +197,8 @@ public class ProjectImplControllerTest {
 
   @Test
   public void addImageLayer() {
-    Readable input = new StringReader("new-project 2 2 add-layer layer1 quit y");
+    Readable input = new StringReader("new-project 2 2 add-image-to-layer Layer1 smol.ppm 0 0 "
+        + "quit y");
     Appendable output = new StringBuilder();
 
     this.g = new ProjectImpl();
@@ -217,5 +218,4 @@ public class ProjectImplControllerTest {
     assertEquals(2, this.g.getHeight());
     assertEquals(1, this.g.getNumberOfLayers());
   }
-
 }
