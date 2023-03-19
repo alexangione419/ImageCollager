@@ -13,10 +13,6 @@ public class LoadProject implements Command {
 
   @Override
   public void run(ImageProject p) {
-    try {
-      p.loadProject(this.projectPath);
-    } catch (IOException io) {
-      throw new IllegalArgumentException("Invalid File Given");
-    }
+    p.loadProject(this.projectPath);
   }
 }
