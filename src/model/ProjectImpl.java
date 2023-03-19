@@ -1,10 +1,15 @@
 package model;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
+import controller.ImageProjectController;
 import view.ImageProjectView;
 import view.PPMProjectTextView;
 
@@ -231,11 +236,58 @@ public class ProjectImpl implements ImageProject {
   //In the controller, make it so that if this method is called after a project is opened, it asks
   //if the user wants to save their previously opened project
   @Override
-  public void loadProject(String filePath) throws IOException, IllegalStateException {
+  public void loadProject(String filePath) throws IllegalArgumentException {
     if (filePath == null) {
       throw new IllegalArgumentException("Filepath cannot be null.");
     }
 
+    Scanner sc = null;
+    try {
+      sc = new Scanner(new FileInputStream("testSaveImage.ppm"));
+    } catch (FileNotFoundException fnf) {
+      throw new IllegalArgumentException("Project file not found");
+    }
+
+    //discards name of project
+    checkNext(sc);
+    sc.next();
+    checkNext(sc);
+    int width = sc.nextInt();
+    checkNext(sc);
+    int height = sc.nextInt();
+
+    ImageProject loaded = new ProjectImpl();
+    loaded.createNewProject(width, height);
+
+    while (sc.hasNext()) {
+      String newLayer = sc.next();
+      checkNext(sc);
+      String filter = sc.next();
+      int[][] newLayerData = new int[height*width][4];
+
+      for (int i = 0; i < width * height; i++) {
+        checkNext(sc);
+        newLayerData[i][0] = sc.nextInt();
+        checkNext(sc);
+        newLayerData[i][1] = sc.nextInt();
+        checkNext(sc);
+        newLayerData[i][2] = sc.nextInt();
+        checkNext(sc);
+        newLayerData[i][3] = sc.nextInt();
+      }
+
+      loaded.addLayer(newLayer);
+      int[][] data = loaded.getActiveLayer().getLayerData();
+      data = newLayerData;
+      loaded.setFilter(filter, newLayer);
+
+    }
+  }
+
+  private void checkNext(Scanner scanner) {
+    if (!scanner.hasNext()) {
+      throw new IllegalArgumentException("Invalid project file format");
+    }
   }
 
   @Override
