@@ -5,17 +5,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
-import model.filters.Blue_Component;
-import model.filters.Brighten_Intensity;
-import model.filters.Brighten_Luma;
-import model.filters.Brighten_Value;
-import model.filters.Darken_Intensity;
-import model.filters.Darken_Luma;
-import model.filters.Darken_Value;
+import model.filters.BlueComponent;
+import model.filters.BrightenIntensity;
+import model.filters.BrightenLuma;
+import model.filters.BrightenValue;
+import model.filters.DarkenIntensity;
+import model.filters.DarkenLuma;
+import model.filters.DarkenValue;
 import model.filters.Filter;
-import model.filters.Green_Component;
+import model.filters.GreenComponent;
 import model.filters.Normal;
-import model.filters.Red_Component;
+import model.filters.RedComponent;
 
 
 /**
@@ -50,15 +50,15 @@ public final class LayerImpl implements Layer {
 
     this.supportedFilters = new HashMap<>();
     this.supportedFilters.put("normal", new Normal());
-    this.supportedFilters.put("red-component", new Red_Component());
-    this.supportedFilters.put("green-component", new Green_Component());
-    this.supportedFilters.put("blue-component", new Blue_Component());
-    this.supportedFilters.put("brighten-value", new Brighten_Value());
-    this.supportedFilters.put("brighten-intensity", new Brighten_Intensity());
-    this.supportedFilters.put("brighten-luma", new Brighten_Luma());
-    this.supportedFilters.put("darken-value", new Darken_Value());
-    this.supportedFilters.put("darken-intensity", new Darken_Intensity());
-    this.supportedFilters.put("darken-luma", new Darken_Luma());
+    this.supportedFilters.put("red-component", new RedComponent());
+    this.supportedFilters.put("green-component", new GreenComponent());
+    this.supportedFilters.put("blue-component", new BlueComponent());
+    this.supportedFilters.put("brighten-value", new BrightenValue());
+    this.supportedFilters.put("brighten-intensity", new BrightenIntensity());
+    this.supportedFilters.put("brighten-luma", new BrightenLuma());
+    this.supportedFilters.put("darken-value", new DarkenValue());
+    this.supportedFilters.put("darken-intensity", new DarkenIntensity());
+    this.supportedFilters.put("darken-luma", new DarkenLuma());
 
   }
 
@@ -134,7 +134,6 @@ public final class LayerImpl implements Layer {
     int width = sc.nextInt();
     int height = sc.nextInt();
     int maxValue = sc.nextInt();
-
 
     int xLim = x + width;
     int yLim = y + height;

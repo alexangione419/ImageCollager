@@ -11,6 +11,7 @@ public class AddLayer implements Command {
 
   /**
    * Construct a new {@code AddLayer} command object.
+   *
    * @param name the name to give to the new layer
    */
   public AddLayer(String name) {

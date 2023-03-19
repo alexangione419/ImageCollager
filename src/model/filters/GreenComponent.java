@@ -2,7 +2,10 @@ package model.filters;
 
 import model.Layer;
 
-public class Blue_Component implements Filter {
+/**
+ * A filter that displayed only the green component of an {@code ImageProject}.
+ */
+public class GreenComponent implements Filter {
 
   @Override
   public int[][] apply(Layer layer) {
@@ -10,10 +13,9 @@ public class Blue_Component implements Filter {
 
     for (int i = 0; i < layer.getTotalPixels(); i++) {
       layerToModify[i][0] = 0;
-      layerToModify[i][1] = 0;
+      layerToModify[i][2] = 0;
     }
 
     return layerToModify;
-
   }
 }

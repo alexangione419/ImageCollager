@@ -2,7 +2,10 @@ package model.filters;
 
 import model.Layer;
 
-public class Darken_Intensity implements Filter {
+/**
+ * A filter that brightens a {@code ImageProject} based on the luma value.
+ */
+public class BrightenLuma implements Filter {
 
   @Override
   public int[][] apply(Layer layer) {
@@ -10,19 +13,20 @@ public class Darken_Intensity implements Filter {
 
     // modifies every pixel in the layer
     for (int i = 0; i < layer.getTotalPixels(); i++) {
-      int sum = layerToModify[i][0] + layerToModify[i][1] + layerToModify[i][2];
-      int ave = sum / 3;
+      int luma = (int) (.2126 * layerToModify[i][0] +
+          (.7152 * layerToModify[i][1]) + (.0722 * layerToModify[i][2]));
 
       for (int j = 0; j < 3; j++) {
         //adds max value to pixel without going over the cap
-        if (layerToModify[i][j] - ave < 0) {
-          layerToModify[i][j] = 0;
+        if (layerToModify[i][j] + luma > layer.getMaxPixel()) {
+          layerToModify[i][j] = layer.getMaxPixel();
         } else {
-          layerToModify[i][j] -= ave;
+          layerToModify[i][j] += luma;
         }
       }
     }
 
     return layerToModify;
+
   }
 }

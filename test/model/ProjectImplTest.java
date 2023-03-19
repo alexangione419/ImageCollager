@@ -78,7 +78,7 @@ public class ProjectImplTest {
   }
 
   @Test
-  public void testSaveProject(){
+  public void testSaveProject() {
     this.model.createNewProject(3, 5);
     this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
     try {
@@ -100,24 +100,33 @@ public class ProjectImplTest {
     assertEquals("5", sc.next());
     assertEquals("Layer1", sc.next());
     assertEquals("normal", sc.next());
-    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255",
+        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255",
+        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255",
+        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255",
+        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255",
+        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255",
+        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255",
+        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255",
+        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255",
+        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255",
+        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255",
+        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    assertEquals("225 225 225 255",
+        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
     assertEquals("0 0 0 0", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
     assertEquals("0 0 0 0", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
     assertEquals("0 0 0 0", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-
-
-
 
 
   }
@@ -128,7 +137,6 @@ public class ProjectImplTest {
     this.model.saveImage("test.ppm");
 
     this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
-
 
     try {
       this.model.saveImage("P1.ppm");
@@ -150,8 +158,7 @@ public class ProjectImplTest {
     try {
       try {
         this.model.saveImage(null);
-      }
-      catch (IOException e) {
+      } catch (IOException e) {
 
       }
       fail("Null passed as an argument");
@@ -493,7 +500,7 @@ public class ProjectImplTest {
     try {
       this.model.setFilter("orange-component", "Layer1");
       fail("Invalid Filter");
-    } catch (IllegalArgumentException a)  {
+    } catch (IllegalArgumentException a) {
       //do nothing
     }
 
@@ -519,9 +526,9 @@ public class ProjectImplTest {
 
     this.model.setFilter("red-component", "Layer1");
     int[][] afterRed = {{119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
-            {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
-            {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
-            {119, 0, 0, 255}};
+        {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
+        {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
+        {119, 0, 0, 255}};
     assertArrayEquals(afterRed, this.model.getActiveLayer().getLayerData());
   }
 
@@ -531,9 +538,9 @@ public class ProjectImplTest {
     assertArrayEquals(new int[12][4], this.model.getActiveLayer().getLayerData());
     this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
     int[][] withImage = {{225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
-            {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
-            {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
-            {225, 225, 225, 255}};
+        {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
+        {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
+        {225, 225, 225, 255}};
     assertArrayEquals(withImage, this.model.getActiveLayer().getLayerData());
 
   }
@@ -605,14 +612,14 @@ public class ProjectImplTest {
     this.model.addLayer("Blue");
     this.model.addLayer("Green");
     this.model.setActiveLayer(0);
-    this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0 , 255);
+    this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
     this.model.setActiveLayer(1);
-    this.model.getActiveLayer().setPixelColor(0, 0, 0, 0, 255 , 128);
+    this.model.getActiveLayer().setPixelColor(0, 0, 0, 0, 255, 128);
 
     assertEquals("127 0 128 0 0 0 \n"
         + "0 0 0 0 0 0 ", this.model.currentCanvas());
     this.model.setActiveLayer(2);
-    this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 0,200);
+    this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 0, 200);
 
     assertEquals("27 200 27 0 0 0 \n"
         + "0 0 0 0 0 0 ", this.model.currentCanvas());
@@ -681,7 +688,7 @@ public class ProjectImplTest {
 
   @Test
   public void testSaveImageOneLayer() {
-    this.model.createNewProject(3, 4 );
+    this.model.createNewProject(3, 4);
     this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
 
     try {
@@ -696,7 +703,6 @@ public class ProjectImplTest {
     } catch (FileNotFoundException fnf) {
       fail("File not found");
     }
-
 
     assertNotNull(sc);
     assertEquals("P3", sc.next());
@@ -728,7 +734,6 @@ public class ProjectImplTest {
     } catch (FileNotFoundException fnf) {
       fail("File not found");
     }
-
 
     assertNotNull(sc);
     assertEquals("P3", sc.next());

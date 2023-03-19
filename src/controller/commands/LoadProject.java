@@ -12,6 +12,7 @@ public class LoadProject implements Command {
 
   /**
    * Constructs a new {@code LoadProject} command object.
+   *
    * @param pPath the project file path
    */
   public LoadProject(String pPath) {

@@ -12,6 +12,7 @@ public class SaveImage implements Command {
 
   /**
    * Constructs a new {@code SaveImage} command object.
+   *
    * @param fileName the file name to give the image
    */
   public SaveImage(String fileName) {
@@ -26,9 +27,8 @@ public class SaveImage implements Command {
   public void run(ImageProject p) {
     try {
       p.saveImage(fileName);
-    }
-    catch (IOException e) {
-
+    } catch (IOException e) {
+      //ignore
     }
   }
 

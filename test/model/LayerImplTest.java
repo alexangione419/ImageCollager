@@ -260,19 +260,19 @@ public class LayerImplTest {
     filterMe.addImageToLayer("smolLow.ppm", 0, 0);
 
     int[][] beforeAll = {{119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
-            {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
-            {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
-            {119, 119, 119, 255}};
+        {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
+        {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
+        {119, 119, 119, 255}};
     assertArrayEquals(beforeAll, filterMe.getLayerData());
     assertArrayEquals(beforeAll, filterMe.getUnfilteredLayer());
 
     //TESTING RED FILTER
     int[][] afterRed = {{119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
-            {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
-            {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
-            {119, 0, 0, 255}};
+        {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
+        {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
+        {119, 0, 0, 255}};
     filterMe.applyFilter("red-component");
-    assertEquals("red-component",filterMe.getFilter());
+    assertEquals("red-component", filterMe.getFilter());
     assertArrayEquals(afterRed, filterMe.getLayerData());
 
     filterMe.applyFilter("normal");
@@ -280,9 +280,9 @@ public class LayerImplTest {
 
     //TESTING GREEN FILTER
     int[][] afterGreen = {{0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255},
-            {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255},
-            {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255},
-            {0, 119, 0, 255}};
+        {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255},
+        {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255},
+        {0, 119, 0, 255}};
     filterMe.applyFilter("green-component");
     assertEquals("green-component", filterMe.getFilter());
     assertArrayEquals(afterGreen, filterMe.getLayerData());
@@ -290,12 +290,11 @@ public class LayerImplTest {
     filterMe.applyFilter("normal");
     assertArrayEquals(beforeAll, filterMe.getLayerData());
 
-
     //TESTING BLUE FILTER
     int[][] afterBlue = {{0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255},
-            {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255},
-            {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255},
-            {0, 0, 119, 255}};
+        {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255},
+        {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255},
+        {0, 0, 119, 255}};
     filterMe.applyFilter("blue-component");
     assertEquals("blue-component", filterMe.getFilter());
     assertArrayEquals(afterBlue, filterMe.getLayerData());
@@ -303,19 +302,18 @@ public class LayerImplTest {
     filterMe.applyFilter("normal");
     assertArrayEquals(beforeAll, filterMe.getLayerData());
 
-
     int[][] beforeAll2 = {{4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255},
-            {4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255},
-            {4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255},
-            {4, 99, 7, 255}};
+        {4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255},
+        {4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255},
+        {4, 99, 7, 255}};
     Layer filterMe2 = new LayerImpl("filterMe2", this.project3x4);
     filterMe2.addImageToLayer("testPPM.ppm", 0, 0);
     assertArrayEquals(beforeAll2, filterMe2.getLayerData());
     //TESTING BRIGHTEN VALUE
     int[][] afterBValue = {{103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255},
-            {103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255},
-            {103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255},
-            {103, 198, 106, 255}};
+        {103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255},
+        {103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255},
+        {103, 198, 106, 255}};
     filterMe2.applyFilter("brighten-value");
     assertEquals("brighten-value", filterMe2.getFilter());
     assertArrayEquals(afterBValue, filterMe2.getLayerData());
@@ -325,9 +323,9 @@ public class LayerImplTest {
 
     //TESTING BRIGHTEN INTENSITY
     int[][] afterBINTENSITY = {{40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255},
-            {40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255},
-            {40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255},
-            {40, 135, 43, 255}};
+        {40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255},
+        {40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255},
+        {40, 135, 43, 255}};
     filterMe2.applyFilter("brighten-intensity");
     assertEquals("brighten-intensity", filterMe2.getFilter());
     assertArrayEquals(afterBINTENSITY, filterMe2.getLayerData());
@@ -337,9 +335,9 @@ public class LayerImplTest {
 
     //TESTING BRIGHTEN LUMA
     int[][] afterBLuma = {{76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255},
-            {76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255},
-            {76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255},
-            {76, 171, 79, 255}};
+        {76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255},
+        {76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255},
+        {76, 171, 79, 255}};
     filterMe2.applyFilter("brighten-luma");
     assertEquals("brighten-luma", filterMe2.getFilter());
     assertArrayEquals(afterBLuma, filterMe2.getLayerData());
@@ -349,9 +347,9 @@ public class LayerImplTest {
 
     //TESTING DARKEN VALUE
     int[][] afterDValue = {{0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255},
-            {0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255},
-            {0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255},
-            {0, 0, 0, 255}};
+        {0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255},
+        {0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255},
+        {0, 0, 0, 255}};
     filterMe2.applyFilter("darken-value");
     assertEquals("darken-value", filterMe2.getFilter());
     assertArrayEquals(afterDValue, filterMe2.getLayerData());
@@ -361,9 +359,9 @@ public class LayerImplTest {
 
     //TESTING DARKEN Intensity
     int[][] afterDIntense = {{0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255},
-            {0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255},
-            {0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255},
-            {0, 63, 0, 255}};
+        {0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255},
+        {0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255},
+        {0, 63, 0, 255}};
     filterMe2.applyFilter("darken-intensity");
     assertEquals("darken-intensity", filterMe2.getFilter());
     assertArrayEquals(afterDIntense, filterMe2.getLayerData());
@@ -373,9 +371,9 @@ public class LayerImplTest {
 
     //TESTING DARKEN Luma
     int[][] afterDLuma = {{0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255},
-            {0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255},
-            {0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255},
-            {0, 27, 0, 255}};
+        {0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255},
+        {0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255},
+        {0, 27, 0, 255}};
     filterMe2.applyFilter("darken-luma");
     assertEquals("darken-luma", filterMe2.getFilter());
     assertArrayEquals(afterDLuma, filterMe2.getLayerData());

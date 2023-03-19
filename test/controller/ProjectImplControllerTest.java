@@ -76,7 +76,9 @@ public class ProjectImplControllerTest {
     this.controller = new PPMProjectController(this.g, this.view, input);
     this.controller.start();
 
-    assertEquals("Welcome to our Image Processor.\nAwaiting command:\nAwaiting command:\nWARNING: Quitting will delete any" +
+    assertEquals(
+        "Welcome to our Image Processor.\nAwaiting command:\nAwaiting command:\nWARNING: Quitting will delete any"
+            +
             " unsaved progress. Confirm? (y/n)\nBye Bye!\n",
         output.toString());
   }
