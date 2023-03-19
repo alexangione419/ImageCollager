@@ -7,14 +7,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< HEAD
 import java.util.Scanner;
 
 import controller.ImageProjectController;
 import view.ImageProjectView;
 import view.PPMProjectTextView;
-=======
->>>>>>> d84bdde1043071781a91ec874c86ba7672558ab4
 
 /**
  * A class that represents a PPM Image Project. PPM is an image file format that contains rows and
