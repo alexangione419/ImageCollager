@@ -21,39 +21,38 @@ public class LayerImplTest {
     this.project5x6.createNewProject(5, 6);
 
     this.project3x4 = new ProjectImpl();
-    this.project3x4.createNewProject(3, 4);
+    this.project3x4.createNewProject(4, 3);
 
   }
 
   @Test
-  public void testInvalidLayerCreation() {
+  public void badLayerCreation() {
     try {
       Layer lay = new LayerImpl("bad model", null);
       fail("Project cannot be null");
-    } catch (IllegalArgumentException a) {
-      // pass
+    } catch (IllegalArgumentException e) {
+      assertEquals("Layer must have a valid name and project.", e.getMessage());
     }
 
     try {
       Layer lay = new LayerImpl(null, this.project3x4);
       fail("Layer name cannot be null");
-    } catch (IllegalArgumentException a) {
-      // pass
+    } catch (IllegalArgumentException e) {
+      assertEquals("Layer must have a valid name and project.", e.getMessage());
     }
 
     try {
       Layer lay = new LayerImpl(null, null);
       fail("Arguments cannot be null");
-    } catch (IllegalArgumentException a) {
-      // pass
+    } catch (IllegalArgumentException e) {
+      assertEquals("Layer must have a valid name and project.", e.getMessage());
     }
-
   }
 
   @Test
-  public void testValidLayerCreation() {
+  public void validLayerCreation() {
     // creation separate from a model
-    Layer funLayer = new LayerImpl("layer", project3x4);
+    Layer funLayer = new LayerImpl("layer", this.project3x4);
     assertEquals("layer", funLayer.getName());
     assertEquals(255, funLayer.getMaxPixel());
   }
@@ -62,11 +61,10 @@ public class LayerImplTest {
   public void testGetName() {
     Layer blue = new LayerImpl("blue", this.project3x4);
     assertEquals("blue", blue.getName());
-
   }
 
   @Test
-  public void testGetTotalPixels() {
+  public void validGetTotalPixels() {
     Layer green = new LayerImpl("green", this.project5x6);
     assertEquals(30, green.getTotalPixels());
 
@@ -76,7 +74,7 @@ public class LayerImplTest {
   }
 
   @Test
-  public void testGetLayerData() {
+  public void validGetLayerData() {
     // initial blank opaque layer
     int[][] default56 = new int[30][4];
     int[][] default34 = new int[12][4];
@@ -102,7 +100,7 @@ public class LayerImplTest {
   }
 
   @Test
-  public void testGetUnfilteredLayer() {
+  public void validGetUnfilteredLayer() {
     int[][] default56 = new int[30][4];
     int[][] default34 = new int[12][4];
 
@@ -123,21 +121,18 @@ public class LayerImplTest {
   }
 
   @Test
-  public void testGetMaxPixel() {
+  public void validGetMaxPixel() {
     Layer yellow = new LayerImpl("yellow", this.project5x6);
     assertEquals(255, yellow.getMaxPixel());
   }
 
   @Test
   public void testSetPixelColor() {
-//    this.project5x6.getActiveLayer().setPixelColor(0, 0, 255, 255, 255, 255);
-//
-//    ImageProjectView view = new PPMProjectTextView(this.project5x6);
-//
-//    assertEquals("255 255 255 255  0 0 0 0  \n"
-//            + "0 0 0 0  0 0 0 0  ", view.currentCanvas());
-//    assertEquals("255 255 255 255  0 0 0 255  \n"
-//            + "0 0 0 255  0 0 0 255  ", view.currentCanvas());
+    this.project3x4.getActiveLayer().setPixelColor(0, 0, 255, 255, 255, 255);
+//    this.project3x4.getActiveLayer().setPixelColor(1, 0, 255, 0, 0, 255);
+
+    assertEquals("255 255 255 255  0 0 0 0  \n"
+            + "0 0 0 0  0 0 0 0  ", this.project3x4.currentCanvas());
   }
 
   @Test

@@ -216,7 +216,7 @@ public class ProjectImplTest {
       try {
         this.model.saveImage(null);
       } catch (IOException e) {
-
+        //ignore
       }
       fail("Tried to access the width with no loaded Project");
     } catch (IllegalStateException e) {
@@ -229,7 +229,7 @@ public class ProjectImplTest {
       try {
         this.model.saveImage(null);
       } catch (IOException e) {
-
+        //ignore
       }
       fail("Null passed as an argument");
     } catch (IllegalArgumentException e) {
@@ -240,7 +240,7 @@ public class ProjectImplTest {
       try {
         this.model.saveImage("");
       } catch (IOException e) {
-
+        //ignore
       }
       fail("Whitespace passed as an argument");
     } catch (IllegalArgumentException e) {
@@ -251,7 +251,7 @@ public class ProjectImplTest {
       try {
         this.model.saveImage("\n");
       } catch (IOException e) {
-
+        //ignore
       }
       fail("Whitespace passed as an argument");
     } catch (IllegalArgumentException e) {
@@ -262,7 +262,7 @@ public class ProjectImplTest {
       try {
         this.model.saveImage(System.lineSeparator());
       } catch (IOException e) {
-
+        //ignore
       }
       fail("Whitespace passed as an argument");
     } catch (IllegalArgumentException e) {

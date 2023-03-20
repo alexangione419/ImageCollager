@@ -35,8 +35,8 @@ public class ProjectImpl implements ImageProject {
   }
 
   @Override
-  public void saveImage(String name) throws IllegalStateException, IllegalArgumentException
-      , IOException {
+  public void saveImage(String name) throws IllegalStateException, IllegalArgumentException,
+      IOException {
     if (!hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
     }
@@ -93,8 +93,8 @@ public class ProjectImpl implements ImageProject {
 
       endOfLineCounter++;
 
-      if ((endOfLineCounter == this.getWidth()) &&
-          (linesPassedCounter != (this.getHeight() - 1))) {
+      if ((endOfLineCounter == this.getWidth())
+          && (linesPassedCounter != (this.getHeight() - 1))) {
 
         endOfLineCounter = 0;
         linesPassedCounter++;
@@ -386,14 +386,14 @@ public class ProjectImpl implements ImageProject {
 
         finalColor[3] = (alphaPercentage * maxPixelVal);
 
-        finalColor[0] = (curAlpha / maxPixelVal * curRed + backgroundRed *
-            (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
+        finalColor[0] = (curAlpha / maxPixelVal * curRed + backgroundRed
+            * (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
 
-        finalColor[1] = (curAlpha / maxPixelVal * curGreen + backgroundGreen *
-            (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
+        finalColor[1] = (curAlpha / maxPixelVal * curGreen + backgroundGreen
+            * (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
 
-        finalColor[2] = (curAlpha / maxPixelVal * curBlue + backgroundBlue *
-            (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
+        finalColor[2] = (curAlpha / maxPixelVal * curBlue + backgroundBlue
+            * (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
       } else if ((this.activeLayer == 0) && (curAlpha != 0)) {
         finalColor[0] = curRed;
         finalColor[1] = curGreen;
@@ -457,7 +457,7 @@ public class ProjectImpl implements ImageProject {
    *
    * @param layerName the name of the layer to look for
    * @return the {@code Layer} with the given layerName; otherwise, this method throws an
-   * IllegalArgumentException.
+   *         IllegalArgumentException.
    */
   private Layer getLayer(String layerName) {
     Layer result = null;

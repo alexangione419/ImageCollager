@@ -19,14 +19,14 @@ import model.filters.RedComponent;
 
 
 /**
- * A layer found in a {@code PPMProject}. PPM is an image file format that contains rows and
+ * A layer found in a {@code ProjectImpl}. PPM is an image file format that contains rows and
  * columns, each containing the red, green, and blue values for each pixel in an image. The PPM
  * files that this class takes in also contain the alpha value of an image.
  */
 public final class LayerImpl implements Layer {
 
   private final String name;
-  private final ImageProject project; // the Project that this Layer is in
+  private final ImageProject project;
   private String currentFiler; // name of the filter currently applied to the layer
   private int[][] currentLayer;
   private int[][] unfilteredLayer; // a version of the layer with original pixel values retained
@@ -37,7 +37,7 @@ public final class LayerImpl implements Layer {
    */
   public LayerImpl(String name, ImageProject project) throws IllegalArgumentException {
     if (project == null || name == null) {
-      throw new IllegalArgumentException("Layer must have a valid name and project");
+      throw new IllegalArgumentException("Layer must have a valid name and project.");
     }
 
     this.name = name;
@@ -59,7 +59,6 @@ public final class LayerImpl implements Layer {
     this.supportedFilters.put("darken-value", new DarkenValue());
     this.supportedFilters.put("darken-intensity", new DarkenIntensity());
     this.supportedFilters.put("darken-luma", new DarkenLuma());
-
   }
 
 
@@ -167,6 +166,7 @@ public final class LayerImpl implements Layer {
   @Override
   public void setPixelColor(int x, int y, int r, int g, int b, int a) {
     // (y * w) - (w - x)
+    //((y + 1) * (w + (|w-h|))) - ((h + (|w-h|)) - (x + 1) - 1
 
     this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1)))
         - 1]
@@ -180,7 +180,14 @@ public final class LayerImpl implements Layer {
     this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1)))
         - 1]
         [3] = a;
+
   }
+
+//  private int getPixelIndex(int x, int y) {
+//    int sizeDiff = this.project.getWidth() - this.project.getHeight();
+//    return (((y + 1) * (this.project.getWidth() + Math.abs(sizeDiff))) -
+//        ((this.project.getHeight() + Math.abs(sizeDiff)) - (x + 1))) - 1;
+//  }
 
   @Override
   public void clearLayer() {

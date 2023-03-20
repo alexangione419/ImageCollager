@@ -9,20 +9,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A testing class
+ * A testing class for {@code ImageProjectView}s, specifically the {@code PPMProjectTextView}
+ * implementation.
  */
 public class ProjectImplTextViewTest {
 
   private ImageProjectView view;
-  private ImageProject model;
-  private Appendable a;
 
 // private Readable readable;
 
   @Before
   public void init() {
-    this.a = new StringBuilder();
-    this.model = new ProjectImpl();
+    Appendable a = new StringBuilder();
+    ImageProject model = new ProjectImpl();
     this.view = new PPMProjectTextView(model, a);
   }
 
@@ -41,13 +40,5 @@ public class ProjectImplTextViewTest {
     } catch (IllegalArgumentException e) {
       assertEquals("ImageProject and/or Appendable cannot be null.", e.getMessage());
     }
-
-
   }
-
-  @Test
-  public void testRenderMessage() {
-
-  }
-
 }

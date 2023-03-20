@@ -36,7 +36,7 @@ public final class ImageProjectFileUtils {
   }
 
   /**
-   * Creates a new file with the given name
+   * Creates a new file with the given name.
    * @param fileName the name to give the file
    * @throws IOException if the method is unable to create the file.
    */
