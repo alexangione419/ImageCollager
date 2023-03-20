@@ -18,8 +18,9 @@ public interface ImageProject {
   void saveImage(String name) throws IllegalStateException, IllegalArgumentException, IOException;
 
   /**
-   * Saves this project to a specified file path as a .collage file. The .collage file should
-   * contain the project width and height, as well as the contents of each layer.
+   * Saves this {@code ImageProject} as a .collage file with the given file name.
+   * The .collage file should contain the project width and height, as well as the contents of
+   * each layer.
    *
    * @throws IllegalArgumentException           if the name is invalid (null or is empty)
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
@@ -30,7 +31,8 @@ public interface ImageProject {
    * Loads a project at a given file path.
    *
    * @param filePath the file path of the file being loaded
-   * @throws IllegalArgumentException if provided project location doesn't exist
+   * @throws IllegalArgumentException if file at the given file path is not a .collage file
+   *                                  OR the file does not follow the .collage file format
    */
   void loadProject(String filePath) throws IllegalArgumentException;
 

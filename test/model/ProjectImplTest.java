@@ -5,10 +5,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,6 +24,21 @@ public class ProjectImplTest {
   @Before
   public void init() {
     this.model = new ProjectImpl();
+  }
+
+  @After
+  public void removeSaveProjectTestFiles() {
+    File f = new File("P1.collage");
+    f.delete();
+
+    f = new File("P1.ppm");
+    f.delete();
+
+    f = new File("smol2.ppm");
+    f.delete();
+
+    f = new File("smolLow2.ppm");
+    f.delete();
   }
 
   @Test
@@ -58,19 +75,19 @@ public class ProjectImplTest {
   @Test
   public void validSaveImage() throws IOException {
     this.model.createNewProject(2, 2);
-    this.model.saveImage("test.ppm");
+    this.model.saveImage("test");
 
     this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
 
     try {
-      this.model.saveImage("P1.ppm");
+      this.model.saveImage("P1");
     } catch (IOException io) {
       fail(io.getMessage());
     }
 
     Scanner sc = null;
     try {
-      sc = new Scanner(new FileInputStream("P1.txt"));
+      sc = new Scanner(new FileInputStream("P1.ppm"));
     } catch (FileNotFoundException fnf) {
       fail("File not found");
     }
@@ -79,6 +96,19 @@ public class ProjectImplTest {
 
   @Test
   public void badSaveImage() {
+    try {
+      try {
+        this.model.saveImage(null);
+      } catch (IOException e) {
+
+      }
+      fail("Tried to access the width with no loaded Project");
+    } catch (IllegalStateException e) {
+      assertEquals("There's currently no open project.", e.getMessage());
+    }
+
+    this.model.createNewProject(3, 3);
+
     try {
       try {
         this.model.saveImage(null);
@@ -157,7 +187,7 @@ public class ProjectImplTest {
       catch (IOException e) {
         //ignore
       }
-      fail("Tried to save project with no loaded Project");
+      fail("Invalid file name");
     } catch (IllegalArgumentException e) {
       assertEquals("File name cannot be null.", e.getMessage());
     }
@@ -169,7 +199,7 @@ public class ProjectImplTest {
       catch (IOException e) {
         //ignore
       }
-      fail("Tried to save project with no loaded Project");
+      fail("Invalid file name");
     } catch (IllegalArgumentException e) {
       assertEquals("File name cannot be whitespace.", e.getMessage());
     }
@@ -181,7 +211,7 @@ public class ProjectImplTest {
       catch (IOException e) {
         //ignore
       }
-      fail("Tried to save project with no loaded Project");
+      fail("Invalid file name");
     } catch (IllegalArgumentException e) {
       assertEquals("File name cannot be whitespace.", e.getMessage());
     }
@@ -193,7 +223,7 @@ public class ProjectImplTest {
       catch (IOException e) {
         //ignore
       }
-      fail("Tried to save project with no loaded Project");
+      fail("Invalid file name");
     } catch (IllegalArgumentException e) {
       assertEquals("File name cannot be whitespace.", e.getMessage());
     }
@@ -205,9 +235,22 @@ public class ProjectImplTest {
       catch (IOException e) {
         //ignore
       }
-      fail("Tried to save project with no loaded Project");
+      fail("Invalid file name");
     } catch (IllegalArgumentException e) {
       assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.model.saveProject("P1.txt");
+      }
+      catch (IOException e) {
+        //ignore
+      }
+      fail("Invalid file name");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Name must be valid filename with no file extension.",
+          e.getMessage());
     }
   }
 
@@ -215,15 +258,16 @@ public class ProjectImplTest {
   public void testSaveProject() {
     this.model.createNewProject(3, 5);
     this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
+
     try {
-      this.model.saveProject("P1.txt");
+      this.model.saveProject("P1");
     } catch (IOException io) {
       fail(io.getMessage());
     }
 
     Scanner sc = null;
     try {
-      sc = new Scanner(new FileInputStream("P1.txt"));
+      sc = new Scanner(new FileInputStream("P1.collage"));
     } catch (FileNotFoundException fnf) {
       fail("File not found");
     }
@@ -234,35 +278,16 @@ public class ProjectImplTest {
     assertEquals("5", sc.next());
     assertEquals("Layer1", sc.next());
     assertEquals("normal", sc.next());
-    assertEquals("225 225 225 255",
-        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255",
-        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255",
-        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255",
-        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255",
-        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255",
-        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255",
-        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255",
-        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255",
-        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255",
-        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255",
-        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("225 225 225 255",
-        sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("0 0 0 0", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("0 0 0 0", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    assertEquals("0 0 0 0", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
 
+    for (int i = 0; i < 12; i++) {
+      assertEquals("225 225 225 255",
+          sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    }
 
+    for (int j = 0; j < 3; j++) {
+      assertEquals("0 0 0 0",
+          sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    }
   }
 
   @Test
@@ -751,53 +776,19 @@ public class ProjectImplTest {
   }
 
   @Test
-  public void testBadSaveImage() {
-    try {
-      this.model.saveProject("name");
-      fail("no project open");
-    } catch (IllegalStateException s) {
-      //pass
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    this.model.createNewProject(3, 4);
-
-    try {
-      this.model.saveProject(null);
-      fail("null argument");
-    } catch (IllegalArgumentException | IOException a) {
-      //do nothing
-    }
-
-    try {
-      this.model.saveProject(".ppm");
-      fail("invalid name");
-    } catch (IllegalArgumentException | IOException a) {
-      //do nothing
-    }
-    try {
-      this.model.saveProject("file");
-      fail("invalid name-> needs suffix");
-    } catch (IllegalArgumentException | IOException a) {
-      //do nothing
-    }
-
-  }
-
-  @Test
   public void testSaveImageOneLayer() {
     this.model.createNewProject(3, 4);
     this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
 
     try {
-      this.model.saveImage("testSaveImage.ppm");
+      this.model.saveImage("smol2");
     } catch (IOException io) {
       // welp
     }
 
     Scanner sc = null;
     try {
-      sc = new Scanner(new FileInputStream("testSaveImage.ppm"));
+      sc = new Scanner(new FileInputStream("smol2.ppm"));
     } catch (FileNotFoundException fnf) {
       fail("File not found");
     }
@@ -821,14 +812,14 @@ public class ProjectImplTest {
     this.model.addImageToLayer("Layer2", "smolLow.ppm", 0, 0);
 
     try {
-      this.model.saveImage("testSaveImage.ppm");
+      this.model.saveImage("smolLow2");
     } catch (IOException io) {
       // welp
     }
 
     Scanner sc = null;
     try {
-      sc = new Scanner(new FileInputStream("testSaveImage.ppm"));
+      sc = new Scanner(new FileInputStream("smolLow2.ppm"));
     } catch (FileNotFoundException fnf) {
       fail("File not found");
     }

@@ -1,9 +1,7 @@
 package model;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +16,11 @@ public class ProjectImpl implements ImageProject {
 
   private int width;
   private int height;
-  // represents the maximum value allowed in any pixel value
-  private int maxPixelValue;
   private int activeLayer;
   private List<Layer> layers;
 
   //should be false if loadProject() or createNewProject() hasn't been called
   private boolean hasAOpenProject;
-
-  private File projectFile;
 
   /**
    * Constructs a new PPMProject and initializes layers to an ArrayList of {@code Layer}s and sets
@@ -35,44 +29,51 @@ public class ProjectImpl implements ImageProject {
   public ProjectImpl() {
     this.layers = new ArrayList<Layer>();
 
-    this.maxPixelValue = 255;
     this.activeLayer = 0;
     this.hasAOpenProject = false;
   }
 
   @Override
-  public void saveImage(String name) throws IllegalStateException, IOException {
-    if (name == null) {
-      throw new IllegalArgumentException("File name cannot be null.");
+  public void saveImage(String name) throws IllegalStateException, IllegalArgumentException
+      , IOException {
+    if (!hasAOpenProject) {
+      throw new IllegalStateException("There's currently no open project.");
     }
 
-    if (name.isBlank() || name.isEmpty()) {
-      throw new IllegalArgumentException("File name cannot be whitespace.");
+    if (ImageProjectFileUtils.isFileNameValid(name)) {
+
+      String output = "P3\n"
+          + this.getWidth() + " " + this.getHeight() + "\n"
+          + this.getMaxPixelValue() + "\n"
+          + this.currentCanvas() + "\n";
+
+      ImageProjectFileUtils.createFile(name + ".ppm");
+      ImageProjectFileUtils.writeToFile(name + ".ppm", output);
     }
-
-    String currentCanvas = this.currentCanvas();
-
-    String output = "P3\n"
-        + this.getWidth() + " " + this.getHeight() + "\n"
-        + this.getMaxPixelValue() + "\n"
-        + currentCanvas + "\n";
-
-    FileWriter writer;
-
-    try {
-      writer = new FileWriter(name);
-    } catch (IOException io) {
-      throw new IOException("File writer error encountered");
-    }
-
-    try {
-      writer.write(output);
-    } catch (IOException io) {
-      throw new IOException("File writer error encountered");
-    }
-    writer.close();
   }
 
+  @Override
+  public void saveProject(String name) throws IllegalStateException, IOException {
+    if (!hasAOpenProject) {
+      throw new IllegalStateException("There's currently no open project.");
+    }
+
+    if (ImageProjectFileUtils.isFileNameValid(name)) {
+
+      String output = name + "\n"
+          + this.width + " " + this.height + "\n";
+
+      for (Layer currLayer : this.layers) {
+        output = output.concat(currLayer.getName() + " " + currLayer.getFilter() + "\n");
+        for (int[] row : currLayer.getLayerData()) {
+          output = output.concat(row[0] + " " + row[1] + " " + row[2] + " " + row[3] + "\n");
+        }
+      }
+
+      ImageProjectFileUtils.createFile(name + ".collage");
+      ImageProjectFileUtils.writeToFile(name + ".collage", output);
+    }
+  }
 
   @Override
   public String currentCanvas() throws IllegalStateException {
@@ -158,9 +159,9 @@ public class ProjectImpl implements ImageProject {
     this.setActiveLayer(curActiveLayer);
 
     return new double[]{
-        (finalColor[0] * (finalColor[3] / this.maxPixelValue)),
-        (finalColor[1] * (finalColor[3] / this.maxPixelValue)),
-        (finalColor[2] * (finalColor[3] / this.maxPixelValue))
+        (finalColor[0] * (finalColor[3] / this.getMaxPixelValue())),
+        (finalColor[1] * (finalColor[3] / this.getMaxPixelValue())),
+        (finalColor[2] * (finalColor[3] / this.getMaxPixelValue()))
     };
   }
 
@@ -184,58 +185,6 @@ public class ProjectImpl implements ImageProject {
     }
 
     return results;
-  }
-
-  @Override
-  public void saveProject(String name) throws IllegalStateException, IOException {
-    if (!hasAOpenProject) {
-      throw new IllegalStateException("There's currently no open project.");
-    }
-
-    if (name == null) {
-      throw new IllegalArgumentException("File name cannot be null.");
-    }
-
-    if (name.isEmpty() || name.isBlank()) {
-      throw new IllegalArgumentException("File name cannot be whitespace.");
-    }
-
-    //does not save project unless given proper suffix
-    if (!name.matches(".+\\..{2,}")) {
-      throw new IllegalArgumentException("Name must be valid filename with valid suffix");
-    }
-
-    try {
-      this.projectFile = new File(name);
-      this.projectFile.createNewFile();
-    } catch (IOException io) {
-      throw new IOException("File error occurred");
-    }
-
-    FileWriter writer = null;
-    try {
-      writer = new FileWriter(name);
-    } catch (IOException io) {
-      throw new IOException("File writer error encountered");
-    }
-
-    try {
-      writer.write(name.substring(0, name.lastIndexOf(".")) + "\n");
-      writer.write(this.width + " " + this.height + "\n");
-    } catch (IOException io) {
-      throw new IOException("File writer error encountered");
-    }
-    for (Layer currLayer : this.layers) {
-      try {
-        writer.write(currLayer.getName() + " " + currLayer.getFilter() + "\n");
-        for (int[] row : currLayer.getLayerData()) {
-          writer.write(row[0] + " " + row[1] + " " + row[2] + " " + row[3] + "\n");
-        }
-      } catch (IOException io) {
-        throw new IOException("File writer error encountered");
-      }
-    }
-    writer.close();
   }
 
   //In the controller, make it so that if this method is called after a project is opened, it asks
@@ -356,7 +305,7 @@ public class ProjectImpl implements ImageProject {
     if (!hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
     }
-    return this.maxPixelValue;
+    return 255;
   }
 
   @Override
