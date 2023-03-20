@@ -94,6 +94,7 @@ public class ProjectImpl implements ImageProject {
 
       if ((endOfLineCounter == this.getWidth()) &&
           (linesPassedCounter != (this.getHeight() - 1))) {
+
         endOfLineCounter = 0;
         linesPassedCounter++;
         results = results.concat("\n");
@@ -103,117 +104,37 @@ public class ProjectImpl implements ImageProject {
     return results;
   }
 
-  /**
-   * Loops every layer to return back the color that will be displayed in the final image.
-   *
-   * @param pixel the pixel to look at
-   * @return a String of the R G B A values of the final color
-   */
-  private double[] finalColorAt(int pixel) {
-    String results = "";
-    int curActiveLayer = this.activeLayer;
-    double[] finalColor = new double[4];
-
-    //((y + 1) * w) - (w - (x + 1)) formula to get pixels from getLayerData
-
-    for (Layer layer : this.layers) {
-      this.setActiveLayer(layer.getName());
-
-      int[][] curLayerData = layer.getLayerData();
-
-      double curRed = curLayerData[pixel][0];
-      double curGreen = curLayerData[pixel][1];
-      double curBlue = curLayerData[pixel][2];
-      double curAlpha = curLayerData[pixel][3];
-
-      if ((this.activeLayer != 0) && (curAlpha != 0)) {
-        double backgroundRed = finalColor[0];
-        double backgroundGreen = finalColor[1];
-        double backgroundBlue = finalColor[2];
-        double backgroundAlpha = finalColor[3];
-
-        double maxPixelVal = this.getMaxPixelValue();
-
-        double alphaPercentage = ((curAlpha / maxPixelVal) + backgroundAlpha / maxPixelVal * (1
-            - (curAlpha / maxPixelVal)));
-
-        finalColor[3] = (alphaPercentage * maxPixelVal);
-
-        finalColor[0] = (curAlpha / maxPixelVal * curRed + backgroundRed *
-            (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
-
-        finalColor[1] = (curAlpha / maxPixelVal * curGreen + backgroundGreen *
-            (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
-
-        finalColor[2] = (curAlpha / maxPixelVal * curBlue + backgroundBlue *
-            (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
-      } else if ((this.activeLayer == 0) && (curAlpha != 0)) {
-        finalColor[0] = curRed;
-        finalColor[1] = curGreen;
-        finalColor[2] = curBlue;
-        finalColor[3] = curAlpha;
-      }
-
-    }
-
-    this.setActiveLayer(curActiveLayer);
-
-    return new double[]{
-        (finalColor[0] * (finalColor[3] / this.getMaxPixelValue())),
-        (finalColor[1] * (finalColor[3] / this.getMaxPixelValue())),
-        (finalColor[2] * (finalColor[3] / this.getMaxPixelValue()))
-    };
-  }
-
-  /**
-   * Formats the given int[] (which represents a color in the RGBA format) into a String. The method
-   * gives each RGBA component zero padded ("4" -> "004").
-   *
-   * @return a formatted String that displays the RGBA values.
-   */
-  private String formatColor(double[] color) {
-    String results = "";
-
-    for (int c = 0; c < color.length; c++) {
-
-      String componentRep = "";
-
-      componentRep = String.valueOf((int) color[c]);
-
-      results = results.concat(componentRep);
-      results = results.concat(" ");
-    }
-
-    return results;
-  }
-
-  //In the controller, make it so that if this method is called after a project is opened, it asks
-  //if the user wants to save their previously opened project
   @Override
-  public void loadProject(String filePath) throws IllegalArgumentException {
-    if (filePath == null) {
+  public void loadProject(String file) throws IllegalArgumentException {
+    if (file == null) {
       throw new IllegalArgumentException("Filepath cannot be null.");
     }
 
-    Scanner sc = null;
-    try {
-      sc = new Scanner(new FileInputStream("testSaveImage.ppm"));
-    } catch (FileNotFoundException fnf) {
-      throw new IllegalArgumentException("Project file not found");
+    if (!ImageProjectFileUtils.isProjectFile(file)) {
+      throw new IllegalArgumentException("File at filepath is not a .collage file.");
     }
 
-    //discards name of project
-    checkNext(sc);
-    sc.next();
-    checkNext(sc);
-    int width = sc.nextInt();
-    checkNext(sc);
-    int height = sc.nextInt();
+    else {
+      Scanner sc;
+      try {
+        sc = new Scanner(new FileInputStream(file));
+      } catch (FileNotFoundException e) {
+        throw new IllegalArgumentException("Project file not found at given filepath.");
+      }
 
-    ImageProject loaded = new ProjectImpl();
-    loaded.createNewProject(width, height);
+      //discards name of project
+      checkNext(sc);
+      sc.next();
+      checkNext(sc);
 
-    while (sc.hasNext()) {
+      int width = sc.nextInt();
+      checkNext(sc);
+      int height = sc.nextInt();
+
+      ImageProject loaded = new ProjectImpl();
+      loaded.createNewProject(width, height);
+
+      while (sc.hasNext()) {
       String newLayer = sc.next();
       checkNext(sc);
       String filter = sc.next();
@@ -234,7 +155,7 @@ public class ProjectImpl implements ImageProject {
       int[][] data = loaded.getActiveLayer().getLayerData();
       data = newLayerData;
       loaded.setFilter(filter, newLayer);
-
+      }
     }
   }
 
@@ -420,6 +341,84 @@ public class ProjectImpl implements ImageProject {
     }
     this.setActiveLayer(layerName);
     this.getActiveLayer().addImageToLayer(imageFile, x, y);
+  }
+
+  /**
+   * Loops every layer to return back the color that will be displayed in the final image.
+   *
+   * @param pixel the pixel to look at
+   * @return a String of the R G B A values of the final color
+   */
+  private double[] finalColorAt(int pixel) {
+    double[] finalColor = new double[4];
+
+    //((y + 1) * w) - (w - (x + 1)) formula to get pixels from getLayerData
+
+    for (Layer layer : this.layers) {
+
+      int[][] curLayerData = layer.getLayerData();
+
+      double curRed = curLayerData[pixel][0];
+      double curGreen = curLayerData[pixel][1];
+      double curBlue = curLayerData[pixel][2];
+      double curAlpha = curLayerData[pixel][3];
+
+      if ((this.activeLayer != 0) && (curAlpha != 0)) {
+        double backgroundRed = finalColor[0];
+        double backgroundGreen = finalColor[1];
+        double backgroundBlue = finalColor[2];
+        double backgroundAlpha = finalColor[3];
+
+        double maxPixelVal = this.getMaxPixelValue();
+
+        double alphaPercentage = ((curAlpha / maxPixelVal) + backgroundAlpha / maxPixelVal * (1
+            - (curAlpha / maxPixelVal)));
+
+        finalColor[3] = (alphaPercentage * maxPixelVal);
+
+        finalColor[0] = (curAlpha / maxPixelVal * curRed + backgroundRed *
+            (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
+
+        finalColor[1] = (curAlpha / maxPixelVal * curGreen + backgroundGreen *
+            (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
+
+        finalColor[2] = (curAlpha / maxPixelVal * curBlue + backgroundBlue *
+            (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
+      } else if ((this.activeLayer == 0) && (curAlpha != 0)) {
+        finalColor[0] = curRed;
+        finalColor[1] = curGreen;
+        finalColor[2] = curBlue;
+        finalColor[3] = curAlpha;
+      }
+    }
+
+    return new double[]{
+        (finalColor[0] * (finalColor[3] / this.getMaxPixelValue())),
+        (finalColor[1] * (finalColor[3] / this.getMaxPixelValue())),
+        (finalColor[2] * (finalColor[3] / this.getMaxPixelValue()))
+    };
+  }
+
+  /**
+   * Formats the given double[] (which represents a color in the RGBA format) into a String.
+   * The method gives each RGBA component a space in between.
+   *
+   * @return a formatted String that displays the RGBA values.
+   */
+  private String formatColor(double[] color) {
+    String results = "";
+
+    for (int c = 0; c < color.length; c++) {
+
+      String componentRep = "";
+
+      componentRep = String.valueOf((int) color[c]);
+
+      results = results.concat(componentRep);
+      results = results.concat(" ");
+    }
+
+    return results;
   }
 
   /**

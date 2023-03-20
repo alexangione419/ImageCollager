@@ -162,6 +162,20 @@ public class ProjectImplTest {
     } catch (IllegalArgumentException e) {
       assertEquals("Filepath cannot be null.", e.getMessage());
     }
+
+    try {
+      this.model.loadProject("tako.ppm");
+      fail("Invalid filepath");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File at filepath is not a .collage file.", e.getMessage());
+    }
+
+    try {
+      this.model.loadProject("tako.collage");
+      fail("Invalid filepath");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Project file not found at given filepath.", e.getMessage());
+    }
   }
 
   @Test

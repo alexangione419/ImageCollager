@@ -37,7 +37,7 @@ public interface ImageProject {
   void loadProject(String filePath) throws IllegalArgumentException;
 
   /**
-   * Outputs a String that represents what the current canvas looks like.
+   * Outputs a String that represents what the current canvas looks like as an image.
    *
    * @return a String that represents the current canvas
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project

@@ -3,6 +3,7 @@ package model;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 /**
  * A utility class for reading and writing to files that {@code ImageProject}s can make.
@@ -52,4 +53,12 @@ public final class ImageProjectFileUtils {
     writer.close();
   }
 
+  public static boolean isProjectFile(String filePath) {
+    if (!filePath.contains(".")) {
+      return false;
+    }
+
+    //code obtained from https://stackoverflow.com/a/16578721
+    return (filePath.split(Pattern.quote("."))[1].equals("collage"));
+  }
 }
