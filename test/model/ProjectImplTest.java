@@ -176,6 +176,13 @@ public class ProjectImplTest {
     } catch (IllegalArgumentException e) {
       assertEquals("Project file not found at given filepath.", e.getMessage());
     }
+
+    try {
+      this.model.loadProject("bad.collage");
+    } catch (IllegalArgumentException e) {
+      fail("This test shouldn't fail because bad.collage is a file that exists.");
+      assertEquals("Project file not found at given filepath.", e.getMessage());
+    }
   }
 
   @Test

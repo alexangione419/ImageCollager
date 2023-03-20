@@ -70,13 +70,6 @@ public interface ImageProject {
   int getHeight() throws IllegalStateException;
 
   /**
-   * Returns whether this {@code ImageProject} supports the alpha channel (transparency).
-   *
-   * @return true if this {@code ImageProject} supports alpha, false otherwise
-   */
-  boolean supportsAlpha();
-
-  /**
    * Returns the number of layers this {@code ImageProject} has.
    *
    * @return the number of layers in this {@code ImageProject}

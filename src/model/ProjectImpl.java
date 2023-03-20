@@ -177,7 +177,7 @@ public class ProjectImpl implements ImageProject {
     this.activeLayer = 0;
     this.hasAOpenProject = true;
     this.layers = new ArrayList<Layer>();
-    this.layers.add(new LayerImpl("Layer1", this)); // make this white
+    this.layers.add(new LayerImpl("Layer1", this));
   }
 
   @Override
@@ -196,11 +196,6 @@ public class ProjectImpl implements ImageProject {
     }
 
     return this.height;
-  }
-
-  @Override
-  public boolean supportsAlpha() {
-    return false;
   }
 
   @Override
