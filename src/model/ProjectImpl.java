@@ -43,7 +43,11 @@ public class ProjectImpl implements ImageProject {
   @Override
   public void saveImage(String name) throws IllegalStateException, IOException {
     if (name == null) {
-      throw new IllegalArgumentException("Filepath cannot be null.");
+      throw new IllegalArgumentException("File name cannot be null.");
+    }
+
+    if (name.isBlank() || name.isEmpty()) {
+      throw new IllegalArgumentException("File name cannot be whitespace.");
     }
 
     String currentCanvas = this.currentCanvas();
@@ -188,10 +192,15 @@ public class ProjectImpl implements ImageProject {
       throw new IllegalStateException("There's currently no open project.");
     }
 
-    if (name == null || name.isEmpty()) {
-      throw new IllegalArgumentException("Filepath cannot be null.");
+    if (name == null) {
+      throw new IllegalArgumentException("File name cannot be null.");
     }
 
+    if (name.isEmpty() || name.isBlank()) {
+      throw new IllegalArgumentException("File name cannot be whitespace.");
+    }
+
+    //does not save project unless given proper suffix
     if (!name.matches(".+\\..{2,}")) {
       throw new IllegalArgumentException("Name must be valid filename with valid suffix");
     }

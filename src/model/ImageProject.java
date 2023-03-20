@@ -11,18 +11,20 @@ public interface ImageProject {
    * Saves the final image created from all the layers with the given name as an image file.
    *
    * @param name the file path to save the image
-   * @throws IOException           if the file path is invalid.
+   * @throws IllegalArgumentException           if the name is invalid (null or is empty)
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
+   * @throws IOException if there is an issue writing to a file
    */
-  void saveImage(String name) throws IllegalStateException, IOException;
+  void saveImage(String name) throws IllegalStateException, IllegalArgumentException, IOException;
 
   /**
-   * Saves this project to a specified file path as a .collage file.
+   * Saves this project to a specified file path as a .collage file. The .collage file should
+   * contain the project width and height, as well as the contents of each layer.
    *
-   * @throws IOException           if the file path is invalid.
+   * @throws IllegalArgumentException           if the name is invalid (null or is empty)
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
-  void saveProject(String name) throws IllegalStateException, IOException;
+  void saveProject(String name) throws IllegalStateException, IllegalArgumentException, IOException;
 
   /**
    * Loads a project at a given file path.

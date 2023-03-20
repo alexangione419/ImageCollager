@@ -56,6 +56,75 @@ public class ProjectImplTest {
   }
 
   @Test
+  public void validSaveImage() throws IOException {
+    this.model.createNewProject(2, 2);
+    this.model.saveImage("test.ppm");
+
+    this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
+
+    try {
+      this.model.saveImage("P1.ppm");
+    } catch (IOException io) {
+      fail(io.getMessage());
+    }
+
+    Scanner sc = null;
+    try {
+      sc = new Scanner(new FileInputStream("P1.txt"));
+    } catch (FileNotFoundException fnf) {
+      fail("File not found");
+    }
+
+  }
+
+  @Test
+  public void badSaveImage() {
+    try {
+      try {
+        this.model.saveImage(null);
+      } catch (IOException e) {
+
+      }
+      fail("Null passed as an argument");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be null.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.model.saveImage("");
+      } catch (IOException e) {
+
+      }
+      fail("Whitespace passed as an argument");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.model.saveImage("\n");
+      } catch (IOException e) {
+
+      }
+      fail("Whitespace passed as an argument");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.model.saveImage(System.lineSeparator());
+      } catch (IOException e) {
+
+      }
+      fail("Whitespace passed as an argument");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+  }
+
+  @Test
   public void badLoadProject() {
     try {
       this.model.loadProject(null);
@@ -67,14 +136,78 @@ public class ProjectImplTest {
 
   @Test
   public void badSaveProject() {
-    this.model.createNewProject(4, 4);
     try {
-      this.model.saveProject(null);
-      fail("Null passed as an argument");
+      try {
+        this.model.saveProject(null);
+      }
+      catch (IOException e) {
+        //ignore
+      }
+      fail("Tried to save project with no loaded Project");
+    } catch (IllegalStateException e) {
+      assertEquals("There's currently no open project.", e.getMessage());
+    }
+
+    this.model.createNewProject(4, 4);
+
+    try {
+      try {
+        this.model.saveProject(null);
+      }
+      catch (IOException e) {
+        //ignore
+      }
+      fail("Tried to save project with no loaded Project");
     } catch (IllegalArgumentException e) {
-      assertEquals("Filepath cannot be null.", e.getMessage());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+      assertEquals("File name cannot be null.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.model.saveProject("");
+      }
+      catch (IOException e) {
+        //ignore
+      }
+      fail("Tried to save project with no loaded Project");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.model.saveProject("\n");
+      }
+      catch (IOException e) {
+        //ignore
+      }
+      fail("Tried to save project with no loaded Project");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.model.saveProject(" ");
+      }
+      catch (IOException e) {
+        //ignore
+      }
+      fail("Tried to save project with no loaded Project");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.model.saveProject(System.lineSeparator());
+      }
+      catch (IOException e) {
+        //ignore
+      }
+      fail("Tried to save project with no loaded Project");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
     }
   }
 
@@ -130,42 +263,6 @@ public class ProjectImplTest {
     assertEquals("0 0 0 0", sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
 
 
-  }
-
-  @Test
-  public void validSaveImage() throws IOException {
-    this.model.createNewProject(2, 2);
-    this.model.saveImage("test.ppm");
-
-    this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
-
-    try {
-      this.model.saveImage("P1.ppm");
-    } catch (IOException io) {
-      fail(io.getMessage());
-    }
-
-    Scanner sc = null;
-    try {
-      sc = new Scanner(new FileInputStream("P1.txt"));
-    } catch (FileNotFoundException fnf) {
-      fail("File not found");
-    }
-
-  }
-
-  @Test
-  public void badSaveImage() {
-    try {
-      try {
-        this.model.saveImage(null);
-      } catch (IOException e) {
-
-      }
-      fail("Null passed as an argument");
-    } catch (IllegalArgumentException e) {
-      assertEquals("Filepath cannot be null.", e.getMessage());
-    }
   }
 
   @Test
