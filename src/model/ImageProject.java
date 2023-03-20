@@ -10,7 +10,7 @@ public interface ImageProject {
   /**
    * Saves the final image created from all the layers with the given name as an image file.
    *
-   * @param name the file path to save the image
+   * @param name the name to give the image file
    * @throws IllegalArgumentException           if the name is invalid (null or is empty)
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    * @throws IOException if there is an issue writing to a file
@@ -19,8 +19,8 @@ public interface ImageProject {
 
   /**
    * Saves this {@code ImageProject} as a .collage file with the given file name.
-   * The .collage file should contain the project width and height, as well as the contents of
-   * each layer.
+   * The .collage file should contain the project width and height, as well as the contents,
+   * name, and filter of each layer.
    *
    * @throws IllegalArgumentException           if the name is invalid (null or is empty)
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
@@ -38,6 +38,7 @@ public interface ImageProject {
 
   /**
    * Outputs a String that represents what the current canvas looks like as an image.
+   * The String should contain the RGBA values of every pixel on the canvas.
    *
    * @return a String that represents the current canvas
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
@@ -49,7 +50,7 @@ public interface ImageProject {
    *
    * @param width  the width of the canvas
    * @param height the height of the canvas
-   * @throws IllegalArgumentException if the width or height is less than 0.
+   * @throws IllegalArgumentException if the width or height is less than OR equal to 0.
    */
   void createNewProject(int width, int height) throws IllegalArgumentException;
 
@@ -146,9 +147,9 @@ public interface ImageProject {
       throws IllegalArgumentException, IllegalStateException;
 
   /**
-   * Adds the image at the given file to the given layer.
+   * Adds an image, specified by imageFile, to the {@code Layer} whose name matches layerName.
    *
-   * @param layerName the layer to add the image to
+   * @param layerName the name of the layer to add the image to
    * @param imageFile the file of the image to add
    * @param x         the x position to place the picture at
    * @param y         the y position to place the picture at

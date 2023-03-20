@@ -2,6 +2,7 @@ package model;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
@@ -37,7 +38,13 @@ public class ProjectImplTest {
     f = new File("smol2.ppm");
     f.delete();
 
+    f = new File("smol2.collage");
+    f.delete();
+
     f = new File("smolLow2.ppm");
+    f.delete();
+
+    f = new File("smolLow2.collage");
     f.delete();
   }
 
@@ -73,25 +80,134 @@ public class ProjectImplTest {
   }
 
   @Test
-  public void validSaveImage() throws IOException {
+  public void validSaveImage() {
     this.model.createNewProject(2, 2);
-    this.model.saveImage("test");
-
     this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
 
     try {
       this.model.saveImage("P1");
+      this.model.saveProject("P1");
     } catch (IOException io) {
       fail(io.getMessage());
     }
 
-    Scanner sc = null;
+    Scanner sc;
+
     try {
-      sc = new Scanner(new FileInputStream("P1.ppm"));
+      sc = new Scanner(new FileInputStream("P1.collage"));
     } catch (FileNotFoundException fnf) {
       fail("File not found");
     }
 
+    String curCanvas = this.model.currentCanvas();
+
+    this.model.loadProject("P1.collage");
+
+    assertEquals(this.model.currentCanvas(), curCanvas);
+    assertEquals("255 0 0 0 0 0 \n0 0 0 0 0 0 ", curCanvas);
+    assertEquals("255 0 0 0 0 0 \n0 0 0 0 0 0 ", this.model.currentCanvas());
+
+  }
+
+  @Test
+  public void validSaveImageOneLayer() {
+    this.model.createNewProject(3, 4);
+    this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
+    String curCanvas = this.model.currentCanvas();
+
+    try {
+      this.model.saveImage("smol2");
+      this.model.saveProject("smol2");
+    } catch (IOException io) {
+      // ignore
+    }
+
+    Scanner sc = null;
+
+    try {
+      sc = new Scanner(new FileInputStream("smol2.ppm"));
+    } catch (FileNotFoundException fnf) {
+      fail("File not found");
+    }
+
+    assertNotNull(sc);
+    assertEquals("P3", sc.next());
+    assertEquals("3", sc.next());
+    assertEquals("4", sc.next());
+    assertEquals("255", sc.next());
+    for (int i = 0; i < 12; i++) {
+      assertEquals(sc.nextInt(), 225);
+    }
+
+    this.model.loadProject("smol2.collage");
+
+    assertEquals("225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", this.model.currentCanvas());
+
+    assertEquals("225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", curCanvas);
+
+    assertEquals(curCanvas, this.model.currentCanvas());
+  }
+
+  @Test
+  public void validSaveImageOneLayer2() {
+    this.model.createNewProject(3, 4);
+    this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
+    String curCanvas = this.model.currentCanvas();
+
+    try {
+      this.model.saveImage("smol2");
+      this.model.saveProject("smol2");
+      this.model.loadProject("./res/good.collage");
+    } catch (IOException io) {
+      // ignore
+    }
+
+    assertNotEquals("255 255 255 255 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 \n"
+        + "255 255 255 255 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 ", curCanvas);
+
+    assertEquals("225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", this.model.currentCanvas());
+
+  }
+
+  @Test
+  public void validSaveImageMultipleLayers() {
+    this.model.createNewProject(3, 4);
+    this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
+    this.model.addLayer("Layer2");
+    this.model.addImageToLayer("Layer2", "smolLow.ppm", 0, 0);
+
+    try {
+      this.model.saveImage("smolLow2");
+    } catch (IOException io) {
+      // welp
+    }
+
+    Scanner sc = null;
+    try {
+      sc = new Scanner(new FileInputStream("smolLow2.ppm"));
+    } catch (FileNotFoundException fnf) {
+      fail("File not found");
+    }
+
+    assertNotNull(sc);
+    assertEquals("P3", sc.next());
+    assertEquals("3", sc.next());
+    assertEquals("4", sc.next());
+    assertEquals("255", sc.next());
+    for (int i = 0; i < 12; i++) {
+      assertEquals(sc.nextInt(), 119);
+    }
   }
 
   @Test
@@ -178,10 +294,46 @@ public class ProjectImplTest {
     }
 
     try {
-      this.model.loadProject("bad.collage");
+      this.model.loadProject("./res/bad.collage");
+      fail("bad project file");
     } catch (IllegalArgumentException e) {
-      fail("This test shouldn't fail because bad.collage is a file that exists.");
-      assertEquals("Project file not found at given filepath.", e.getMessage());
+      assertEquals("Invalid project file at given filepath.", e.getMessage());
+    }
+  }
+
+  @Test
+  public void validSaveProject() {
+    this.model.createNewProject(3, 5);
+    this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
+
+    try {
+      this.model.saveProject("P1");
+    } catch (IOException io) {
+      fail(io.getMessage());
+    }
+
+    Scanner sc = null;
+    try {
+      sc = new Scanner(new FileInputStream("P1.collage"));
+    } catch (FileNotFoundException fnf) {
+      fail("File not found");
+    }
+    assertNotNull(sc);
+
+    assertEquals("P1", sc.next());
+    assertEquals("3", sc.next());
+    assertEquals("5", sc.next());
+    assertEquals("Layer1", sc.next());
+    assertEquals("normal", sc.next());
+
+    for (int i = 0; i < 12; i++) {
+      assertEquals("225 225 225 255",
+          sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    }
+
+    for (int j = 0; j < 3; j++) {
+      assertEquals("0 0 0 0",
+          sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
     }
   }
 
@@ -276,42 +428,6 @@ public class ProjectImplTest {
   }
 
   @Test
-  public void testSaveProject() {
-    this.model.createNewProject(3, 5);
-    this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
-
-    try {
-      this.model.saveProject("P1");
-    } catch (IOException io) {
-      fail(io.getMessage());
-    }
-
-    Scanner sc = null;
-    try {
-      sc = new Scanner(new FileInputStream("P1.collage"));
-    } catch (FileNotFoundException fnf) {
-      fail("File not found");
-    }
-    assertNotNull(sc);
-
-    assertEquals("P1", sc.next());
-    assertEquals("3", sc.next());
-    assertEquals("5", sc.next());
-    assertEquals("Layer1", sc.next());
-    assertEquals("normal", sc.next());
-
-    for (int i = 0; i < 12; i++) {
-      assertEquals("225 225 225 255",
-          sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    }
-
-    for (int j = 0; j < 3; j++) {
-      assertEquals("0 0 0 0",
-          sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
-    }
-  }
-
-  @Test
   public void validGetMaxPixelValue() {
     this.model.createNewProject(32, 32);
     assertEquals(255, this.model.getMaxPixelValue());
@@ -331,6 +447,15 @@ public class ProjectImplTest {
   }
 
   @Test
+  public void validGetWidth() {
+    this.model.createNewProject(32, 32);
+    assertEquals(32, this.model.getWidth());
+
+    this.model.createNewProject(320, 32);
+    assertEquals(320, this.model.getWidth());
+  }
+
+  @Test
   public void badGetWidth() {
     try {
       this.model.getWidth();
@@ -338,15 +463,6 @@ public class ProjectImplTest {
     } catch (IllegalStateException e) {
       assertEquals("There's currently no open project.", e.getMessage());
     }
-  }
-
-  @Test
-  public void validGetWidth() {
-    this.model.createNewProject(32, 32);
-    assertEquals(32, this.model.getWidth());
-
-    this.model.createNewProject(320, 32);
-    assertEquals(320, this.model.getWidth());
   }
 
   @Test
@@ -620,6 +736,19 @@ public class ProjectImplTest {
   }
 
   @Test
+  public void validSetFilter() {
+    this.model.createNewProject(3, 4);
+    this.model.addImageToLayer("Layer1", "smolLow.ppm", 0, 0);
+
+    this.model.setFilter("red-component", "Layer1");
+    int[][] afterRed = {{119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
+        {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
+        {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
+        {119, 0, 0, 255}};
+    assertArrayEquals(afterRed, this.model.getActiveLayer().getLayerData());
+  }
+
+  @Test
   public void badSetFilter() {
     try {
       this.model.setFilter("Some Filter", "Layer1");
@@ -664,20 +793,7 @@ public class ProjectImplTest {
   }
 
   @Test
-  public void testSetFilter() {
-    this.model.createNewProject(3, 4);
-    this.model.addImageToLayer("Layer1", "smolLow.ppm", 0, 0);
-
-    this.model.setFilter("red-component", "Layer1");
-    int[][] afterRed = {{119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
-        {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
-        {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
-        {119, 0, 0, 255}};
-    assertArrayEquals(afterRed, this.model.getActiveLayer().getLayerData());
-  }
-
-  @Test
-  public void testAddImageToLayer() {
+  public void validAddImageToLayer() {
     this.model.createNewProject(3, 4);
     assertArrayEquals(new int[12][4], this.model.getActiveLayer().getLayerData());
     this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
@@ -795,64 +911,4 @@ public class ProjectImplTest {
     assertEquals("128 127 255 128 0 128 \n"
         + "0 0 0 0 0 0 ", this.model.currentCanvas());
   }
-
-  @Test
-  public void testSaveImageOneLayer() {
-    this.model.createNewProject(3, 4);
-    this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
-
-    try {
-      this.model.saveImage("smol2");
-    } catch (IOException io) {
-      // welp
-    }
-
-    Scanner sc = null;
-    try {
-      sc = new Scanner(new FileInputStream("smol2.ppm"));
-    } catch (FileNotFoundException fnf) {
-      fail("File not found");
-    }
-
-    assertNotNull(sc);
-    assertEquals("P3", sc.next());
-    assertEquals("3", sc.next());
-    assertEquals("4", sc.next());
-    assertEquals("255", sc.next());
-    for (int i = 0; i < 12; i++) {
-      assertEquals(sc.nextInt(), 225);
-    }
-
-  }
-
-  @Test
-  public void testSaveImageMultipleLayers() {
-    this.model.createNewProject(3, 4);
-    this.model.addImageToLayer("Layer1", "smol.ppm", 0, 0);
-    this.model.addLayer("Layer2");
-    this.model.addImageToLayer("Layer2", "smolLow.ppm", 0, 0);
-
-    try {
-      this.model.saveImage("smolLow2");
-    } catch (IOException io) {
-      // welp
-    }
-
-    Scanner sc = null;
-    try {
-      sc = new Scanner(new FileInputStream("smolLow2.ppm"));
-    } catch (FileNotFoundException fnf) {
-      fail("File not found");
-    }
-
-    assertNotNull(sc);
-    assertEquals("P3", sc.next());
-    assertEquals("3", sc.next());
-    assertEquals("4", sc.next());
-    assertEquals("255", sc.next());
-    for (int i = 0; i < 12; i++) {
-      assertEquals(sc.nextInt(), 119);
-    }
-  }
-
 }

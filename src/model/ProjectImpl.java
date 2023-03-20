@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -127,34 +128,48 @@ public class ProjectImpl implements ImageProject {
       sc.next();
       checkNext(sc);
 
-      int width = sc.nextInt();
+      int width;
+      int height;
+
+      try {
+        width = sc.nextInt();
+      }
+      catch (InputMismatchException e) {
+        throw new IllegalArgumentException("Invalid project file at given filepath.");
+      }
       checkNext(sc);
-      int height = sc.nextInt();
+
+      try {
+        height = sc.nextInt();
+      }
+      catch (InputMismatchException e) {
+        throw new IllegalArgumentException("Invalid project file at given filepath.");
+      }
 
       ImageProject loaded = new ProjectImpl();
       loaded.createNewProject(width, height);
 
       while (sc.hasNext()) {
-      String newLayer = sc.next();
-      checkNext(sc);
-      String filter = sc.next();
-      int[][] newLayerData = new int[height * width][4];
+        String newLayer = sc.next();
+        checkNext(sc);
+        String filter = sc.next();
+        int[][] newLayerData = new int[height * width][4];
 
-      for (int i = 0; i < width * height; i++) {
-        checkNext(sc);
-        newLayerData[i][0] = sc.nextInt();
-        checkNext(sc);
-        newLayerData[i][1] = sc.nextInt();
-        checkNext(sc);
-        newLayerData[i][2] = sc.nextInt();
-        checkNext(sc);
-        newLayerData[i][3] = sc.nextInt();
-      }
+        for (int i = 0; i < width * height; i++) {
+          checkNext(sc);
+          newLayerData[i][0] = sc.nextInt();
+          checkNext(sc);
+          newLayerData[i][1] = sc.nextInt();
+          checkNext(sc);
+          newLayerData[i][2] = sc.nextInt();
+          checkNext(sc);
+          newLayerData[i][3] = sc.nextInt();
+        }
 
-      loaded.addLayer(newLayer);
-      int[][] data = loaded.getActiveLayer().getLayerData();
-      data = newLayerData;
-      loaded.setFilter(filter, newLayer);
+        loaded.addLayer(newLayer);
+        int[][] data = loaded.getActiveLayer().getLayerData();
+        data = newLayerData;
+        loaded.setFilter(filter, newLayer);
       }
     }
   }

@@ -83,7 +83,10 @@ public final class ImageProjectFileUtils {
       return false;
     }
 
+    int file = filePath.split(Pattern.quote(".")).length;
     //code obtained from https://stackoverflow.com/a/16578721
-    return (filePath.split(Pattern.quote("."))[1].equals("collage"));
+
+
+    return (filePath.split(Pattern.quote("."))[file - 1].equals("collage"));
   }
 }
