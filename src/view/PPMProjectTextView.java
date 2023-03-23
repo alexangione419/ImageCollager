@@ -2,6 +2,7 @@ package view;
 
 import java.io.IOException;
 import model.ImageProject;
+import model.ImageProjectState;
 
 /**
  * A text-based implementation of {@code ImageProjectView}. This class allows anyone to view a
@@ -9,7 +10,7 @@ import model.ImageProject;
  */
 public class PPMProjectTextView implements ImageProjectView {
 
-  private ImageProject model;
+  private ImageProjectState model;
   private Appendable output;
 
   /**
@@ -17,7 +18,7 @@ public class PPMProjectTextView implements ImageProjectView {
    *
    * @param m the {@code ImageProject} to view
    */
-  public PPMProjectTextView(ImageProject m) {
+  public PPMProjectTextView(ImageProjectState m) {
     if (m == null) {
       throw new IllegalArgumentException("ImageProject cannot be null.");
     }
@@ -32,7 +33,7 @@ public class PPMProjectTextView implements ImageProjectView {
    * @param m the {@code ImageProject} to view
    * @param a the {@code Appendable} to write to
    */
-  public PPMProjectTextView(ImageProject m, Appendable a) {
+  public PPMProjectTextView(ImageProjectState m, Appendable a) {
     if ((m == null) || (a == null)) {
       throw new IllegalArgumentException("ImageProject and/or Appendable cannot be null.");
     }

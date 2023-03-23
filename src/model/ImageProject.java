@@ -5,7 +5,7 @@ import java.io.IOException;
 /**
  * An interface for creating image projects that contain {@code Layers}.
  */
-public interface ImageProject {
+public interface ImageProject extends ImageProjectState{
 
   /**
    * Saves the final image created from all the layers with the given name as an image file.
@@ -54,37 +54,6 @@ public interface ImageProject {
    */
   void createNewProject(int width, int height) throws IllegalArgumentException;
 
-  /**
-   * Returns the width size of this {@code ImageProject}.
-   *
-   * @return the width of this this {@code ImageProject}
-   * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
-   */
-  int getWidth() throws IllegalStateException;
-
-  /**
-   * Returns the name of this {@code ImageProject}.
-   *
-   * @return the name of this {@code ImageProject}
-   * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
-   */
-  String getName() throws IllegalStateException;
-
-  /**
-   * Returns the height size of this {@code ImageProject}.
-   *
-   * @return the height of this this {@code ImageProject}
-   * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
-   */
-  int getHeight() throws IllegalStateException;
-
-  /**
-   * Returns the number of layers this {@code ImageProject} has.
-   *
-   * @return the number of layers in this {@code ImageProject}
-   * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
-   */
-  int getNumberOfLayers() throws IllegalStateException;
 
   /**
    * Returns the current layer that the user is editing.
@@ -94,12 +63,6 @@ public interface ImageProject {
    */
   Layer getActiveLayer() throws IllegalStateException;
 
-  /**
-   * Returns the maximum value allowed for a pixel.
-   *
-   * @return the maximum value of a pixel
-   */
-  int getMaxPixelValue();
 
   /**
    * Sets the active layer to the {@code Layer} whose name matches the given String.

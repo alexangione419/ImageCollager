@@ -6,5 +6,7 @@
 
 [] Find out why smolLow2.ppm isn't getting deleted
 
-[] Figure out if it's necessary to have a HSLPixel class; I think giving the RGBAPixel class
+[] Make it so the model itself doesn't do anything with files
+
+[X] Figure out if it's necessary to have a HSLPixel class; I think giving the RGBAPixel class
    the ability to return its hue, saturation, and light values based on its RGB is better.
