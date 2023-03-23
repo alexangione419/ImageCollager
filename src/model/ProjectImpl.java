@@ -387,13 +387,17 @@ public class ProjectImpl implements ImageProject {
         finalColor[3] = (alphaPercentage * maxPixelVal);
 
         finalColor[0] = (curAlpha / maxPixelVal * curRed + backgroundRed
-            * (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
+            * (backgroundAlpha / maxPixelVal)
+            * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
 
         finalColor[1] = (curAlpha / maxPixelVal * curGreen + backgroundGreen
-            * (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
+            * (backgroundAlpha / maxPixelVal)
+            * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
 
         finalColor[2] = (curAlpha / maxPixelVal * curBlue + backgroundBlue
-            * (backgroundAlpha / maxPixelVal) * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
+            * (backgroundAlpha / maxPixelVal)
+            * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
+        
       } else if ((this.activeLayer == 0) && (curAlpha != 0)) {
         finalColor[0] = curRed;
         finalColor[1] = curGreen;

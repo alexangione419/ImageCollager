@@ -59,13 +59,13 @@ public class LayerImplTest {
 
   @Test
   public void testGetName() {
-    Layer blue = new LayerImpl("blue", this.project3x4);
-    assertEquals("blue", blue.getName());
+    Layer blue = new LayerImpl("blueRGBA", this.project3x4);
+    assertEquals("blueRGBA", blue.getName());
   }
 
   @Test
   public void validGetTotalPixels() {
-    Layer green = new LayerImpl("green", this.project5x6);
+    Layer green = new LayerImpl("greenRGBA", this.project5x6);
     assertEquals(30, green.getTotalPixels());
 
     Layer armadillo = new LayerImpl("armadillo", this.project3x4);
@@ -90,7 +90,7 @@ public class LayerImplTest {
         {225, 225, 225, 255}};
     pineapple2.addImageToLayer("smol.ppm", 0, 0);
     assertArrayEquals(default34new, pineapple2.getLayerData());
-    pineapple2.applyFilter("red-component");
+    pineapple2.applyFilter("redRGBA-component");
 
     int[][] default34red = {{225, 0, 0, 255}, {225, 0, 0, 255}, {225, 0, 0, 255},
         {225, 0, 0, 255}, {225, 0, 0, 255}, {225, 0, 0, 255}, {225, 0, 0, 255},
@@ -115,7 +115,7 @@ public class LayerImplTest {
         {225, 225, 225, 255}};
     pineapple2.addImageToLayer("smol.ppm", 0, 0);
     assertArrayEquals(default34new, pineapple2.getUnfilteredLayer());
-    pineapple2.applyFilter("red-component");
+    pineapple2.applyFilter("redRGBA-component");
 
     assertArrayEquals(default34new, pineapple2.getUnfilteredLayer());
   }
@@ -269,8 +269,8 @@ public class LayerImplTest {
         {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
         {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
         {119, 0, 0, 255}};
-    filterMe.applyFilter("red-component");
-    assertEquals("red-component", filterMe.getFilter());
+    filterMe.applyFilter("redRGBA-component");
+    assertEquals("redRGBA-component", filterMe.getFilter());
     assertArrayEquals(afterRed, filterMe.getLayerData());
 
     filterMe.applyFilter("normal");
@@ -281,8 +281,8 @@ public class LayerImplTest {
         {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255},
         {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255},
         {0, 119, 0, 255}};
-    filterMe.applyFilter("green-component");
-    assertEquals("green-component", filterMe.getFilter());
+    filterMe.applyFilter("greenRGBA-component");
+    assertEquals("greenRGBA-component", filterMe.getFilter());
     assertArrayEquals(afterGreen, filterMe.getLayerData());
 
     filterMe.applyFilter("normal");
@@ -293,8 +293,8 @@ public class LayerImplTest {
         {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255},
         {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255},
         {0, 0, 119, 255}};
-    filterMe.applyFilter("blue-component");
-    assertEquals("blue-component", filterMe.getFilter());
+    filterMe.applyFilter("blueRGBA-component");
+    assertEquals("blueRGBA-component", filterMe.getFilter());
     assertArrayEquals(afterBlue, filterMe.getLayerData());
 
     filterMe.applyFilter("normal");

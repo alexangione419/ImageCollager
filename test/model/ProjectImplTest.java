@@ -778,7 +778,7 @@ public class ProjectImplTest {
     }
 
     try {
-      this.model.setFilter("red-component", "hello");
+      this.model.setFilter("redRGBA-component", "hello");
       fail("Unknown filter");
     } catch (IllegalArgumentException a) {
       //do nothing

@@ -1,5 +1,7 @@
 package model;
 
+import model.pixels.Pixel;
+
 /**
  * A Layer a single slide of a project comprised of one or more images.
  */
@@ -29,7 +31,7 @@ public interface Layer {
   /**
    * Returns a copy of the pixel data contained on this {@code Layer}.
    *
-   * @return a 2D array of each pixel's data on this {@code Layer}
+   * @return a 2D array of the {@code Pixel}s on this {@code Layer}
    */
   int[][] getLayerData();
 

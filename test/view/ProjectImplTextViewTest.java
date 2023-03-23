@@ -16,8 +16,6 @@ public class ProjectImplTextViewTest {
 
   private ImageProjectView view;
 
-// private Readable readable;
-
   @Before
   public void init() {
     Appendable a = new StringBuilder();
