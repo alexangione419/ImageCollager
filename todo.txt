@@ -1,0 +1,10 @@
+[] Optimize the filters: they all loop through all the layer data and apply something to the r g b
+                         components. This could be abstracted. IntelliJ itself points out that there
+                         is duplicated code.
+
+[] Fix all controller issues
+
+[] Find out why smolLow2.ppm isn't getting deleted
+
+[] Figure out if it's necessary to have a HSLPixel class; I think giving the RGBAPixel class
+   the ability to return its hue, saturation, and light values based on its RGB is better.

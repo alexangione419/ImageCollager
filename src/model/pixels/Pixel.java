@@ -13,10 +13,30 @@ public interface Pixel {
    */
   int getAlpha();
 
+  int getRed();
+
+  int getGreen();
+
+  int getBlue();
+
+  double getHue();
+
+  double getSaturation();
+
+  double getLight();
+
   /**
    * Returns a String containing all of this {@code Pixel}'s components seperated by a spaces.
    * @return a String representation of this {@code Pixel}.
    */
   String toString();
+
+  /**
+   * Returns a String containing all of this {@code Pixel}'s components--except alpha--seperated
+   * by a spaces.
+   * @return a String representation of this {@code Pixel}.
+   */
+  String toStringNoAlpha();
+
 
 }

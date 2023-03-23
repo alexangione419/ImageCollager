@@ -8,6 +8,9 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import model.pixels.Pixel;
+import model.pixels.PixelUtils;
+import model.pixels.RGBAPixel;
 
 /**
  * A class that represents a PPM Image Project. PPM is an image file format that contains rows and
@@ -67,8 +70,18 @@ public class ProjectImpl implements ImageProject {
 
       for (Layer currLayer : this.layers) {
         output = output.concat(currLayer.getName() + " " + currLayer.getFilter() + "\n");
-        for (int[] row : currLayer.getLayerData()) {
-          output = output.concat(row[0] + " " + row[1] + " " + row[2] + " " + row[3] + "\n");
+
+        int i = 0;
+
+        for (Pixel[] row : currLayer.getLayerData()) {
+          for (Pixel p : row) {
+            output = output.concat(p.toString());
+
+            if (i != ((this.width * this.height) - 1)) {
+              output = output.concat("\n");
+            }
+            i++;
+          }
         }
       }
 
@@ -85,20 +98,11 @@ public class ProjectImpl implements ImageProject {
 
     String results = "";
 
-    int endOfLineCounter = 0;
-    int linesPassedCounter = 0;
-
-    //for every pixel
-    for (int p = 0; p < this.getWidth() * this.getHeight(); p++) {
-      results = results.concat(this.formatColor(this.finalColorAt(p)));
-
-      endOfLineCounter++;
-
-      if ((endOfLineCounter == this.getWidth())
-          && (linesPassedCounter != (this.getHeight() - 1))) {
-
-        endOfLineCounter = 0;
-        linesPassedCounter++;
+    for (int y = 0; y < this.getHeight(); y++) {
+      for (int x = 0; x < this.getWidth(); x++) {
+        results = results.concat(this.finalColorAt(x, y).toStringNoAlpha());
+      }
+      if (y != this.getHeight() - 1) {
         results = results.concat("\n");
       }
     }
@@ -154,21 +158,30 @@ public class ProjectImpl implements ImageProject {
         String newLayer = sc.next();
         checkNext(sc);
         String filter = sc.next();
-        int[][] newLayerData = new int[height * width][4];
+        Pixel[][] newLayerData = new Pixel[width][height];
 
-        for (int i = 0; i < width * height; i++) {
-          checkNext(sc);
-          newLayerData[i][0] = sc.nextInt();
-          checkNext(sc);
-          newLayerData[i][1] = sc.nextInt();
-          checkNext(sc);
-          newLayerData[i][2] = sc.nextInt();
-          checkNext(sc);
-          newLayerData[i][3] = sc.nextInt();
+        for (int y = 0; y < height; y++) {
+          for (int x = 0; x < width; x++) {
+            checkNext(sc);
+
+            int r = sc.nextInt();
+            checkNext(sc);
+
+            int g = sc.nextInt();
+            checkNext(sc);
+
+            int b = sc.nextInt();
+            checkNext(sc);
+
+            int a = sc.nextInt();
+            //checkNext(sc);
+
+            newLayerData[x][y] = new RGBAPixel(this.getMaxPixelValue(), r, g, b, a);
+          }
         }
 
         loaded.addLayer(newLayer);
-        int[][] data = loaded.getActiveLayer().getLayerData();
+        Pixel[][] data = loaded.getActiveLayer().getLayerData();
         data = newLayerData;
         loaded.setFilter(filter, newLayer);
       }
@@ -365,22 +378,23 @@ public class ProjectImpl implements ImageProject {
   /**
    * Loops every layer to return back the color that will be displayed in the final image.
    *
-   * @param pixel the pixel to look at
-   * @return a String of the R G B A values of the final color
+   * @param x the x-coordinate of the pixel to look at
+   * @param y the y-coordinate of the pixel to look at
+   * @return a Pixel containing the RGBA values of the final color
    */
-  private double[] finalColorAt(int pixel) {
-    double[] finalColor = new double[4];
+  private Pixel finalColorAt(int x, int y) {
 
-    //((y + 1) * w) - (w - (x + 1)) formula to get pixels from getLayerData
+    double[] finalColor = new double[4];
 
     for (Layer layer : this.layers) {
 
-      int[][] curLayerData = layer.getLayerData();
+      Pixel[][] curLayerData = layer.getLayerData();
 
-      double curRed = curLayerData[pixel][0];
-      double curGreen = curLayerData[pixel][1];
-      double curBlue = curLayerData[pixel][2];
-      double curAlpha = curLayerData[pixel][3];
+      double curRed = curLayerData[x][y].getRed();
+      double curGreen = curLayerData[x][y].getGreen();
+      double curBlue = curLayerData[x][y].getBlue();
+      double curAlpha = curLayerData[x][y].getAlpha();
+
 
       if ((this.activeLayer != 0) && (curAlpha != 0)) {
         double backgroundRed = finalColor[0];
@@ -415,33 +429,10 @@ public class ProjectImpl implements ImageProject {
       }
     }
 
-    return new double[]{
-        (finalColor[0] * (finalColor[3] / this.getMaxPixelValue())),
-        (finalColor[1] * (finalColor[3] / this.getMaxPixelValue())),
-        (finalColor[2] * (finalColor[3] / this.getMaxPixelValue()))
-    };
-  }
+    RGBAPixel finalPixel = new RGBAPixel(this.getMaxPixelValue(),
+        (int) finalColor[0], (int) finalColor[1], (int) finalColor[2], (int) finalColor[3]);
 
-  /**
-   * Formats the given double[] (which represents a color in the RGBA format) into a String.
-   * The method gives each RGBA component a space in between.
-   *
-   * @return a formatted String that displays the RGBA values.
-   */
-  private String formatColor(double[] color) {
-    String results = "";
-
-    for (int c = 0; c < color.length; c++) {
-
-      String componentRep = "";
-
-      componentRep = String.valueOf((int) color[c]);
-
-      results = results.concat(componentRep);
-      results = results.concat(" ");
-    }
-
-    return results;
+    return PixelUtils.convertRGBAtoRGB(finalPixel);
   }
 
   /**

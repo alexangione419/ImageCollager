@@ -1,6 +1,9 @@
 package model.filters;
 
+import model.Clamp;
 import model.Layer;
+import model.pixels.Pixel;
+import model.pixels.RGBAPixel;
 
 /**
  * A filter that darken a {@code ImageProject} based on each pixel's greatest component.
@@ -8,19 +11,20 @@ import model.Layer;
 public class DarkenValue implements Filter {
 
   @Override
-  public int[][] apply(Layer layer) {
-    int[][] layerToModify = layer.getLayerData();
+  public Pixel[][] apply(Layer layer) {
+    Pixel[][] layerToModify = layer.getLayerData();
 
-    // modifies every pixel in the layer
-    for (int i = 0; i < layer.getTotalPixels(); i++) {
-      int max = Math.max(layerToModify[i][0], Math.max(layerToModify[i][1], layerToModify[i][2]));
-      for (int j = 0; j < 3; j++) {
-        //adds max value to pixel without going over the cap
-        if (layerToModify[i][j] - max < 0) {
-          layerToModify[i][j] = 0;
-        } else {
-          layerToModify[i][j] -= max;
-        }
+    for (int y = 0; y < layerToModify[0].length; y++) {
+      for (int x = 0; x < layerToModify.length; x++) {
+        Pixel p = layerToModify[x][y];
+
+        int max = Math.max(p.getRed(), Math.max(p.getGreen(), p.getBlue()));
+
+        int r = Clamp.execute(p.getRed() - max, 0, layer.getMaxPixel());
+        int g = Clamp.execute(p.getGreen() - max, 0, layer.getMaxPixel());
+        int b = Clamp.execute(p.getBlue() - max, 0, layer.getMaxPixel());
+
+        layerToModify[x][y] = new RGBAPixel(layer.getMaxPixel(), r, g, b, p.getAlpha());
       }
     }
 

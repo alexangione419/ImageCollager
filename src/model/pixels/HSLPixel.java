@@ -60,8 +60,28 @@ public final class HSLPixel implements Pixel {
   }
 
   @Override
+  public int getRed() {
+    return 0;
+  }
+
+  @Override
+  public int getGreen() {
+    return 0;
+  }
+
+  @Override
+  public int getBlue() {
+    return 0;
+  }
+
+  @Override
   public String toString() {
     return this.hue + " " + this.saturation + " " + this.light + " ";
+  }
+
+  @Override
+  public String toStringNoAlpha() {
+    return null;
   }
 
 }

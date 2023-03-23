@@ -101,6 +101,21 @@ public final class RGBAPixel implements Pixel {
     return this.blue;
   }
 
+  @Override
+  public double getHue() {
+    return 0;
+  }
+
+  @Override
+  public double getSaturation() {
+    return 0;
+  }
+
+  @Override
+  public double getLight() {
+    return 0;
+  }
+
   /**
    * Returns the alpha component of this {@code RGBAPixel}.
    * @return the alpha component of this RGBAPixel.
@@ -119,6 +134,11 @@ public final class RGBAPixel implements Pixel {
 
   @Override
   public String toString() {
-    return this.red + " " + this.green + " " + this.blue + " " +this.alpha + " ";
+    return this.red + " " + this.green + " " + this.blue + " " + this.alpha + " ";
+  }
+
+  @Override
+  public String toStringNoAlpha() {
+    return this.red + " " + this.green + " " + this.blue + " ";
   }
 }
