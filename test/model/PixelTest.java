@@ -103,4 +103,15 @@ public class PixelTest {
     assertEquals("180.0 1.0 0.5 ", this.cyanHSL.toString());
     assertEquals("300.0 1.0 0.5 ", this.purpleHSL.toString());
   }
+
+  @Test
+  public void validToStringNoAlpha() {
+    assertEquals("255 0 0 ", this.redRGBA.toStringNoAlpha());
+    assertEquals("0 255 0 ", this.greenRGBA.toStringNoAlpha());
+    assertEquals("0 0 255 ", this.blueRGBA.toStringNoAlpha());
+    assertEquals("0 255 255 ", this.cyanRGBA.toStringNoAlpha());
+    assertEquals("255 0 255 ", this.purpleRGBA.toStringNoAlpha());
+    assertEquals("255 255 255 ", this.transparentWhiteRGBA.toStringNoAlpha());
+
+  }
 }

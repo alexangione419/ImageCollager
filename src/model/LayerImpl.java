@@ -16,6 +16,8 @@ import model.filters.Filter;
 import model.filters.GreenComponent;
 import model.filters.Normal;
 import model.filters.RedComponent;
+import model.pixels.Pixel;
+import model.pixels.RGBAPixel;
 
 
 /**
@@ -27,9 +29,9 @@ public final class LayerImpl implements Layer {
 
   private final String name;
   private final ImageProject project;
-  private String currentFiler; // name of the filter currently applied to the layer
-  private int[][] currentLayer;
-  private int[][] unfilteredLayer; // a version of the layer with original pixel values retained
+  private String currentFilter; // name of the filter currently applied to the layer
+  private Pixel[][] currentLayer;
+  private Pixel[][] unfilteredLayer; // a version of the layer with original pixel values retained
   private final HashMap<String, Filter> supportedFilters; // list allowed filters
 
   /**
@@ -42,11 +44,11 @@ public final class LayerImpl implements Layer {
 
     this.name = name;
     this.project = project;
-    this.currentLayer = new int[project.getHeight() * project.getWidth()][4];
+    this.currentLayer = new Pixel[this.project.getWidth()][this.project.getHeight()];
+    this.unfilteredLayer = new Pixel[this.project.getWidth()][this.project.getHeight()];
+    this.clearLayer();
 
-    this.unfilteredLayer = new int[project.getHeight() * project.getWidth()][4];
-
-    this.currentFiler = "normal"; // filter is normal by default
+    this.currentFilter = "normal"; // filter is normal by default
 
     this.supportedFilters = new HashMap<>();
     this.supportedFilters.put("normal", new Normal());
@@ -74,16 +76,16 @@ public final class LayerImpl implements Layer {
 
   @Override
   public String getFilter() {
-    return this.currentFiler;
+    return this.currentFilter;
   }
 
   @Override
-  public int[][] getLayerData() {
+  public Pixel[][] getLayerData() {
     return this.currentLayer;
   }
 
   @Override
-  public int[][] getUnfilteredLayer() {
+  public Pixel[][] getUnfilteredLayer() {
     return this.unfilteredLayer;
   }
 
@@ -97,8 +99,9 @@ public final class LayerImpl implements Layer {
     if (!this.supportedFilters.containsKey(filterOption)) {
       throw new IllegalArgumentException("Unsupported filter");
     }
+
     this.currentLayer = this.supportedFilters.get(filterOption).apply(this);
-    this.currentFiler = filterOption;
+    this.currentFilter = filterOption;
   }
 
   @Override
@@ -110,11 +113,13 @@ public final class LayerImpl implements Layer {
     Scanner sc;
 
     try {
-      sc = new Scanner(new FileInputStream("./res/" + imageFilename));
+      sc = new Scanner(new FileInputStream(imageFilename));
     } catch (FileNotFoundException e) {
       throw new IllegalArgumentException("File not found");
     }
+
     StringBuilder builder = new StringBuilder();
+
     //read the file line by line, and populate a string. This will throw away any comment lines
     while (sc.hasNextLine()) {
       String s = sc.nextLine();
@@ -122,42 +127,34 @@ public final class LayerImpl implements Layer {
         builder.append(s).append(System.lineSeparator());
       }
     }
+
     //now set up the scanner to read from the string we just built
     sc = new Scanner(builder.toString());
 
     String token;
     token = sc.next();
+
     if (!token.equals("P3")) {
       throw new IllegalArgumentException("Invalid PPM file");
     }
+
     int width = sc.nextInt();
     int height = sc.nextInt();
     int maxValue = sc.nextInt();
 
-    int xLim = x + width;
-    int yLim = y + height;
     // ensures the image will not out of the bounds of the layer
-    if (x + width > this.project.getWidth()) {
-      xLim = this.project.getWidth();
-    }
-    if (y + height > this.project.getHeight()) {
-      yLim = this.project.getHeight();
-    }
+    int xLim = Clamp.execute(x + width, 0, this.project.getWidth());
+    int yLim = Clamp.execute(y + height, 0, this.project.getHeight());
 
-    for (int r = x; r < xLim; r++) {
-      for (int c = y; c < yLim; c++) {
-        int conversion = (((c + 1) * this.project.getWidth())
-            - (this.project.getWidth() - (r + 1))) - 1;
+    for (int y2 = y; y2 < yLim; y2++) {
+      for (int x2 = x; x2 < xLim; x2++) {
 
-        this.currentLayer[conversion][0] = sc.nextInt();
-        this.currentLayer[conversion][1] = sc.nextInt();
-        this.currentLayer[conversion][2] = sc.nextInt();
-        this.currentLayer[conversion][3] = this.getMaxPixel();
+        int r = sc.nextInt();
+        int g = sc.nextInt();
+        int b = sc.nextInt();
 
-        this.unfilteredLayer[conversion][0] = this.currentLayer[conversion][0];
-        this.unfilteredLayer[conversion][1] = this.currentLayer[conversion][1];
-        this.unfilteredLayer[conversion][2] = this.currentLayer[conversion][2];
-        this.unfilteredLayer[conversion][3] = this.getMaxPixel();
+        this.currentLayer[x2][y2] = new RGBAPixel(this.getMaxPixel(), r, g, b);
+        this.unfilteredLayer[x2][y2] = new RGBAPixel(this.getMaxPixel(), r, g, b);
       }
     }
 
@@ -165,34 +162,19 @@ public final class LayerImpl implements Layer {
 
   @Override
   public void setPixelColor(int x, int y, int r, int g, int b, int a) {
-    // (y * w) - (w - x)
-    //((y + 1) * (w + (|w-h|))) - ((h + (|w-h|)) - (x + 1) - 1
-
-    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1)))
-        - 1]
-        [0] = r;
-    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1)))
-        - 1]
-        [1] = g;
-    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1)))
-        - 1]
-        [2] = b;
-    this.currentLayer[(((y + 1) * this.project.getWidth()) - (this.project.getHeight() - (x + 1)))
-        - 1]
-        [3] = a;
-
+    this.currentLayer[x][y] = new RGBAPixel(this.getMaxPixel(), r, g, b, a);
   }
-
-//  private int getPixelIndex(int x, int y) {
-//    int sizeDiff = this.project.getWidth() - this.project.getHeight();
-//    return (((y + 1) * (this.project.getWidth() + Math.abs(sizeDiff))) -
-//        ((this.project.getHeight() + Math.abs(sizeDiff)) - (x + 1))) - 1;
-//  }
 
   @Override
   public void clearLayer() {
-    this.currentLayer = new int[project.getHeight() * project.getWidth()][4];
-    this.unfilteredLayer = new int[project.getHeight() * project.getWidth()][4];
-  }
+    this.currentLayer = new Pixel[this.project.getWidth()][this.project.getHeight()];
+    this.unfilteredLayer = new Pixel[this.project.getWidth()][this.project.getHeight()];
 
+    for (int x = 0; x < this.project.getWidth(); x++) {
+      for (int y = 0; y < this.project.getHeight(); y++) {
+        this.currentLayer[x][y] =
+            new RGBAPixel(this.getMaxPixel(), 0, 0, 0, 0);
+      }
+    }
+  }
 }

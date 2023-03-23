@@ -1,6 +1,9 @@
 package model.filters;
 
+import model.Clamp;
 import model.Layer;
+import model.pixels.Pixel;
+import model.pixels.RGBAPixel;
 
 /**
  * A filter darkens a {@code ImageProject} based on each pixel's intensity.
@@ -8,21 +11,20 @@ import model.Layer;
 public class DarkenIntensity implements Filter {
 
   @Override
-  public int[][] apply(Layer layer) {
-    int[][] layerToModify = layer.getLayerData();
+  public Pixel[][] apply(Layer layer) {
+    Pixel[][] layerToModify = layer.getLayerData();
 
-    // modifies every pixel in the layer
-    for (int i = 0; i < layer.getTotalPixels(); i++) {
-      int sum = layerToModify[i][0] + layerToModify[i][1] + layerToModify[i][2];
-      int ave = sum / 3;
+    for (int y = 0; y < layerToModify[0].length; y++) {
+      for (int x = 0; x < layerToModify.length; x++) {
+        Pixel p = layerToModify[x][y];
 
-      for (int j = 0; j < 3; j++) {
-        //adds max value to pixel without going over the cap
-        if (layerToModify[i][j] - ave < 0) {
-          layerToModify[i][j] = 0;
-        } else {
-          layerToModify[i][j] -= ave;
-        }
+        int sum = p.getRed() + p.getGreen() + p.getBlue();
+        int ave = sum / 3;
+        int r = Clamp.execute(p.getRed() - ave, 0, layer.getMaxPixel());
+        int g = Clamp.execute(p.getGreen() - ave, 0, layer.getMaxPixel());
+        int b = Clamp.execute(p.getBlue() - ave, 0, layer.getMaxPixel());
+
+        layerToModify[x][y] = new RGBAPixel(layer.getMaxPixel(), r, g, b, p.getAlpha());
       }
     }
 

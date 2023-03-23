@@ -33,14 +33,14 @@ public interface Layer {
    *
    * @return a 2D array of the {@code Pixel}s on this {@code Layer}
    */
-  int[][] getLayerData();
+  Pixel[][] getLayerData();
 
   /**
    * Returns a copy of the unfiltered pixel data contained on this {@code Layer}.
    *
    * @return a 2D array of each pixel's data on this {@code Layer}
    */
-  int[][] getUnfilteredLayer();
+  Pixel[][] getUnfilteredLayer();
 
   /**
    * Gets the maximum value allowed for a pixel.

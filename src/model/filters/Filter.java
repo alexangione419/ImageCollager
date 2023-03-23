@@ -1,6 +1,7 @@
 package model.filters;
 
 import model.Layer;
+import model.pixels.Pixel;
 
 /**
  * A filter to be applied to an {@code ImageProject} or a {@code Layer}. Filters affect the images
@@ -13,5 +14,5 @@ public interface Filter {
    *
    * @param layer the player to apply the filter to
    */
-  int[][] apply(Layer layer);
+  Pixel[][] apply(Layer layer);
 }

@@ -1,0 +1,5 @@
+[] Optimize the filters: they all loop through all the layer data and apply something to the r g b
+                         components. This could be abstracted. IntelliJ itself points out that there
+                         is duplicated code.
+
+[] Fix all controller issues

@@ -176,7 +176,7 @@ public class ProjectImplControllerTest {
 
   @Test
   public void addLayer() {
-    Readable input = new StringReader("new-project 2 2 add-layer quit y");
+    Readable input = new StringReader("new-project 2 2 add-layer quit quit y");
     Appendable output = new StringBuilder();
 
     this.g = new ProjectImpl();
@@ -199,7 +199,7 @@ public class ProjectImplControllerTest {
 
   @Test
   public void addImageLayer() {
-    Readable input = new StringReader("new-project 2 2 add-image-to-layer Layer1 smol.ppm 0 0 "
+    Readable input = new StringReader("new-project 2 2 add-image-to-layer Layer1 ./res/smol.ppm 0 0 "
         + "quit y");
     Appendable output = new StringBuilder();
 

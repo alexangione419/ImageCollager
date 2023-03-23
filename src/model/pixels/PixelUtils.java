@@ -63,6 +63,14 @@ public final class PixelUtils {
     return new RGBAPixel(255, (int) r, (int) g, (int) b, 255);
   }
 
+  public static RGBAPixel convertRGBAtoRGB(RGBAPixel p) {
+    double r = p.getRed() * ((double) p.getAlpha() / p.getMaxPixelValue());
+    double g = p.getGreen() * ((double) p.getAlpha() / p.getMaxPixelValue());
+    double b = p.getBlue() * ((double) p.getAlpha() / p.getMaxPixelValue());
+
+    return new RGBAPixel(p.getMaxPixelValue(), (int) r, (int) g, (int) b, p.getMaxPixelValue());
+  }
+
 
   /**
    * Helper method that performs the translation from the HSL polygonal
