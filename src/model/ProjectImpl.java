@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Scanner;
  * files that this class takes in also contain the alpha value of an image.
  */
 public class ProjectImpl implements ImageProject {
-
+  private String name;
   private int width;
   private int height;
   private int activeLayer;
@@ -202,6 +203,14 @@ public class ProjectImpl implements ImageProject {
     }
 
     return this.width;
+  }
+
+  @Override
+  public String getName() throws IllegalStateException {
+    if (!hasAOpenProject) {
+      throw new IllegalStateException("There's currently no open project.");
+    }
+    return Objects.requireNonNullElse(this.name, "Untitled Project");
   }
 
   @Override

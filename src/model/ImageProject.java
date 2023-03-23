@@ -63,6 +63,14 @@ public interface ImageProject {
   int getWidth() throws IllegalStateException;
 
   /**
+   * Returns the name of this {@code ImageProject}.
+   *
+   * @return the name of this {@code ImageProject}
+   * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
+   */
+  String getName() throws IllegalStateException;
+
+  /**
    * Returns the height size of this {@code ImageProject}.
    *
    * @return the height of this this {@code ImageProject}
