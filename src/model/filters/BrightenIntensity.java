@@ -1,6 +1,5 @@
 package model.filters;
 
-import model.Clamp;
 import model.Layer;
 import model.pixels.Pixel;
 import model.pixels.RGBAPixel;

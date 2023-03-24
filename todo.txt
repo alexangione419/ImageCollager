@@ -2,11 +2,15 @@
                          components. This could be abstracted. IntelliJ itself points out that there
                          is duplicated code.
 
-[] Fix all controller issues
+[J] Fix all controller issues
+[J]
 
 [] Find out why smolLow2.ppm isn't getting deleted
 
+<<<<<<< Updated upstream
 [] Make it so the model itself doesn't do anything with files
 
+=======
+>>>>>>> Stashed changes
 [X] Figure out if it's necessary to have a HSLPixel class; I think giving the RGBAPixel class
    the ability to return its hue, saturation, and light values based on its RGB is better.

@@ -1,4 +1,4 @@
-package model;
+package model.filters;
 
 /**
  * A functional class that takes in three number (int or double) arguments:
@@ -8,7 +8,7 @@ package model;
  * If value is lower than lower-bound, then the function will return lower-bound.
  * If value is in between upper-bound and lower-bound, value will get returned back.
  */
-public class Clamp {
+public final class Clamp {
 
   public static double execute(double value, double lower, double upper) {
     if (value > upper) {

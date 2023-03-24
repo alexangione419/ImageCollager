@@ -9,6 +9,7 @@ import model.filters.BlueComponent;
 import model.filters.BrightenIntensity;
 import model.filters.BrightenLuma;
 import model.filters.BrightenValue;
+import model.filters.Clamp;
 import model.filters.DarkenIntensity;
 import model.filters.DarkenLuma;
 import model.filters.DarkenValue;
