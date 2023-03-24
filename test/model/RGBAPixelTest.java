@@ -120,4 +120,33 @@ public class RGBAPixelTest extends PixelTest {
     assertEquals(100, this.cyanRGBA.getAlpha());
   }
 
+  @Test
+  public void getHue() {
+    assertEquals(0.0, this.redRGBA.getHue(), 0.1);
+    assertEquals(120.0, this.greenRGBA.getHue(), 0.1);
+    assertEquals(240.0, this.blueRGBA.getHue(), 0.1);
+    assertEquals(0.0, this.transparentWhiteRGBA.getHue(), 0.1);
+    assertEquals(180.0, this.cyanRGBA.getHue(), 0.1);
+  }
+
+  @Test
+  public void getSaturation() {
+    assertEquals(1.0, this.redRGBA.getSaturation(), 0.1);
+    assertEquals(1.0, this.greenRGBA.getSaturation(), 0.1);
+    assertEquals(1.0, this.blueRGBA.getSaturation(), 0.1);
+
+    this.whiteRGBA = new RGBAPixel(255, 128, 128, 128);
+    assertEquals(0.0, this.whiteRGBA.getSaturation(), 0.1);
+
+  }
+
+  @Test
+  public void getLight() {
+    assertEquals(0.5, this.redRGBA.getLight(), 0.1);
+    assertEquals(0.5, this.greenRGBA.getLight(), 0.1);
+    assertEquals(0.5, this.blueRGBA.getLight(), 0.1);
+
+    this.whiteRGBA = new RGBAPixel(255, 128, 128, 128);
+    assertEquals(0.52, this.whiteRGBA.getLight(), 0.1);
+  }
 }

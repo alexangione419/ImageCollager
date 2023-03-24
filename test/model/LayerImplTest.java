@@ -4,6 +4,8 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import model.pixels.Pixel;
+import model.pixels.RGBAPixel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -76,48 +78,57 @@ public class LayerImplTest {
   @Test
   public void validGetLayerData() {
     // initial blank opaque layer
-    int[][] default56 = new int[30][4];
-    int[][] default34 = new int[12][4];
+    Pixel p0 = new RGBAPixel(255, 0, 0, 0, 0);
+    Pixel p1 = new RGBAPixel(255, 225, 225, 225);
+    Pixel p2 = new RGBAPixel(255, 225, 0, 0);
 
     Layer pineapple = new LayerImpl("pineappleLayer", this.project5x6);
-    assertArrayEquals(default56, pineapple.getLayerData());
+
+    for (Pixel[] pList : pineapple.getLayerData()) {
+      for (Pixel p : pList) {
+        assertEquals("0 0 0 ", p.toStringRGB());
+      }
+    }
+
     Layer pineapple2 = new LayerImpl("pineappleLayer2", this.project3x4);
-    assertArrayEquals(default34, pineapple2.getLayerData());
+    pineapple2.addImageToLayer("./res/smol.ppm", 0, 0);
 
-    int[][] default34new = {{225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
-        {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
-        {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
-        {225, 225, 225, 255}};
-    pineapple2.addImageToLayer("smol.ppm", 0, 0);
-    assertArrayEquals(default34new, pineapple2.getLayerData());
-    pineapple2.applyFilter("redRGBA-component");
+    for (Pixel[] pList : pineapple2.getLayerData()) {
+      for (Pixel p : pList) {
+        assertEquals("225 225 225 ", p.toStringRGB());
+      }
+    }
 
-    int[][] default34red = {{225, 0, 0, 255}, {225, 0, 0, 255}, {225, 0, 0, 255},
-        {225, 0, 0, 255}, {225, 0, 0, 255}, {225, 0, 0, 255}, {225, 0, 0, 255},
-        {225, 0, 0, 255}, {225, 0, 0, 255}, {225, 0, 0, 255}, {225, 0, 0, 255},
-        {225, 0, 0, 255}};
-    assertArrayEquals(default34red, pineapple2.getLayerData());
+    pineapple2.applyFilter("red-component");
+    for (Pixel[] pList : pineapple2.getLayerData()) {
+      for (Pixel p : pList) {
+        assertEquals("225 0 0 ", p.toStringRGB());
+      }
+    }
   }
 
   @Test
   public void validGetUnfilteredLayer() {
-    int[][] default56 = new int[30][4];
-    int[][] default34 = new int[12][4];
+    this.project3x4.createNewProject(3, 4);
+    this.project3x4.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
 
-    Layer pineapple = new LayerImpl("pineappleLayer", this.project5x6);
-    assertArrayEquals(default56, pineapple.getUnfilteredLayer());
-    Layer pineapple2 = new LayerImpl("pineappleLayer2", this.project3x4);
-    assertArrayEquals(default34, pineapple2.getUnfilteredLayer());
+    assertEquals("225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
 
-    int[][] default34new = {{225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
-        {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
-        {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
-        {225, 225, 225, 255}};
-    pineapple2.addImageToLayer("smol.ppm", 0, 0);
-    assertArrayEquals(default34new, pineapple2.getUnfilteredLayer());
-    pineapple2.applyFilter("redRGBA-component");
+    this.project3x4.setFilter("red-component", "Layer1");
 
-    assertArrayEquals(default34new, pineapple2.getUnfilteredLayer());
+    assertEquals("225 0 0 225 0 0 225 0 0 \n"
+        + "225 0 0 225 0 0 225 0 0 \n"
+        + "225 0 0 225 0 0 225 0 0 \n"
+        + "225 0 0 225 0 0 225 0 0 ", this.project3x4.currentCanvas());
+
+    for (Pixel[] pList : this.project3x4.getActiveLayer().getUnfilteredLayer()) {
+      for (Pixel p : pList) {
+        assertEquals("225 225 225 ", p.toStringRGB());
+      }
+    }
   }
 
   @Test
@@ -149,65 +160,39 @@ public class LayerImplTest {
 
   @Test
   public void testClearLayer() {
-    Layer pine = new LayerImpl("pine", this.project5x6);
-    pine.addImageToLayer("./res/smol.ppm", 0, 0);
-    int[][] default56new = {{225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
-        {0, 0, 0, 0}, {0, 0, 0, 0}, {225, 225, 225, 255}, {225, 225, 225, 255},
-        {225, 225, 225, 255}, {0, 0, 0, 0}, {0, 0, 0, 0}, {225, 225, 225, 255},
-        {225, 225, 225, 255}, {225, 225, 225, 255}, {0, 0, 0, 0}, {0, 0, 0, 0},
-        {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {0, 0, 0, 0},
-        {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
-        {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
-        {0, 0, 0, 0}, {0, 0, 0, 0}};
+    this.project3x4.createNewProject(3, 4);
+    this.project3x4.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
+
+    assertEquals("225 225 225 225 225 225 225 225 225 \n"
+            + "225 225 225 225 225 225 225 225 225 \n"
+            + "225 225 225 225 225 225 225 225 225 \n"
+            + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
 
 
-    assertArrayEquals(default56new, pine.getLayerData());
-
-    int[][] cleared56 = new int[30][4];
-    pine.clearLayer();
-    assertArrayEquals(cleared56, pine.getLayerData());
+    this.project3x4.getActiveLayer().clearLayer();
+    assertEquals("0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 ", this.project3x4.currentCanvas());
   }
 
 
   @Test
   public void testAddingImageToLayer() {
-    Layer lots = new LayerImpl("topleft", this.project5x6);
+    this.project3x4.createNewProject(3, 4);
+    this.project3x4.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
 
-    int[][] default56 = new int[30][4];
-    assertArrayEquals(default56, lots.getLayerData());
-    int[][] smolTopLeft = {{225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
-        {0, 0, 0, 0}, {0, 0, 0, 0}, {225, 225, 225, 255}, {225, 225, 225, 255},
-        {225, 225, 225, 255}, {0, 0, 0, 0}, {0, 0, 0, 0}, {225, 225, 225, 255},
-        {225, 225, 225, 255}, {225, 225, 225, 255}, {0, 0, 0, 0}, {0, 0, 0, 0},
-        {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {0, 0, 0, 0},
-        {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
-        {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
-        {0, 0, 0, 0}, {0, 0, 0, 0}};
-    lots.addImageToLayer("smol.ppm", 0, 0);
-    assertArrayEquals(smolTopLeft, lots.getLayerData());
+    assertEquals("225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
 
-    int[][] smolBottomRight = {{225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255},
-        {0, 0, 0, 0}, {0, 0, 0, 0}, {225, 225, 225, 255}, {225, 225, 225, 255},
-        {225, 225, 225, 255}, {0, 0, 0, 0}, {0, 0, 0, 0}, {225, 225, 225, 255},
-        {225, 225, 225, 255}, {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
-        {225, 225, 225, 255}, {225, 225, 225, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
-        {119, 119, 119, 255}, {0, 0, 0, 0}, {0, 0, 0, 0}, {119, 119, 119, 255},
-        {119, 119, 119, 255}, {119, 119, 119, 255}, {0, 0, 0, 0}, {0, 0, 0, 0},
-        {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255}};
-    lots.addImageToLayer("smolLow.ppm", 2, 2);
-    assertArrayEquals(smolBottomRight, lots.getLayerData());
+    this.project3x4.addImageToLayer("Layer1", "./res/smolLow.ppm", 2, 2);
 
-    int[][] smolFallingOffTopRight = {{225, 225, 225, 255}, {225, 225, 225, 255},
-        {225, 225, 225, 255}, {0, 0, 0, 0}, {225, 225, 225, 255}, {225, 225, 225, 255},
-        {225, 225, 225, 255}, {225, 225, 225, 255}, {0, 0, 0, 0}, {225, 225, 225, 255},
-        {225, 225, 225, 255}, {225, 225, 225, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
-        {225, 225, 225, 255}, {225, 225, 225, 255}, {225, 225, 225, 255}, {119, 119, 119, 255},
-        {119, 119, 119, 255}, {225, 225, 225, 255}, {0, 0, 0, 0}, {0, 0, 0, 0},
-        {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255}, {0, 0, 0, 0},
-        {0, 0, 0, 0}, {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255}};
-    lots.addImageToLayer("smol.ppm", 4, 0);
-    assertArrayEquals(smolFallingOffTopRight, lots.getLayerData());
-
+    assertEquals("225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 119 119 119 \n"
+        + "225 225 225 225 225 225 119 119 119 ", this.project3x4.currentCanvas());
   }
 
   @Test
@@ -257,130 +242,27 @@ public class LayerImplTest {
 
   @Test
   public void testApplyFilters() {
-    Layer filterMe = new LayerImpl("filterTest", this.project3x4);
-    filterMe.addImageToLayer("./res/smolLow.ppm", 0, 0);
+    this.project3x4.createNewProject(3, 4);
+    this.project3x4.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
 
-    int[][] beforeAll = {{119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
-        {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
-        {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255}, {119, 119, 119, 255},
-        {119, 119, 119, 255}};
-    assertArrayEquals(beforeAll, filterMe.getLayerData());
-    assertArrayEquals(beforeAll, filterMe.getUnfilteredLayer());
+    assertEquals("225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
 
-    //TESTING RED FILTER
-    int[][] afterRed = {{119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
-        {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
-        {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255}, {119, 0, 0, 255},
-        {119, 0, 0, 255}};
-    filterMe.applyFilter("red-component");
-    assertEquals("redRGBA-component", filterMe.getFilter());
-    assertArrayEquals(afterRed, filterMe.getLayerData());
+    this.project3x4.setFilter("red-component", "Layer1");
 
-    filterMe.applyFilter("normal");
-    assertArrayEquals(beforeAll, filterMe.getLayerData());
+    assertEquals("225 0 0 225 0 0 225 0 0 \n"
+        + "225 0 0 225 0 0 225 0 0 \n"
+        + "225 0 0 225 0 0 225 0 0 \n"
+        + "225 0 0 225 0 0 225 0 0 ", this.project3x4.currentCanvas());
 
-    //TESTING GREEN FILTER
-    int[][] afterGreen = {{0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255},
-        {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255},
-        {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255}, {0, 119, 0, 255},
-        {0, 119, 0, 255}};
-    filterMe.applyFilter("green-component");
-    assertEquals("greenRGBA-component", filterMe.getFilter());
-    assertArrayEquals(afterGreen, filterMe.getLayerData());
+    this.project3x4.setFilter("green-component", "Layer1");
 
-    filterMe.applyFilter("normal");
-    assertArrayEquals(beforeAll, filterMe.getLayerData());
-
-    //TESTING BLUE FILTER
-    int[][] afterBlue = {{0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255},
-        {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255},
-        {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255}, {0, 0, 119, 255},
-        {0, 0, 119, 255}};
-    filterMe.applyFilter("blueRGBA-component");
-    assertEquals("blueRGBA-component", filterMe.getFilter());
-    assertArrayEquals(afterBlue, filterMe.getLayerData());
-
-    filterMe.applyFilter("normal");
-    assertArrayEquals(beforeAll, filterMe.getLayerData());
-
-    int[][] beforeAll2 = {{4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255},
-        {4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255},
-        {4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255}, {4, 99, 7, 255},
-        {4, 99, 7, 255}};
-    Layer filterMe2 = new LayerImpl("filterMe2", this.project3x4);
-    filterMe2.addImageToLayer("testPPM.ppm", 0, 0);
-    assertArrayEquals(beforeAll2, filterMe2.getLayerData());
-    //TESTING BRIGHTEN VALUE
-    int[][] afterBValue = {{103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255},
-        {103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255},
-        {103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255}, {103, 198, 106, 255},
-        {103, 198, 106, 255}};
-    filterMe2.applyFilter("brighten-value");
-    assertEquals("brighten-value", filterMe2.getFilter());
-    assertArrayEquals(afterBValue, filterMe2.getLayerData());
-
-    filterMe2.applyFilter("normal");
-    assertArrayEquals(beforeAll2, filterMe2.getLayerData());
-
-    //TESTING BRIGHTEN INTENSITY
-    int[][] afterBINTENSITY = {{40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255},
-        {40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255},
-        {40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255}, {40, 135, 43, 255},
-        {40, 135, 43, 255}};
-    filterMe2.applyFilter("brighten-intensity");
-    assertEquals("brighten-intensity", filterMe2.getFilter());
-    assertArrayEquals(afterBINTENSITY, filterMe2.getLayerData());
-
-    filterMe2.applyFilter("normal");
-    assertArrayEquals(beforeAll2, filterMe2.getLayerData());
-
-    //TESTING BRIGHTEN LUMA
-    int[][] afterBLuma = {{76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255},
-        {76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255},
-        {76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255}, {76, 171, 79, 255},
-        {76, 171, 79, 255}};
-    filterMe2.applyFilter("brighten-luma");
-    assertEquals("brighten-luma", filterMe2.getFilter());
-    assertArrayEquals(afterBLuma, filterMe2.getLayerData());
-
-    filterMe2.applyFilter("normal");
-    assertArrayEquals(beforeAll2, filterMe2.getLayerData());
-
-    //TESTING DARKEN VALUE
-    int[][] afterDValue = {{0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255},
-        {0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255},
-        {0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255}, {0, 0, 0, 255},
-        {0, 0, 0, 255}};
-    filterMe2.applyFilter("darken-value");
-    assertEquals("darken-value", filterMe2.getFilter());
-    assertArrayEquals(afterDValue, filterMe2.getLayerData());
-
-    filterMe2.applyFilter("normal");
-    assertArrayEquals(beforeAll2, filterMe2.getLayerData());
-
-    //TESTING DARKEN Intensity
-    int[][] afterDIntense = {{0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255},
-        {0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255},
-        {0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255}, {0, 63, 0, 255},
-        {0, 63, 0, 255}};
-    filterMe2.applyFilter("darken-intensity");
-    assertEquals("darken-intensity", filterMe2.getFilter());
-    assertArrayEquals(afterDIntense, filterMe2.getLayerData());
-
-    filterMe2.applyFilter("normal");
-    assertArrayEquals(beforeAll2, filterMe2.getLayerData());
-
-    //TESTING DARKEN Luma
-    int[][] afterDLuma = {{0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255},
-        {0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255},
-        {0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255}, {0, 27, 0, 255},
-        {0, 27, 0, 255}};
-    filterMe2.applyFilter("darken-luma");
-    assertEquals("darken-luma", filterMe2.getFilter());
-    assertArrayEquals(afterDLuma, filterMe2.getLayerData());
-
-    filterMe2.applyFilter("normal");
-    assertArrayEquals(beforeAll2, filterMe2.getLayerData());
+    assertEquals("0 225 0 0 225 0 0 225 0 \n"
+        + "0 225 0 0 225 0 0 225 0 \n"
+        + "0 225 0 0 225 0 0 225 0 \n"
+        + "0 225 0 0 225 0 0 225 0 ", this.project3x4.currentCanvas());
 
   }
 

@@ -100,7 +100,7 @@ public class ProjectImpl implements ImageProject {
 
     for (int y = 0; y < this.getHeight(); y++) {
       for (int x = 0; x < this.getWidth(); x++) {
-        results = results.concat(this.finalColorAt(x, y).toStringNoAlpha());
+        results = results.concat(this.finalColorAt(x, y).toStringRGB());
       }
       if (y != this.getHeight() - 1) {
         results = results.concat("\n");

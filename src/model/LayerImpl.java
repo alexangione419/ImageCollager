@@ -101,6 +101,7 @@ public final class LayerImpl implements Layer {
       throw new IllegalArgumentException("Unsupported filter");
     }
 
+    this.currentLayer = this.supportedFilters.get("normal").apply(this);
     this.currentLayer = this.supportedFilters.get(filterOption).apply(this);
     this.currentFilter = filterOption;
   }
@@ -174,6 +175,13 @@ public final class LayerImpl implements Layer {
     for (int x = 0; x < this.project.getWidth(); x++) {
       for (int y = 0; y < this.project.getHeight(); y++) {
         this.currentLayer[x][y] =
+            new RGBAPixel(this.getMaxPixel(), 0, 0, 0, 0);
+      }
+    }
+
+    for (int x = 0; x < this.project.getWidth(); x++) {
+      for (int y = 0; y < this.project.getHeight(); y++) {
+        this.unfilteredLayer[x][y] =
             new RGBAPixel(this.getMaxPixel(), 0, 0, 0, 0);
       }
     }

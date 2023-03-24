@@ -9,6 +9,9 @@ public final class RGBAPixel implements Pixel {
   private int red;
   private int green;
   private int blue;
+  private double hue;
+  private double saturation;
+  private double lightness;
   private int alpha;
   private int maxPixelValue;
 
@@ -52,6 +55,8 @@ public final class RGBAPixel implements Pixel {
     this.green = green;
     this.blue = blue;
 
+    this.setHSL();
+
     this.alpha = this.maxPixelValue;
   }
 
@@ -78,56 +83,89 @@ public final class RGBAPixel implements Pixel {
   }
 
   /**
-   * Returns the red component of this {@code RGBAPixel}.
-   * @return the red component of this RGBAPixel.
+   * Sets the hue, saturation, and lightness values of this {@code Pixel}.
+   * The code in this method is derived from the A5 sample code for converting
+   * RGBA to HSL.
    */
+  private void setHSL() {
+    double r = ((double) this.getRed() / (double) this.getMaxPixelValue());
+    double g = ((double) this.getGreen() / (double) this.getMaxPixelValue());
+    double b = ((double) this.getBlue() / (double) this.getMaxPixelValue());
+
+    double componentMax = Math.max(r, Math.max(g, b));
+    double componentMin = Math.min(r, Math.min(g, b));
+    double delta = componentMax - componentMin;
+
+    double lightness = (componentMax + componentMin) / 2;
+
+    double hue;
+    double saturation;
+
+    if (delta == 0) {
+      hue = 0;
+      saturation = 0;
+    } else {
+      saturation = delta / (1 - Math.abs(2 * lightness - 1));
+      hue = 0;
+      if (componentMax == r) {
+        hue = (g - b) / delta;
+        hue = hue % 6;
+      } else if (componentMax == g) {
+        hue = (b - r) / delta;
+        hue += 2;
+      } else if (componentMax == b) {
+        hue = (r - g) / delta;
+        hue += 4;
+      }
+
+      hue = hue * 60;
+
+      if (hue < 0) {
+        hue += 360;
+      }
+    }
+
+    this.hue = hue;
+    this.saturation = saturation;
+    this.lightness = lightness;
+  }
+
+  @Override
   public int getRed() {
     return this.red;
   }
 
-  /**
-   * Returns the green component of this {@code RGBAPixel}.
-   * @return the green component of this RGBAPixel.
-   */
+  @Override
   public int getGreen() {
     return this.green;
   }
 
-  /**
-   * Returns the blue component of this {@code RGBAPixel}.
-   * @return the blue component of this RGBAPixel.
-   */
+  @Override
   public int getBlue() {
     return this.blue;
   }
 
   @Override
   public double getHue() {
-    return 0;
+    return this.hue;
   }
 
   @Override
   public double getSaturation() {
-    return 0;
+    return this.saturation;
   }
 
   @Override
   public double getLight() {
-    return 0;
+    return this.lightness;
   }
 
-  /**
-   * Returns the alpha component of this {@code RGBAPixel}.
-   * @return the alpha component of this RGBAPixel.
-   */
+  @Override
   public int getAlpha() {
     return this.alpha;
   }
 
-  /**
-   * Returns the max pixel value of this {@code RGBAPixel}.
-   * @return the max pixel value of this RGBAPixel.
-   */
+  @Override
   public int getMaxPixelValue() {
     return this.maxPixelValue;
   }
@@ -138,7 +176,12 @@ public final class RGBAPixel implements Pixel {
   }
 
   @Override
-  public String toStringNoAlpha() {
+  public String toStringRGB() {
     return this.red + " " + this.green + " " + this.blue + " ";
+  }
+
+  @Override
+  public String toStringHSL() {
+    return this.hue + " " + this.saturation + " " + this.lightness + " ";
   }
 }
