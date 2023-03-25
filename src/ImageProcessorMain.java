@@ -22,8 +22,8 @@ public class ImageProcessorMain {
 
     Readable rd = new InputStreamReader(System.in);
     ImageProject project = new ProjectImpl();
-    //ImageProjectView view = new ImageProcessorGUIView(project);
-    ImageProjectView view = new PPMProjectTextView(project, System.out);
+    ImageProjectView view = new ImageProcessorGUIView(project);
+    //ImageProjectView view = new PPMProjectTextView(project, System.out);
 
     ImageProjectController controller = new PPMProjectController(project, view, rd);
 

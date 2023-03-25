@@ -24,6 +24,6 @@ public class Normal implements Filter {
       }
     }
 
-    return layer.getUnfilteredLayer();
+    return result;
   }
 }
