@@ -8,6 +8,7 @@ import controller.commands.SaveImage;
 import controller.commands.SaveProject;
 import controller.commands.SetFilter;
 import java.io.IOException;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ import javax.swing.*;
 import model.ImageProject;
 import model.ImageProjectState;
 import model.ProjectImpl;
+import model.filters.Filter;
 import view.ImageProcessorGUIView;
 import view.ImageProjectView;
 
@@ -93,6 +95,7 @@ public class PPMProjectController implements ImageProjectController {
     }
 
     this.running = true;
+
     // begin command input loop
     while (running) {
       try {
@@ -108,6 +111,35 @@ public class PPMProjectController implements ImageProjectController {
 
       String currCommand = sc.next();
       switch (currCommand) {
+        case "help":
+        case "?":
+          try {
+            this.view.renderMessage("Here are all the available commands:\n"
+                + "new-project: starts a new project.\n"
+                + "save-project: save the current project.\n"
+                + "load-project: loads a project found at the given file path.\n"
+                + "add-layer: adds a new layer to the current project.\n"
+                + "add-image-to-layer: adds an image at the given file path to the layer on the "
+                + "current project that matches the same name."
+                + "set-filter: sets a filter for a specified layer.\n"
+                + "save-image: saves the image present on the canvas.\n"
+            );
+          } catch (IOException e) {
+            //pass
+          }
+          break;
+        case "filter-list":
+          try {
+            this.view.renderMessage("Here are all the available filters:\n");
+
+            for (Entry<String, Filter> s : this.model.getFilters().entrySet()) {
+              this.view.renderMessage(s.getKey() + "\n");
+            }
+
+          } catch (IOException e) {
+            //pass
+          }
+          break;
         case "quit":
           try {
             this.view.renderMessage("WARNING: Quitting will delete any" +
@@ -115,6 +147,7 @@ public class PPMProjectController implements ImageProjectController {
           } catch (IOException io) {
             //pass
           }
+
           if (!sc.hasNext()) {
             throw new IllegalStateException("No input detected\n");
           }

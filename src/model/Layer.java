@@ -69,7 +69,7 @@ public interface Layer {
   void addImageToLayer(String imageFilename, int x, int y) throws IllegalArgumentException;
 
   /**
-   * Changes the colors of a specific pixel.
+   * Changes the color of a specific pixel.
    *
    * @param x the x position of the pixel
    * @param y the y position of the pixel
@@ -79,6 +79,15 @@ public interface Layer {
    * @param a the alpha component of the pixel
    */
   void setPixelColor(int x, int y, int r, int g, int b, int a);
+
+  /**
+   * Changes the color of a specific pixel to the given one.
+   *
+   * @param x the x position of the pixel
+   * @param y the y position of the pixel
+   * @param pixel the pixel to set at the given position
+   */
+  void setPixelColor(int x, int y, Pixel pixel);
 
   /**
    * Clears the current layer making it black and translucent.

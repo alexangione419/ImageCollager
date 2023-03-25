@@ -51,17 +51,7 @@ public final class LayerImpl implements Layer {
 
     this.currentFilter = "normal"; // filter is normal by default
 
-    this.supportedFilters = new HashMap<>();
-    this.supportedFilters.put("normal", new Normal());
-    this.supportedFilters.put("red-component", new RedComponent());
-    this.supportedFilters.put("green-component", new GreenComponent());
-    this.supportedFilters.put("blue-component", new BlueComponent());
-    this.supportedFilters.put("brighten-value", new BrightenValue());
-    this.supportedFilters.put("brighten-intensity", new BrightenIntensity());
-    this.supportedFilters.put("brighten-luma", new BrightenLuma());
-    this.supportedFilters.put("darken-value", new DarkenValue());
-    this.supportedFilters.put("darken-intensity", new DarkenIntensity());
-    this.supportedFilters.put("darken-luma", new DarkenLuma());
+    this.supportedFilters = this.project.getFilters();
   }
 
 
@@ -165,6 +155,16 @@ public final class LayerImpl implements Layer {
   @Override
   public void setPixelColor(int x, int y, int r, int g, int b, int a) {
     this.currentLayer[x][y] = new RGBAPixel(this.getMaxPixel(), r, g, b, a);
+    this.unfilteredLayer[x][y] = new RGBAPixel(this.getMaxPixel(), r, g, b);
+  }
+
+  @Override
+  public void setPixelColor(int x, int y, Pixel pixel) {
+
+    this.currentLayer[x][y] = new RGBAPixel(this.getMaxPixel(),
+        pixel.getRed(), pixel.getGreen(), pixel.getBlue(), pixel.getAlpha());
+    this.unfilteredLayer[x][y] = new RGBAPixel(this.getMaxPixel(),
+        pixel.getRed(), pixel.getGreen(), pixel.getBlue(), pixel.getAlpha());
   }
 
   @Override

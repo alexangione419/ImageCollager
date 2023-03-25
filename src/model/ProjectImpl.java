@@ -4,10 +4,23 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Scanner;
+import model.filters.BlueComponent;
+import model.filters.BrightenIntensity;
+import model.filters.BrightenLuma;
+import model.filters.BrightenValue;
+import model.filters.DarkenIntensity;
+import model.filters.DarkenLuma;
+import model.filters.DarkenValue;
+import model.filters.Filter;
+import model.filters.GreenComponent;
+import model.filters.Normal;
+import model.filters.RedComponent;
 import model.pixels.Pixel;
 import model.pixels.PixelUtils;
 import model.pixels.RGBAPixel;
@@ -23,6 +36,7 @@ public class ProjectImpl implements ImageProject {
   private int height;
   private int activeLayer;
   private List<Layer> layers;
+  private HashMap<String, Filter> supportedFilters;
 
   //should be false if loadProject() or createNewProject() hasn't been called
   private boolean hasAOpenProject;
@@ -206,6 +220,19 @@ public class ProjectImpl implements ImageProject {
     this.activeLayer = 0;
     this.hasAOpenProject = true;
     this.layers = new ArrayList<Layer>();
+
+    this.supportedFilters = new HashMap<String, Filter>();
+    this.supportedFilters.put("normal", new Normal());
+    this.supportedFilters.put("red-component", new RedComponent());
+    this.supportedFilters.put("green-component", new GreenComponent());
+    this.supportedFilters.put("blue-component", new BlueComponent());
+    this.supportedFilters.put("brighten-value", new BrightenValue());
+    this.supportedFilters.put("brighten-intensity", new BrightenIntensity());
+    this.supportedFilters.put("brighten-luma", new BrightenLuma());
+    this.supportedFilters.put("darken-value", new DarkenValue());
+    this.supportedFilters.put("darken-intensity", new DarkenIntensity());
+    this.supportedFilters.put("darken-luma", new DarkenLuma());
+
     this.layers.add(new LayerImpl("Layer1", this));
   }
 
@@ -364,6 +391,11 @@ public class ProjectImpl implements ImageProject {
     } catch (IllegalArgumentException a) {
       throw new IllegalArgumentException("Invalid filter");
     }
+  }
+
+  @Override
+  public HashMap<String, Filter> getFilters() {
+    return new HashMap<String, Filter>(this.supportedFilters);
   }
 
   @Override

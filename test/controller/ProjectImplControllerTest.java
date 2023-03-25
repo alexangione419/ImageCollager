@@ -188,13 +188,13 @@ public class ProjectImplControllerTest {
     assertEquals("Welcome to our Image Processor.",
         output.toString().split("\n")[0]);
 
-    assertEquals("Awaiting command:\nAwaiting command:\n"
+    assertEquals("Awaiting command:\nAwaiting command:\nAwaiting command:\n"
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!\n",
         output.toString().split("Welcome to our Image Processor.\n")[1]);
     assertEquals(2, this.g.getWidth());
     assertEquals(2, this.g.getHeight());
-    assertEquals(1, this.g.getNumberOfLayers());
+    assertEquals(2, this.g.getNumberOfLayers());
   }
 
   @Test
