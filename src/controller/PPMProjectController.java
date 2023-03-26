@@ -10,12 +10,7 @@ import controller.commands.SetFilter;
 import java.io.IOException;
 import java.util.Scanner;
 
-import javax.swing.*;
-
 import model.ImageProject;
-import model.ImageProjectState;
-import model.ProjectImpl;
-import view.ImageProcessorGUIView;
 import view.ImageProjectView;
 
 /**
@@ -62,29 +57,8 @@ public class PPMProjectController implements ImageProjectController {
 
   @Override
   public void start() throws IllegalStateException {
-    ImageProcessorGUIView.setDefaultLookAndFeelDecorated(false);
-    ImageProcessorGUIView frame = new ImageProcessorGUIView(new ProjectImpl());
-
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setVisible(true);
 
 
-    try {
-      // Set cross-platform Java L&F (also called "Metal")
-      UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-
-    } catch (UnsupportedLookAndFeelException e) {
-      // handle exception
-    } catch (ClassNotFoundException e) {
-      // handle exception
-    } catch (InstantiationException e) {
-      // handle exception
-    } catch (IllegalAccessException e) {
-      // handle exception
-    } catch (Exception e) {
-    }
-
-    /*
 
     try {
       this.view.renderMessage("Welcome to our Image Processor.\n");
@@ -215,7 +189,7 @@ public class PPMProjectController implements ImageProjectController {
           }
       }
     }
-*/
+
   }
 
   private void displayInvalidArgs() {

@@ -1,12 +1,13 @@
 import controller.ImageProjectController;
+import controller.ImageProjectGUIController;
 import controller.PPMProjectController;
-import java.io.InputStreamReader;
+
+import java.io.BufferedReader;
+
 import model.ImageProject;
-import model.ImageProjectState;
 import model.ProjectImpl;
-import view.ImageProcessorGUIView;
-import view.ImageProjectView;
-import view.PPMProjectTextView;
+import view.ImageProjectGUIView;
+import view.ImageProjectGUIViewImpl;
 
 /**
  * The main class of this ImageProcessor. The program starts in this class.
@@ -19,13 +20,16 @@ public class ImageProcessorMain {
    * @param args arguments to give
    */
   public static void main(String[] args) {
-
-    Readable rd = new InputStreamReader(System.in);
     ImageProject project = new ProjectImpl();
-    ImageProjectView view = new ImageProcessorGUIView(project);
+
+    Appendable viewToController = new StringBuilder();
+    //ImageProjectView view = new PPMProjectTextView(project);
+    ImageProjectGUIView view = new ImageProjectGUIViewImpl(project, viewToController);
+
+    Readable rd = new BufferedReader(viewToController);
     //ImageProjectView view = new PPMProjectTextView(project, System.out);
 
-    ImageProjectController controller = new PPMProjectController(project, view, rd);
+    ImageProjectController controller = new ImageProjectGUIController(project, view, rd);
 
     controller.start();
 
