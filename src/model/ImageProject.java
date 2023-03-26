@@ -1,6 +1,8 @@
 package model;
 
 import java.io.IOException;
+import java.util.HashMap;
+import model.filters.Filter;
 
 /**
  * An interface for creating image projects that contain {@code Layers}.
@@ -116,6 +118,12 @@ public interface ImageProject extends ImageProjectState{
    */
   void setFilter(String filterName, String layerName)
       throws IllegalArgumentException, IllegalStateException;
+
+  /**
+   * Returns a copy of the HashMap containing every filter that this {@code ImageProject} supports.
+   * @return a copy of the HashMap containing all the filters.
+   */
+  HashMap<String, Filter> getFilters();
 
   /**
    * Adds an image, specified by imageFile, to the {@code Layer} whose name matches layerName.

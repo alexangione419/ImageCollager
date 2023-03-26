@@ -145,6 +145,19 @@ public class LayerImplTest {
         + "0 0 0 0 0 0 0 0 0 \n"
         + "0 0 0 0 0 0 0 0 0 \n"
         + "0 0 0 0 0 0 0 0 0 ", this.project3x4.currentCanvas());
+
+    Pixel turquoiseGreen = new RGBAPixel(255, 30, 89, 69);
+    Pixel pastelBlue = new RGBAPixel(255, 93, 155, 155);
+    Pixel mahoganyBrown = new RGBAPixel(255, 76, 47, 39);
+
+    this.project3x4.getActiveLayer().setPixelColor(0, 0, turquoiseGreen);
+    this.project3x4.getActiveLayer().setPixelColor(1, 0, pastelBlue);
+    this.project3x4.getActiveLayer().setPixelColor(2, 0, mahoganyBrown);
+
+    assertEquals("30 89 69 93 155 155 76 47 39 \n"
+        + "0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 ", this.project3x4.currentCanvas());
   }
 
   @Test
@@ -245,25 +258,83 @@ public class LayerImplTest {
     this.project3x4.createNewProject(3, 4);
     this.project3x4.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
 
-    assertEquals("225 225 225 225 225 225 225 225 225 \n"
+    Pixel turquoiseGreen = new RGBAPixel(255, 30, 89, 69);
+    Pixel pastelBlue = new RGBAPixel(255, 93, 155, 155);
+    Pixel mahoganyBrown = new RGBAPixel(255, 76, 47, 39);
+
+    this.project3x4.getActiveLayer().setPixelColor(0, 0, turquoiseGreen);
+    this.project3x4.getActiveLayer().setPixelColor(1, 0, pastelBlue);
+    this.project3x4.getActiveLayer().setPixelColor(2, 0, mahoganyBrown);
+
+    assertEquals("30 89 69 93 155 155 76 47 39 \n"
         + "225 225 225 225 225 225 225 225 225 \n"
         + "225 225 225 225 225 225 225 225 225 \n"
         + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("red-component", "Layer1");
 
-    assertEquals("225 0 0 225 0 0 225 0 0 \n"
+    assertEquals("30 0 0 93 0 0 76 0 0 \n"
         + "225 0 0 225 0 0 225 0 0 \n"
         + "225 0 0 225 0 0 225 0 0 \n"
         + "225 0 0 225 0 0 225 0 0 ", this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("green-component", "Layer1");
 
-    assertEquals("0 225 0 0 225 0 0 225 0 \n"
+    assertEquals("0 89 0 0 155 0 0 47 0 \n"
         + "0 225 0 0 225 0 0 225 0 \n"
         + "0 225 0 0 225 0 0 225 0 \n"
         + "0 225 0 0 225 0 0 225 0 ", this.project3x4.currentCanvas());
 
+    this.project3x4.setFilter("blue-component", "Layer1");
+
+    assertEquals("0 0 69 0 0 155 0 0 39 \n"
+        + "0 0 225 0 0 225 0 0 225 \n"
+        + "0 0 225 0 0 225 0 0 225 \n"
+        + "0 0 225 0 0 225 0 0 225 ", this.project3x4.currentCanvas());
+
+
+    this.project3x4.setFilter("brighten-intensity", "Layer1");
+
+    assertEquals("92 151 131 227 255 255 130 101 93 \n"
+        + "255 255 255 255 255 255 255 255 255 \n"
+        + "255 255 255 255 255 255 255 255 255 \n"
+        + "255 255 255 255 255 255 255 255 255 ", this.project3x4.currentCanvas());
+
+    this.project3x4.setFilter("darken-intensity", "Layer1");
+
+    assertEquals("0 27 7 0 21 21 22 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 ", this.project3x4.currentCanvas());
+
+    this.project3x4.setFilter("brighten-luma", "Layer1");
+
+    assertEquals("105 164 144 234 255 255 128 99 91 \n"
+        + "255 255 255 255 255 255 255 255 255 \n"
+        + "255 255 255 255 255 255 255 255 255 \n"
+        + "255 255 255 255 255 255 255 255 255 ", this.project3x4.currentCanvas());
+
+    this.project3x4.setFilter("darken-luma", "Layer1");
+
+    assertEquals("0 14 0 0 14 14 24 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 ", this.project3x4.currentCanvas());
+
+
+    this.project3x4.setFilter("brighten-value", "Layer1");
+
+    assertEquals("119 178 158 248 255 255 152 123 115 \n"
+        + "255 255 255 255 255 255 255 255 255 \n"
+        + "255 255 255 255 255 255 255 255 255 \n"
+        + "255 255 255 255 255 255 255 255 255 ", this.project3x4.currentCanvas());
+
+    this.project3x4.setFilter("darken-value", "Layer1");
+
+    assertEquals("0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 0 ", this.project3x4.currentCanvas());
   }
 
   @Test

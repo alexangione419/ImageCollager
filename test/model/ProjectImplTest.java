@@ -10,7 +10,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
+import model.filters.Filter;
+import model.filters.Normal;
 import model.pixels.Pixel;
 import org.junit.After;
 import org.junit.Before;
@@ -790,6 +793,18 @@ public class ProjectImplTest {
     } catch (IllegalArgumentException a) {
       //do nothing
     }
+  }
+
+  @Test
+  public void validGetFilters() {
+    this.model.createNewProject(3, 4);
+    this.model.addImageToLayer("Layer1", "./res/smolLow.ppm", 0, 0);
+
+    HashMap<String, Filter> temp = this.model.getFilters();
+
+    temp.put("new-filter", new Normal());
+
+    assertNotEquals(this.model.getFilters(), temp);
   }
 
   @Test
