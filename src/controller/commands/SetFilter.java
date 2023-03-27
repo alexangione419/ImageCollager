@@ -1,31 +1,55 @@
 package controller.commands;
 
+import java.io.IOException;
+import java.util.Scanner;
 import model.ImageProject;
+import view.ImageProjectView;
 
 /**
- * A command for setting a filter to a specified {@code Layer} on a {@code ImageProject}.
+ * A command object that sets the filter of a given layer found on the given {@code ImageProject}.
  */
-public class SetFilter implements Command {
+public final class SetFilter extends ACommand {
 
-  private final String layerName;
-  private final String filter;
+  Scanner sc;
 
   /**
-   * Constructs a new {@code SetFilter} command object.
+   * Constructs a new {@code SetFilter}.
    *
-   * @param layerName the name of the Layer to set to
-   * @param filter    the name of the filter to add
+   * @param model the model to use
+   * @param view  the view to use to render messages
+   * @param sc    the Scanner with the current user input
    */
-  public SetFilter(String layerName, String filter) {
-    if (layerName.isEmpty() || filter.isEmpty()) {
-      throw new IllegalArgumentException("Arguments cannot be empty");
-    }
-    this.layerName = layerName;
-    this.filter = filter;
+  public SetFilter(ImageProject model, ImageProjectView view, Scanner sc) {
+    super(model, view);
+    this.sc = sc;
   }
 
   @Override
-  public void run(ImageProject p) {
-    p.setFilter(filter, layerName);
+  public void run() {
+
+    // Make sure there is input to read
+    if (!sc.hasNext()) {
+      throw new IllegalStateException("No input detected.");
+    }
+
+    String filterName = this.sc.next();
+
+    if (!sc.hasNext()) {
+      throw new IllegalStateException("No input detected.");
+    }
+
+    String layerName = this.sc.next();
+
+    try {
+      try {
+        this.model.setFilter(filterName, layerName);
+        this.view.renderMessage("Set the " + filterName + " filter to Layer " + layerName + ".\n");
+      } catch (IllegalArgumentException e) {
+        this.view.renderMessage("Invalid arguments. Either filter or layer does not exist. "
+            + "Try again:\n");
+      }
+    } catch (IOException e) {
+      //ignore
+    }
   }
 }

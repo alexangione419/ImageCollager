@@ -2,7 +2,7 @@ import controller.ImageProjectController;
 import java.io.InputStreamReader;
 import model.ImageProject;
 import model.ProjectImpl;
-import newcontroller.ControllerImpl;
+import controller.ControllerImpl;
 import view.ImageProjectView;
 import view.PPMProjectTextView;
 

@@ -1,28 +1,61 @@
 package controller.commands;
 
+import java.io.IOException;
+import java.util.Scanner;
 import model.ImageProject;
+import view.ImageProjectView;
 
 /**
- * A command that adds a layer to the given {@code ImageProject}.
+ * A command object that adds a new layer to the given model.
  */
-public class AddLayer implements Command {
+public final class AddLayer extends ACommand {
 
-  private final String name;
+  Scanner sc;
 
   /**
-   * Construct a new {@code AddLayer} command object.
+   * Constructs a new {@code AddLayer}.
    *
-   * @param name the name to give to the new layer
+   * @param model the model to use
+   * @param view  the view to use to render messages
+   * @param sc    the Scanner with the current user input
    */
-  public AddLayer(String name) {
-    if (name.isEmpty()) {
-      throw new IllegalArgumentException("Name of Layer cannot be empty");
-    }
-    this.name = name;
+  public AddLayer(ImageProject model, ImageProjectView view, Scanner sc) {
+    super(model, view);
+    this.sc = sc;
   }
 
   @Override
-  public void run(ImageProject p) {
-    p.addLayer(this.name);
+  public void run() {
+    if (!this.model.hasOpenProject()) {
+      try {
+        this.view.renderMessage("Please create or open a new project to use that command.\n");
+      } catch (IOException e) {
+        //ignore
+      }
+    }
+
+    // Make sure there is input to read
+    if (!sc.hasNext()) {
+      throw new IllegalStateException("No input detected");
+    }
+
+    String layerName = this.sc.next();
+
+    try {
+      this.model.addLayer(layerName);
+      try {
+        this.view.renderMessage("Layer " + layerName + " was created.\n");
+      } catch (IOException e) {
+        //ignore
+      }
+    } catch (IllegalArgumentException e) {
+      try {
+        this.view.renderMessage("Invalid layer name. Layer name cannot be whitespace and cannot"
+            + "share the same name as another layer. "
+            + "Try again:\n");
+      } catch (IOException io) {
+        //ignore
+      }
+    }
   }
 }

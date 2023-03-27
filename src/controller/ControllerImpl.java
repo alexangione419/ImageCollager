@@ -1,20 +1,19 @@
-package newcontroller;
+package controller;
 
-import controller.ImageProjectController;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 import model.ImageProject;
-import newcontroller.commands.ACommand;
-import newcontroller.commands.AddImageToLayer;
-import newcontroller.commands.AddLayer;
-import newcontroller.commands.FilterList;
-import newcontroller.commands.Help;
-import newcontroller.commands.LoadProject;
-import newcontroller.commands.NewProject;
-import newcontroller.commands.SaveImage;
-import newcontroller.commands.SaveProject;
-import newcontroller.commands.SetFilter;
+import controller.commands.ACommand;
+import controller.commands.AddImageToLayer;
+import controller.commands.AddLayer;
+import controller.commands.FilterList;
+import controller.commands.Help;
+import controller.commands.LoadProject;
+import controller.commands.NewProject;
+import controller.commands.SaveImage;
+import controller.commands.SaveProject;
+import controller.commands.SetFilter;
 import view.ImageProjectView;
 
 /**

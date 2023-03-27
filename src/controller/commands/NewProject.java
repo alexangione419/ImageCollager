@@ -1,31 +1,66 @@
 package controller.commands;
 
+import java.io.IOException;
+import java.util.Scanner;
 import model.ImageProject;
+import view.ImageProjectView;
+
 
 /**
- * A command for making a new project.
+ * A command object that calls the given {@code ImageProject}'s createNewProject method with the
+ * given input from the passed {@code Scanner}.
  */
-public class NewProject implements Command {
+public final class NewProject extends ACommand {
 
-  private final int height;
-  private final int width;
+  Scanner sc;
 
   /**
-   * Creates a new project command.
+   * Constructs a new {@code NewProject}.
    *
-   * @param height of the new project
-   * @param width  of the new project
+   * @param model the model to use
+   * @param view  the view to use to render messages
+   * @param sc    the Scanner with the current user input
    */
-  public NewProject(int width, int height) {
-    if (height <= 0 || width <= 0) {
-      throw new IllegalArgumentException("Invalid project dimensions");
-    }
-    this.width = width;
-    this.height = height;
+  public NewProject(ImageProject model, ImageProjectView view, Scanner sc) {
+    super(model, view);
+    this.sc = sc;
   }
 
   @Override
-  public void run(ImageProject p) {
-    p.createNewProject(this.width, this.height);
+  public void run() {
+    if (!this.sc.hasNextInt()) {
+      try {
+        this.view.renderMessage("Invalid argument, try again.\n");
+      } catch (IOException e) {
+        //ignore
+      }
+    }
+    int width = this.sc.nextInt();
+
+    if (!this.sc.hasNextInt()) {
+      try {
+        this.view.renderMessage("Invalid argument, try again.\n");
+      } catch (IOException e) {
+        //ignore
+      }
+    }
+
+    int height = this.sc.nextInt();
+
+    try {
+      this.model.createNewProject(width, height);
+      try {
+        this.view.renderMessage("Created new project with canvas size of "
+            + width + "x" + height + ".\n");
+      } catch (IOException e) {
+        //ignore
+      }
+    } catch (IllegalArgumentException e) {
+      try {
+        this.view.renderMessage("Invalid argument, try again.\n");
+      } catch (IOException io) {
+        //ignore
+      }
+    }
   }
 }

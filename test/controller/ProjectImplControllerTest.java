@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.StringReader;
 import model.ImageProject;
 import model.ProjectImpl;
-import newcontroller.ControllerImpl;
 import org.junit.After;
 import org.junit.Test;
 import view.ImageProjectView;

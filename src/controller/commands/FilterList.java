@@ -1,4 +1,4 @@
-package newcontroller.commands;
+package controller.commands;
 
 import java.io.IOException;
 import java.util.Map.Entry;

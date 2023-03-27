@@ -1,4 +1,4 @@
-package newcontroller.commands;
+package controller.commands;
 
 import model.ImageProject;
 import view.ImageProjectView;

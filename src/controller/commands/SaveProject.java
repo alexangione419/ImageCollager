@@ -1,33 +1,56 @@
 package controller.commands;
 
 import java.io.IOException;
+import java.util.Scanner;
 import model.ImageProject;
+import view.ImageProjectView;
 
 /**
- * A command for saving project files made from {@code ImageProject}s.
+ * A command object that saves the currently opened {@code ImageProject} to a .collage file.
  */
-public class SaveProject implements Command {
+public final class SaveProject extends ACommand {
 
-  private final String name;
+  Scanner sc;
 
   /**
-   * Constructs a new {@code SaveProject} command object.
+   * Constructs a new {@code SaveProject}.
    *
-   * @param name the name to give the project file
+   * @param model the model to use
+   * @param view  the view to use to render messages
+   * @param sc    the Scanner with the current user input
    */
-  public SaveProject(String name) {
-    if (name.isEmpty()) {
-      throw new IllegalArgumentException("Name of project cannot be empty");
-    }
-    this.name = name;
+  public SaveProject(ImageProject model, ImageProjectView view, Scanner sc) {
+    super(model, view);
+    this.sc = sc;
   }
 
   @Override
-  public void run(ImageProject p) throws IOException {
+  public void run() {
+    if (!this.model.hasOpenProject()) {
+      try {
+        this.view.renderMessage("Please create or open a new project to use that command.\n");
+      } catch (IOException e) {
+        //ignore
+      }
+    }
+
+    // Make sure there is input to read
+    if (!sc.hasNext()) {
+      throw new IllegalStateException("No input detected.");
+    }
+
+    String fileName = this.sc.next();
+
     try {
-      p.saveProject(this.name);
-    } catch (IOException io) {
-      throw new IOException(io);
+      try {
+        this.model.saveProject(fileName);
+        this.view.renderMessage("Project was saved to as " + fileName + ".collage.\n");
+      } catch (IllegalArgumentException e) {
+        this.view.renderMessage("The name for the file is invalid. It must not contain any periods."
+            + " Try again\n");
+      }
+    } catch (IOException e) {
+      //ignore
     }
   }
 }
