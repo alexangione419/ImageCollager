@@ -30,6 +30,18 @@ public class ProjectImplControllerTest {
 
     f = new File("P1.ppm");
     f.delete();
+
+    f = new File("smol2.ppm");
+    f.delete();
+
+    f = new File("smol2.collage");
+    f.delete();
+
+    f = new File("smolLow2.ppm");
+    f.delete();
+
+    f = new File("smolLow2.collage");
+    f.delete();
   }
 
   @Test

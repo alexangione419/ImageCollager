@@ -2,23 +2,18 @@ package controller;
 
 import controller.commands.AddImageToLayer;
 import controller.commands.AddLayer;
+import controller.commands.Command;
 import controller.commands.LoadProject;
 import controller.commands.NewProject;
 import controller.commands.SaveImage;
 import controller.commands.SaveProject;
 import controller.commands.SetFilter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Scanner;
-
 import model.ImageProject;
-<<<<<<< HEAD
-=======
-import model.ImageProjectState;
-import model.ProjectImpl;
 import model.filters.Filter;
-import view.ImageProcessorGUIView;
->>>>>>> 5b0c1cb1654e704e2c2e16b0cc7f8b86ff1bf632
 import view.ImageProjectView;
 
 /**
@@ -30,6 +25,7 @@ public class PPMProjectController implements ImageProjectController {
   private final ImageProject model;
   private final ImageProjectView view;
   private final Scanner sc;
+  private HashMap<String, Command> commands;
 
 
   /**
@@ -59,14 +55,40 @@ public class PPMProjectController implements ImageProjectController {
     this.model = model;
     this.view = view;
     this.sc = new Scanner(input);
+    this.initCommands();
+
+  }
+
+  private void initCommands() {
+    this.commands = new HashMap<String, Command>();
+
 
   }
 
 
   @Override
   public void start() throws IllegalStateException {
-
-
+//    ImageProcessorGUIView.setDefaultLookAndFeelDecorated(false);
+//    ImageProcessorGUIView frame = new ImageProcessorGUIView(new ProjectImpl());
+//
+//    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//    frame.setVisible(true);
+//
+//
+//    try {
+//      // Set cross-platform Java L&F (also called "Metal")
+//      UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+//
+//    } catch (UnsupportedLookAndFeelException e) {
+//      // handle exception
+//    } catch (ClassNotFoundException e) {
+//      // handle exception
+//    } catch (InstantiationException e) {
+//      // handle exception
+//    } catch (IllegalAccessException e) {
+//      // handle exception
+//    } catch (Exception e) {
+//    }
 
     try {
       this.view.renderMessage("Welcome to our Image Processor.\n");
@@ -103,6 +125,9 @@ public class PPMProjectController implements ImageProjectController {
                 + "current project that matches the same name."
                 + "set-filter: sets a filter for a specified layer.\n"
                 + "save-image: saves the image present on the canvas.\n"
+                + "filter-list: lists out all the supported filters.\n"
+                + "help: lists out all the available commands.\n"
+                + "?: lists out all the available commands.\n"
             );
           } catch (IOException e) {
             //pass
@@ -110,12 +135,15 @@ public class PPMProjectController implements ImageProjectController {
           break;
         case "filter-list":
           try {
-            this.view.renderMessage("Here are all the available filters:\n");
+            if (!this.model.hasOpenProject()) {
+              this.view.renderMessage("Please create or open a new project to use that command.\n");
+            } else {
+              this.view.renderMessage("Here are all the available filters:\n");
 
-            for (Entry<String, Filter> s : this.model.getFilters().entrySet()) {
-              this.view.renderMessage(s.getKey() + "\n");
+              for (Entry<String, Filter> s : this.model.getFilters().entrySet()) {
+                this.view.renderMessage(s.getKey() + "\n");
+              }
             }
-
           } catch (IOException e) {
             //pass
           }
@@ -145,13 +173,20 @@ public class PPMProjectController implements ImageProjectController {
             this.displayInvalidArgs();
             break;
           }
-          int height = sc.nextInt();
+          int width = sc.nextInt();
           if (!sc.hasNextInt()) {
             this.displayInvalidArgs();
             break;
           }
-          int width = sc.nextInt();
-          new NewProject(height, width).run(this.model);
+          int height = sc.nextInt();
+          new NewProject(width, height).run(this.model);
+          try {
+            this.view.renderMessage("Created new project with canvas size of "
+                + width + "x" + height + "."
+            );
+          } catch (IOException e) {
+            //ignore
+          }
           break;
         case "load-project":
           if (!sc.hasNext()) {
@@ -228,7 +263,6 @@ public class PPMProjectController implements ImageProjectController {
           }
       }
     }
-
   }
 
   private void displayInvalidArgs() {

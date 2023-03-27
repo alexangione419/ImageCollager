@@ -30,7 +30,7 @@ public class ProjectImplTest {
   }
 
   @After
-  public void removeSaveProjectTestFiles() throws Exception {
+  public void removeSaveProjectTestFiles() {
     File f = new File("P1.collage");
     f.delete();
 
