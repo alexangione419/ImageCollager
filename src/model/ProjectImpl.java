@@ -357,6 +357,10 @@ public class ProjectImpl implements ImageProject {
       throw new IllegalArgumentException("A layer name cannot contain a space or a linebreak.");
     }
 
+    if (this.doesLayerExist(layerName)) {
+      throw new IllegalArgumentException("Layer " + layerName + " already exists in this project.");
+    }
+
     this.layers.add(new LayerImpl(layerName, this));
     this.activeLayer = this.layers.size() - 1;
   }

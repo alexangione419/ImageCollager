@@ -50,9 +50,9 @@ public final class AddLayer extends ACommand {
       }
     } catch (IllegalArgumentException e) {
       try {
-        this.view.renderMessage("Invalid layer name. Layer name cannot be whitespace.\n"
+        this.view.renderMessage("Invalid layer name. Layer name cannot be whitespace and cannot"
+            + "share the same name as another layer. "
             + "Try again:\n");
-        this.run();
       } catch (IOException io) {
         //ignore
       }

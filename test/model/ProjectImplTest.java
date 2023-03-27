@@ -592,6 +592,8 @@ public class ProjectImplTest {
           e.getMessage());
     }
 
+   this.init();
+
     try {
       this.model.createNewProject(32, 32);
       this.model.addLayer(null);
@@ -601,12 +603,25 @@ public class ProjectImplTest {
           e.getMessage());
     }
 
+    this.init();
+
     try {
       this.model.createNewProject(32, 32);
       this.model.addLayer("Layer 1");
       fail("Null was passed as a argument");
     } catch (IllegalArgumentException e) {
       assertEquals("A layer name cannot contain a space or a linebreak.",
+          e.getMessage());
+    }
+
+    this.init();
+
+    try {
+      this.model.createNewProject(32, 32);
+      this.model.addLayer("Layer1");
+      fail("Null was passed as a argument");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Layer Layer1 already exists in this project.",
           e.getMessage());
     }
   }

@@ -323,6 +323,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected", e.getMessage());
     }
@@ -346,6 +347,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected", e.getMessage());
     }
@@ -388,6 +390,35 @@ public class ProjectImplControllerTest {
 
   @Test
   public void addLayer2() {
+    Readable input = new StringReader("new-project 2 2 "
+        + "add-layer Layer1 "
+        + "quit y");
+    Appendable output = new StringBuilder();
+
+    this.g = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.g, output);
+    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.controller.start();
+
+    assertEquals("Welcome to our Image Processor.",
+        output.toString().split("\n")[0]);
+
+    assertEquals("Awaiting command:\n"
+            + "Created new project with canvas size of 2x2.\n"
+            + "Awaiting command:\n"
+            + "Invalid layer name. Layer name cannot be whitespace and cannot"
+            + "share the same name as another layer. Try again:\n"
+            + "Awaiting command:\n"
+            + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
+            + "Bye Bye!",
+        output.toString().split("Welcome to our Image Processor.\n")[1]);
+    assertEquals(2, this.g.getWidth());
+    assertEquals(2, this.g.getHeight());
+    assertEquals(1, this.g.getNumberOfLayers());
+  }
+
+  @Test
+  public void addLayer3() {
     Readable input = new StringReader("new-project 2 2 "
         + "add-layer Layer2 "
         + "add-layer Layer3 "
@@ -435,6 +466,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -460,6 +492,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -478,6 +511,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -496,6 +530,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -514,6 +549,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -623,6 +659,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -642,6 +679,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -661,6 +699,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -688,6 +727,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      ;
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -715,6 +755,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -733,6 +774,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -759,6 +801,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -811,6 +854,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -835,6 +879,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -852,6 +897,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -900,6 +946,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -924,6 +971,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }
@@ -941,6 +989,7 @@ public class ProjectImplControllerTest {
 
     try {
       this.controller.start();
+      fail("no quit");
     } catch (IllegalStateException e) {
       assertEquals("No input detected.", e.getMessage());
     }

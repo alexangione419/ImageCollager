@@ -7,6 +7,10 @@ import model.pixels.Pixel;
 import model.pixels.PixelUtils;
 import model.pixels.RGBAPixel;
 
+/**
+ * A filter that takes the difference in RGB values on the given layer with the rest of the
+ * layers underneath.
+ */
 public class Difference implements Filter {
 
   List<Layer> layers;
@@ -22,7 +26,9 @@ public class Difference implements Filter {
     Layer[] bottom = new Layer[this.layers.size() - 1];
 
     for (int i = 0; i < this.layers.size() - 1; i++) {
-      bottom[i] = this.layers.get(i);
+      if (!this.layers.get(i).getName().equals(layer.getName())) {
+        bottom[i] = this.layers.get(i);
+      }
     }
 
     for (int y = 0; y < layerToModify[0].length; y++) {
