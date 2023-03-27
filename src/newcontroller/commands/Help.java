@@ -10,6 +10,12 @@ import view.ImageProjectView;
  */
 public final class Help extends ACommand {
 
+  /**
+   * Constructs a new {@code Help}.
+   *
+   * @param model the model to use
+   * @param view  the view to use to render messages
+   */
   public Help(ImageProject model, ImageProjectView view) {
     super(model, view);
   }

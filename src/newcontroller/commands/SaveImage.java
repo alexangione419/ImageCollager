@@ -12,6 +12,13 @@ public class SaveImage extends ACommand {
 
   Scanner sc;
 
+  /**
+   * Constructs a new {@code SaveImage}.
+   *
+   * @param model the model to use
+   * @param view  the view to use to render messages
+   * @param sc    the Scanner with the current user input
+   */
   public SaveImage(ImageProject model, ImageProjectView view, Scanner sc) {
     super(model, view);
     this.sc = sc;

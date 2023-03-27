@@ -12,6 +12,13 @@ public final class SaveProject extends ACommand {
 
   Scanner sc;
 
+  /**
+   * Constructs a new {@code SaveProject}.
+   *
+   * @param model the model to use
+   * @param view  the view to use to render messages
+   * @param sc    the Scanner with the current user input
+   */
   public SaveProject(ImageProject model, ImageProjectView view, Scanner sc) {
     super(model, view);
     this.sc = sc;

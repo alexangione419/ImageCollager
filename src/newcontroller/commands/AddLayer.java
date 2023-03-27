@@ -12,6 +12,13 @@ public final class AddLayer extends ACommand {
 
   Scanner sc;
 
+  /**
+   * Constructs a new {@code AddLayer}.
+   *
+   * @param model the model to use
+   * @param view  the view to use to render messages
+   * @param sc    the Scanner with the current user input
+   */
   public AddLayer(ImageProject model, ImageProjectView view, Scanner sc) {
     super(model, view);
     this.sc = sc;

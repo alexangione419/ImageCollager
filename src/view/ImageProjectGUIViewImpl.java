@@ -28,7 +28,8 @@ import model.ImageProjectState;
  * Represents a Generate User Interface for interacting with Image Processing Software.
  */
 public class ImageProjectGUIViewImpl extends JFrame implements
-        ImageProjectGUIView, ActionListener, ItemListener, ListSelectionListener {
+    ImageProjectGUIView, ActionListener, ItemListener, ListSelectionListener {
+
   private ImageProjectState model;
   private String defaultName;
   private String name;
@@ -57,12 +58,6 @@ public class ImageProjectGUIViewImpl extends JFrame implements
     // adds top panel above bottom section
     mainBottomPanel.add(mainPanel);
     add(mainBottomPanel);
-
-
-
-
-
-
 
     //----------------------------------------------------------------------------------------------
 
@@ -112,7 +107,7 @@ public class ImageProjectGUIViewImpl extends JFrame implements
     controls = new JPanel();
     // THIS IS BAD -> ASSUMES CONTROLS MODEL HAS
     List<String> controlsAllowed = new ArrayList<String>(Arrays.asList("Create new project",
-            "Load project", "Save project", "Save current image", "Exit"));
+        "Load project", "Save project", "Save current image", "Exit"));
     controlOptions = new JButton[controlsAllowed.size()];
     for (int i = 0; i < controlsAllowed.size(); i++) {
       controlOptions[i] = new JButton(controlsAllowed.get(i));

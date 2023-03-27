@@ -12,6 +12,13 @@ public final class AddImageToLayer extends ACommand {
 
   Scanner sc;
 
+  /**
+   * Constructs a new {@code AddImageToLayer}.
+   *
+   * @param model the model to use
+   * @param view  the view to use to render messages
+   * @param sc    the Scanner with the current user input
+   */
   public AddImageToLayer(ImageProject model, ImageProjectView view, Scanner sc) {
     super(model, view);
     this.sc = sc;

@@ -9,6 +9,13 @@ public class LoadProject extends ACommand {
 
   Scanner sc;
 
+  /**
+   * Constructs a new {@code LoadProject}.
+   *
+   * @param model the model to use
+   * @param view  the view to use to render messages
+   * @param sc    the Scanner with the current user input
+   */
   public LoadProject(ImageProject model, ImageProjectView view, Scanner sc) {
     super(model, view);
     this.sc = sc;

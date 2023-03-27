@@ -12,6 +12,12 @@ import view.ImageProjectView;
  */
 public final class FilterList extends ACommand {
 
+  /**
+   * Constructs a new {@code FilterList}.
+   *
+   * @param model the model to use
+   * @param view  the view to use to render messages
+   */
   public FilterList(ImageProject model, ImageProjectView view) {
     super(model, view);
   }
