@@ -20,6 +20,22 @@ public final class PixelUtils {
     return new RGBAPixel(p.getMaxPixelValue(), (int) r, (int) g, (int) b, p.getMaxPixelValue());
   }
 
+  /**
+   * This method takes the components of the given {@code HSLPixel} and creates a new
+   * {@code RGBAPixel} based off those values. This code was taken from the
+   * RGB to HSL conversion code atop of the A5 page.
+   * @param hue the hue value (0-360)
+   * @param saturation the saturation value (0.0-1.0)
+   * @param light the lightness value (0.0-1.0)
+   * @return a new {@code HSLPixel} based on the given {@code HSLPixel}'s components
+   */
+  public static RGBAPixel convertHSLtoRGBA(double hue, double saturation, double light) {
+    double r = convertFn(hue, saturation, light, 0) * 255;
+    double g = convertFn(hue, saturation, light, 8) * 255;
+    double b = convertFn(hue, saturation, light, 4) * 255;
+
+    return new RGBAPixel(255, (int) r, (int) g, (int) b, 255);
+  }
 
   /**
    * Helper method that performs the translation from the HSL polygonal model to the more familiar

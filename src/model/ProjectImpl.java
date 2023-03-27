@@ -19,8 +19,10 @@ import model.filters.DarkenValue;
 import model.filters.Difference;
 import model.filters.Filter;
 import model.filters.GreenComponent;
+import model.filters.Multiply;
 import model.filters.Normal;
 import model.filters.RedComponent;
+import model.filters.Screen;
 import model.pixels.Pixel;
 import model.pixels.PixelUtils;
 import model.pixels.RGBAPixel;
@@ -248,6 +250,8 @@ public class ProjectImpl implements ImageProject {
     this.supportedFilters.put("darken-luma", new DarkenLuma());
 
     this.supportedFilters.put("difference", new Difference(this.layers));
+    this.supportedFilters.put("multiply", new Multiply(this.layers));
+    this.supportedFilters.put("screen", new Screen(this.layers));
 
     this.layers.add(new LayerImpl("Layer1", this));
   }

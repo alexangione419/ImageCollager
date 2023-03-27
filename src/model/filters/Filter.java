@@ -1,5 +1,6 @@
 package model.filters;
 
+import java.util.List;
 import model.Layer;
 import model.pixels.Pixel;
 
@@ -16,4 +17,17 @@ public interface Filter {
    * @return the modified layer
    */
   Pixel[][] apply(Layer layer);
+
+
+  static Layer[] getCompositeImage(List<Layer> layers, String layerToIgnore) {
+    Layer[] bottom = new Layer[layers.size() - 1];
+
+    for (int i = 0; i < layers.size() - 1; i++) {
+      if (!layers.get(i).getName().equals(layerToIgnore)) {
+        bottom[i] = layers.get(i);
+      }
+    }
+
+    return bottom;
+  }
 }

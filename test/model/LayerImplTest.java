@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
 import model.pixels.Pixel;
+import model.pixels.PixelUtils;
 import model.pixels.RGBAPixel;
 import org.junit.Before;
 import org.junit.Test;
@@ -335,6 +336,21 @@ public class LayerImplTest {
         + "0 0 0 0 0 0 0 0 0 \n"
         + "0 0 0 0 0 0 0 0 0 \n"
         + "0 0 0 0 0 0 0 0 0 ", this.project3x4.currentCanvas());
+  }
+
+  @Test
+  public void testApplyBlendFilters() {
+    this.project3x4.createNewProject(3, 4);
+    this.project3x4.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
+
+    Pixel turquoiseGreen = new RGBAPixel(255, 30, 89, 69);
+    Pixel pastelBlue = new RGBAPixel(255, 93, 155, 155);
+    Pixel mahoganyBrown = new RGBAPixel(255, 76, 47, 39);
+    Pixel purple = new RGBAPixel(255, 255, 0, 255);
+
+    this.project3x4.getActiveLayer().setPixelColor(0, 0, turquoiseGreen);
+    this.project3x4.getActiveLayer().setPixelColor(1, 0, pastelBlue);
+    this.project3x4.getActiveLayer().setPixelColor(2, 0, mahoganyBrown);
 
     this.project3x4.setFilter("normal", "Layer1");
 
@@ -364,6 +380,69 @@ public class LayerImplTest {
         + "225 225 225 225 225 225 225 225 225 \n"
         + "225 225 225 225 225 225 225 225 225 \n"
         + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
+
+    this.project3x4.setFilter("normal", "Layer2");
+
+    assertEquals("255 0 255 255 0 255 255 0 255 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
+
+    this.project3x4.setFilter("multiply", "Layer2");
+
+    assertEquals(0.5, purple.getLight(), 0.1);
+    assertEquals(0.23333, turquoiseGreen.getLight(), 0.00001);
+    assertEquals(0.48627, pastelBlue.getLight(), 0.00001);
+    assertEquals(0.22549, mahoganyBrown.getLight(), 0.00001);
+
+    Pixel purpGreen = PixelUtils.convertHSLtoRGBA(
+        purple.getHue(), purple.getSaturation(), 0.11665);
+    Pixel purpBlue = PixelUtils.convertHSLtoRGBA(
+        purple.getHue(), purple.getSaturation(), 0.243135);
+    Pixel purpBrown = PixelUtils.convertHSLtoRGBA(
+        purple.getHue(), purple.getSaturation(), 0.112745);
+
+    assertEquals(
+        purpGreen.toStringRGB()
+            + purpBlue.toStringRGB()
+            + purpBrown.toStringRGB()
+            + "\n"
+            + "0 0 0 0 0 0 0 0 0 \n"
+            + "0 0 0 0 0 0 0 0 0 \n"
+            + "0 0 0 0 0 0 0 0 0 ", this.project3x4.currentCanvas());
+
+    this.project3x4.setFilter("normal", "Layer2");
+
+    assertEquals("255 0 255 255 0 255 255 0 255 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
+
+    this.project3x4.setFilter("screen", "Layer2");
+
+    assertEquals(0.5, purple.getLight(), 0.1);
+    assertEquals(0.23333, turquoiseGreen.getLight(), 0.00001);
+    assertEquals(0.48627, pastelBlue.getLight(), 0.00001);
+    assertEquals(0.22549, mahoganyBrown.getLight(), 0.00001);
+
+    purpGreen = PixelUtils.convertHSLtoRGBA(
+        purple.getHue(), purple.getSaturation(),
+        (1 - ((1 - 0.5) * (1 - turquoiseGreen.getLight()))));
+    purpBlue = PixelUtils.convertHSLtoRGBA(
+        purple.getHue(), purple.getSaturation(),
+        (1 - ((1 - 0.5) * (1 - pastelBlue.getLight()))));
+    purpBrown = PixelUtils.convertHSLtoRGBA(
+        purple.getHue(), purple.getSaturation(),
+        (1 - ((1 - 0.5) * (1 - mahoganyBrown.getLight()))));
+
+    assertEquals(
+        purpGreen.toStringRGB()
+            + purpBlue.toStringRGB()
+            + purpBrown.toStringRGB()
+            + "\n"
+            + "225 225 225 225 225 225 225 225 225 \n"
+            + "225 225 225 225 225 225 225 225 225 \n"
+            + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
   }
 
   @Test

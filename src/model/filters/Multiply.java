@@ -2,24 +2,23 @@ package model.filters;
 
 import java.util.List;
 import model.Layer;
-import model.LayerImpl;
 import model.pixels.Pixel;
 import model.pixels.PixelUtils;
 import model.pixels.RGBAPixel;
 
 /**
- * A filter that takes the difference in RGB values on the given layer with the rest of the
- * layers underneath.
+ * A filter that takes the HSL values of each pixel on a layer and multiplies the lightness levels
+ * with the pixels on the composite image underneath to darken the image.
  */
-public class Difference implements Filter {
+public class Multiply implements Filter {
 
   List<Layer> layers;
 
   /**
-   * Constructs a new {@code Difference} and stores the given List of layers.
+   * Constructs a new {@code Multiply} and stores the given List of layers.
    * @param layers the layers of the model
    */
-  public Difference(List<Layer> layers) {
+  public Multiply(List<Layer> layers) {
     this.layers = layers;
   }
 
@@ -35,11 +34,10 @@ public class Difference implements Filter {
         Pixel p = layerToModify[x][y];
         Pixel p2 = PixelUtils.finalColorAt(x, y, layer.getMaxPixel(), bottom);
 
-        layerToModify[x][y] = new RGBAPixel(layer.getMaxPixel(),
-            Math.abs(p.getRed() - p2.getRed()),
-            Math.abs(p.getGreen() - p2.getGreen()),
-            Math.abs(p.getBlue() - p2.getBlue()),
-            p.getAlpha());
+        layerToModify[x][y] = PixelUtils.convertHSLtoRGBA(
+            p.getHue(),
+            p.getSaturation(),
+            p.getLight() * p2.getLight());
       }
     }
 
