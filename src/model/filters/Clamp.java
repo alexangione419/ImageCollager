@@ -9,6 +9,15 @@ package model.filters;
  */
 public final class Clamp {
 
+  /**
+   * Performs the clamp operation.
+   * @param value the value to clamp
+   * @param lower the lower-bound value
+   * @param upper the upper-bound value
+   * @return value if value is between lower and upper,
+   *         otherwise lower if value is less than lower
+   *         or upper if value is greater than upper
+   */
   public static double execute(double value, double lower, double upper) {
     if (value > upper) {
       return upper;
@@ -19,6 +28,15 @@ public final class Clamp {
     }
   }
 
+  /**
+   * Performs the clamp operation.
+   * @param value the value to clamp
+   * @param lower the lower-bound value
+   * @param upper the upper-bound value
+   * @return value if value is between lower and upper,
+   *         otherwise lower if value is less than lower
+   *         or upper if value is greater than upper
+   */
   public static int execute(int value, int lower, int upper) {
     if (value > upper) {
       return upper;

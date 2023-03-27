@@ -62,8 +62,8 @@ public final class AddImageToLayer extends ACommand {
     try {
       try {
         this.model.addImageToLayer(layer, filePath, x, y);
-        this.view.renderMessage("Added " + filePath + " to Layer " + layer +
-            " at (" + x + ", " + y + ").\n");
+        this.view.renderMessage("Added " + filePath + " to Layer " + layer
+            + " at (" + x + ", " + y + ").\n");
       } catch (IllegalArgumentException e) {
         this.view.renderMessage("Invalid arguments. Try again:\n");
       }

@@ -29,7 +29,7 @@ public final class Help extends ACommand {
           + "load-project: loads a project found at the given file path.\n"
           + "add-layer: adds a new layer to the current project.\n"
           + "add-image-to-layer: adds an image at the given file path to the layer on the "
-          + "current project that matches the same name."
+          + "current project that matches the same name.\n"
           + "set-filter: sets a filter for a specified layer.\n"
           + "save-image: saves the image present on the canvas.\n"
           + "filter-list: lists out all the supported filters.\n"

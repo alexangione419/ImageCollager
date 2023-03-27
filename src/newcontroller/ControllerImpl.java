@@ -17,6 +17,10 @@ import newcontroller.commands.SaveProject;
 import newcontroller.commands.SetFilter;
 import view.ImageProjectView;
 
+/**
+ * A implementation of {@code ImageProjectController} that allows users to manipulate an
+ * {@code ImageProject}.
+ */
 public class ControllerImpl implements ImageProjectController {
 
   boolean running;
@@ -27,7 +31,7 @@ public class ControllerImpl implements ImageProjectController {
 
 
   /**
-   * Constructs a new {@code PPMProjectController}.
+   * Constructs a new {@code ControllerImpl}.
    *
    * @param model the model to control
    * @param view  the view of the model
@@ -71,8 +75,8 @@ public class ControllerImpl implements ImageProjectController {
     this.commands.put("save-project", new SaveProject(this.model, this.view, this.sc));
     this.commands.put("save-image", new SaveImage(this.model, this.view, this.sc));
 
-//    this.commands.put("quit", new Quit(this.model, this.view, this.sc));
-//    this.commands.put("q", new Quit(this.model, this.view, this.sc));
+    //this.commands.put("quit", new Quit(this.model, this.view, this.sc));
+    //this.commands.put("q", new Quit(this.model, this.view, this.sc));
 
   }
 

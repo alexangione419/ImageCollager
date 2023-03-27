@@ -5,6 +5,9 @@ import static org.junit.Assert.assertEquals;
 import model.pixels.RGBAPixel;
 import org.junit.Test;
 
+/**
+ * A testing class for the {@code RGBAPixel} class.
+ */
 public class RGBAPixelTest extends PixelTest {
 
   @Test

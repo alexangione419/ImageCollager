@@ -5,7 +5,10 @@ import java.util.Scanner;
 import model.ImageProject;
 import view.ImageProjectView;
 
-public class LoadProject extends ACommand {
+/**
+ * A command object that saves the given {@code ImageProject} into a .collage project file.
+ */
+public final class LoadProject extends ACommand {
 
   Scanner sc;
 

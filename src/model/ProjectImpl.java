@@ -505,7 +505,7 @@ public class ProjectImpl implements ImageProject {
    *
    * @param layerName the name of the layer to look for
    * @return the {@code Layer} with the given layerName; otherwise, this method throws an
-   * IllegalArgumentException.
+   *         IllegalArgumentException.
    */
   private Layer getLayer(String layerName) {
     Layer result = null;

@@ -39,9 +39,8 @@ public final class Quit extends ACommand {
 
     if (currCommand.equalsIgnoreCase("y")) {
       System.exit(0);
-    } else if (currCommand.equalsIgnoreCase("n")) {
-
-    } else {
+    }
+    else if (!currCommand.equalsIgnoreCase("n")) {
       try {
         this.view.renderMessage("Invalid Command\n");
       } catch (IOException e) {
