@@ -83,6 +83,7 @@ public final class LayerImpl implements Layer {
 
     this.currentLayer = this.supportedFilters.get("normal").apply(this);
     this.currentLayer = this.supportedFilters.get(filterOption).apply(this);
+
     this.currentFilter = filterOption;
   }
 

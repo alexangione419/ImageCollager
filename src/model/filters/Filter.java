@@ -12,7 +12,8 @@ public interface Filter {
   /**
    * Applies this filter to a {@code Layer} within a {@code ImageProject} once.
    *
-   * @param layer the player to apply the filter to
+   * @param layer the layer to apply the filter to
+   * @return the modified layer
    */
   Pixel[][] apply(Layer layer);
 }

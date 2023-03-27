@@ -1,6 +1,7 @@
 package model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
 import model.pixels.Pixel;
@@ -259,10 +260,13 @@ public class LayerImplTest {
     Pixel turquoiseGreen = new RGBAPixel(255, 30, 89, 69);
     Pixel pastelBlue = new RGBAPixel(255, 93, 155, 155);
     Pixel mahoganyBrown = new RGBAPixel(255, 76, 47, 39);
+    Pixel purple = new RGBAPixel(255, 255, 0, 255);
 
     this.project3x4.getActiveLayer().setPixelColor(0, 0, turquoiseGreen);
     this.project3x4.getActiveLayer().setPixelColor(1, 0, pastelBlue);
     this.project3x4.getActiveLayer().setPixelColor(2, 0, mahoganyBrown);
+
+    this.project3x4.setFilter("normal", "Layer1");
 
     assertEquals("30 89 69 93 155 155 76 47 39 \n"
         + "225 225 225 225 225 225 225 225 225 \n"
@@ -331,6 +335,35 @@ public class LayerImplTest {
         + "0 0 0 0 0 0 0 0 0 \n"
         + "0 0 0 0 0 0 0 0 0 \n"
         + "0 0 0 0 0 0 0 0 0 ", this.project3x4.currentCanvas());
+
+    this.project3x4.setFilter("normal", "Layer1");
+
+    assertEquals("30 89 69 93 155 155 76 47 39 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
+
+    this.project3x4.addLayer("Layer2");
+    this.project3x4.getActiveLayer().setPixelColor(0, 0, purple);
+    this.project3x4.getActiveLayer().setPixelColor(1, 0, purple);
+    this.project3x4.getActiveLayer().setPixelColor(2, 0, purple);
+
+    assertEquals("255 0 255 255 0 255 255 0 255 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
+
+    this.project3x4.setFilter("difference", "Layer2");
+
+    assertNotEquals("255 0 255 255 0 255 255 0 255 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
+
+    assertEquals("225 89 186 162 155 100 179 47 216 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
   }
 
   @Test

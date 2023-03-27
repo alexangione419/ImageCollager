@@ -16,6 +16,7 @@ import model.filters.BrightenValue;
 import model.filters.DarkenIntensity;
 import model.filters.DarkenLuma;
 import model.filters.DarkenValue;
+import model.filters.Difference;
 import model.filters.Filter;
 import model.filters.GreenComponent;
 import model.filters.Normal;
@@ -114,7 +115,16 @@ public class ProjectImpl implements ImageProject {
 
     for (int y = 0; y < this.getHeight(); y++) {
       for (int x = 0; x < this.getWidth(); x++) {
-        results = results.concat(this.finalColorAt(x, y).toStringRGB());
+        Layer[] layers = new Layer[this.layers.size()];
+
+        for (int i = 0; i < this.layers.size(); i++) {
+          layers[i] = this.layers.get(i);
+        }
+
+        results = results.concat(
+            PixelUtils.convertRGBAtoRGB(
+                PixelUtils.finalColorAt(x, y, (double) this.getMaxPixelValue(), layers))
+                .toStringRGB());
       }
       if (y != this.getHeight() - 1) {
         results = results.concat("\n");
@@ -236,6 +246,8 @@ public class ProjectImpl implements ImageProject {
     this.supportedFilters.put("darken-value", new DarkenValue());
     this.supportedFilters.put("darken-intensity", new DarkenIntensity());
     this.supportedFilters.put("darken-luma", new DarkenLuma());
+
+    this.supportedFilters.put("difference", new Difference(this.layers));
 
     this.layers.add(new LayerImpl("Layer1", this));
   }
@@ -418,65 +430,6 @@ public class ProjectImpl implements ImageProject {
     }
     this.setActiveLayer(layerName);
     this.getActiveLayer().addImageToLayer(imageFile, x, y);
-  }
-
-  /**
-   * Loops every layer to return back the color that will be displayed in the final image.
-   *
-   * @param x the x-coordinate of the pixel to look at
-   * @param y the y-coordinate of the pixel to look at
-   * @return a Pixel containing the RGBA values of the final color
-   */
-  private Pixel finalColorAt(int x, int y) {
-
-    double[] finalColor = new double[4];
-
-    for (Layer layer : this.layers) {
-
-      Pixel[][] curLayerData = layer.getLayerData();
-
-      double curRed = curLayerData[x][y].getRed();
-      double curGreen = curLayerData[x][y].getGreen();
-      double curBlue = curLayerData[x][y].getBlue();
-      double curAlpha = curLayerData[x][y].getAlpha();
-
-      if ((this.activeLayer != 0) && (curAlpha != 0)) {
-        double backgroundRed = finalColor[0];
-        double backgroundGreen = finalColor[1];
-        double backgroundBlue = finalColor[2];
-        double backgroundAlpha = finalColor[3];
-
-        double maxPixelVal = this.getMaxPixelValue();
-
-        double alphaPercentage = ((curAlpha / maxPixelVal) + backgroundAlpha / maxPixelVal * (1
-            - (curAlpha / maxPixelVal)));
-
-        finalColor[3] = (alphaPercentage * maxPixelVal);
-
-        finalColor[0] = (curAlpha / maxPixelVal * curRed + backgroundRed
-            * (backgroundAlpha / maxPixelVal)
-            * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
-
-        finalColor[1] = (curAlpha / maxPixelVal * curGreen + backgroundGreen
-            * (backgroundAlpha / maxPixelVal)
-            * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
-
-        finalColor[2] = (curAlpha / maxPixelVal * curBlue + backgroundBlue
-            * (backgroundAlpha / maxPixelVal)
-            * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
-
-      } else if ((this.activeLayer == 0) && (curAlpha != 0)) {
-        finalColor[0] = curRed;
-        finalColor[1] = curGreen;
-        finalColor[2] = curBlue;
-        finalColor[3] = curAlpha;
-      }
-    }
-
-    RGBAPixel finalPixel = new RGBAPixel(this.getMaxPixelValue(),
-        (int) finalColor[0], (int) finalColor[1], (int) finalColor[2], (int) finalColor[3]);
-
-    return PixelUtils.convertRGBAtoRGB(finalPixel);
   }
 
   /**
