@@ -1,11 +1,12 @@
 package model;
 
 /**
- * An interface containing the various state functions needed in an Image Project. This interface
- * is separate from the Image Project interface so that sections of code that rely on having access
- * to the model only have access to getters relating to the state of the model.
+ * An interface containing the various state functions needed in an Image Project. This interface is
+ * separate from the Image Project interface so that sections of code that rely on having access to
+ * the model only have access to getters relating to the state of the model.
  */
 public interface ImageProjectState {
+
   /**
    * Returns the name of this {@code ImageProject}.
    *

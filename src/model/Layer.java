@@ -83,8 +83,8 @@ public interface Layer {
   /**
    * Changes the color of a specific pixel to the given one.
    *
-   * @param x the x position of the pixel
-   * @param y the y position of the pixel
+   * @param x     the x position of the pixel
+   * @param y     the y position of the pixel
    * @param pixel the pixel to set at the given position
    */
   void setPixelColor(int x, int y, Pixel pixel);

@@ -1,6 +1,6 @@
 package model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import model.filters.Clamp;
 import org.junit.Test;
@@ -30,7 +30,6 @@ public class ClampTest {
     assertEquals(64, Clamp.execute(64, 0, 100));
     assertEquals(777777, Clamp.execute(777777, 1000, 1000000));
   }
-
 
 
 }

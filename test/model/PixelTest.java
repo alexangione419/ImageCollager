@@ -1,9 +1,7 @@
 package model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import model.pixels.Pixel;
-import model.pixels.PixelUtils;
 import model.pixels.RGBAPixel;
 import org.junit.Before;
 import org.junit.Test;

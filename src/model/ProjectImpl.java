@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Scanner;
 import model.filters.BlueComponent;
@@ -31,6 +30,7 @@ import model.pixels.RGBAPixel;
  * files that this class takes in also contain the alpha value of an image.
  */
 public class ProjectImpl implements ImageProject {
+
   private String name;
   private int width;
   private int height;
@@ -132,9 +132,7 @@ public class ProjectImpl implements ImageProject {
 
     if (!ImageProjectFileUtils.isProjectFile(file)) {
       throw new IllegalArgumentException("File at filepath is not a .collage file.");
-    }
-
-    else {
+    } else {
       Scanner sc;
       try {
         sc = new Scanner(new FileInputStream(file));
@@ -152,27 +150,32 @@ public class ProjectImpl implements ImageProject {
 
       try {
         width = sc.nextInt();
-      }
-      catch (InputMismatchException e) {
+      } catch (InputMismatchException e) {
         throw new IllegalArgumentException("Invalid project file at given filepath.");
       }
       checkNext(sc);
 
       try {
         height = sc.nextInt();
-      }
-      catch (InputMismatchException e) {
+      } catch (InputMismatchException e) {
         throw new IllegalArgumentException("Invalid project file at given filepath.");
       }
 
-      ImageProject loaded = new ProjectImpl();
-      loaded.createNewProject(width, height);
+      checkNext(sc);
+
+      this.createNewProject(width, height);
 
       while (sc.hasNext()) {
         String newLayer = sc.next();
         checkNext(sc);
         String filter = sc.next();
-        Pixel[][] newLayerData = new Pixel[width][height];
+
+        if (this.doesLayerExist(newLayer)) {
+          this.setFilter(filter, newLayer);
+        } else {
+          this.addLayer(newLayer);
+          this.setFilter(filter, newLayer);
+        }
 
         for (int y = 0; y < height; y++) {
           for (int x = 0; x < width; x++) {
@@ -188,20 +191,21 @@ public class ProjectImpl implements ImageProject {
             checkNext(sc);
 
             int a = sc.nextInt();
-            //checkNext(sc);
 
-            newLayerData[x][y] = new RGBAPixel(this.getMaxPixelValue(), r, g, b, a);
+            this.setActiveLayer(newLayer);
+            this.getActiveLayer().setPixelColor(x, y,
+                new RGBAPixel(this.getMaxPixelValue(), r, g, b, a));
           }
         }
-
-        loaded.addLayer(newLayer);
-        Pixel[][] data = loaded.getActiveLayer().getLayerData();
-        data = newLayerData;
-        loaded.setFilter(filter, newLayer);
       }
     }
   }
 
+  /**
+   * Ensures that there is more input in file contents within the given scanner.
+   *
+   * @param scanner the scanner containing the file contents
+   */
   private void checkNext(Scanner scanner) {
     if (!scanner.hasNext()) {
       throw new IllegalArgumentException("Invalid project file format");
@@ -337,6 +341,10 @@ public class ProjectImpl implements ImageProject {
           + "just whitespace.");
     }
 
+    if (layerName.contains("\n") || layerName.contains(" ")) {
+      throw new IllegalArgumentException("A layer name cannot contain a space or a linebreak.");
+    }
+
     this.layers.add(new LayerImpl(layerName, this));
     this.activeLayer = this.layers.size() - 1;
   }
@@ -399,6 +407,11 @@ public class ProjectImpl implements ImageProject {
   }
 
   @Override
+  public boolean hasOpenProject() {
+    return this.hasAOpenProject;
+  }
+
+  @Override
   public void addImageToLayer(String layerName, String imageFile, int x, int y) {
     if (!this.doesLayerExist(layerName)) {
       throw new IllegalArgumentException("Layer not found in current project.");
@@ -427,7 +440,6 @@ public class ProjectImpl implements ImageProject {
       double curBlue = curLayerData[x][y].getBlue();
       double curAlpha = curLayerData[x][y].getAlpha();
 
-
       if ((this.activeLayer != 0) && (curAlpha != 0)) {
         double backgroundRed = finalColor[0];
         double backgroundGreen = finalColor[1];
@@ -452,7 +464,7 @@ public class ProjectImpl implements ImageProject {
         finalColor[2] = (curAlpha / maxPixelVal * curBlue + backgroundBlue
             * (backgroundAlpha / maxPixelVal)
             * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
-        
+
       } else if ((this.activeLayer == 0) && (curAlpha != 0)) {
         finalColor[0] = curRed;
         finalColor[1] = curGreen;
@@ -493,7 +505,7 @@ public class ProjectImpl implements ImageProject {
    *
    * @param layerName the name of the layer to look for
    * @return the {@code Layer} with the given layerName; otherwise, this method throws an
-   *         IllegalArgumentException.
+   * IllegalArgumentException.
    */
   private Layer getLayer(String layerName) {
     Layer result = null;

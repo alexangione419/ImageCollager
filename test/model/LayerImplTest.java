@@ -1,6 +1,5 @@
 package model;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -177,10 +176,9 @@ public class LayerImplTest {
     this.project3x4.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
 
     assertEquals("225 225 225 225 225 225 225 225 225 \n"
-            + "225 225 225 225 225 225 225 225 225 \n"
-            + "225 225 225 225 225 225 225 225 225 \n"
-            + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
-
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", this.project3x4.currentCanvas());
 
     this.project3x4.getActiveLayer().clearLayer();
     assertEquals("0 0 0 0 0 0 0 0 0 \n"
@@ -292,7 +290,6 @@ public class LayerImplTest {
         + "0 0 225 0 0 225 0 0 225 \n"
         + "0 0 225 0 0 225 0 0 225 ", this.project3x4.currentCanvas());
 
-
     this.project3x4.setFilter("brighten-intensity", "Layer1");
 
     assertEquals("92 151 131 227 255 255 130 101 93 \n"
@@ -320,7 +317,6 @@ public class LayerImplTest {
         + "0 0 0 0 0 0 0 0 0 \n"
         + "0 0 0 0 0 0 0 0 0 \n"
         + "0 0 0 0 0 0 0 0 0 ", this.project3x4.currentCanvas());
-
 
     this.project3x4.setFilter("brighten-value", "Layer1");
 

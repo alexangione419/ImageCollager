@@ -16,12 +16,12 @@ public class NewProject implements Command {
    * @param height of the new project
    * @param width  of the new project
    */
-  public NewProject(int height, int width) {
+  public NewProject(int width, int height) {
     if (height <= 0 || width <= 0) {
       throw new IllegalArgumentException("Invalid project dimensions");
     }
-    this.height = height;
     this.width = width;
+    this.height = height;
   }
 
   @Override

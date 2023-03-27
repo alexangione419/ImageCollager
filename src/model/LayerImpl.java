@@ -5,18 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
-import model.filters.BlueComponent;
-import model.filters.BrightenIntensity;
-import model.filters.BrightenLuma;
-import model.filters.BrightenValue;
 import model.filters.Clamp;
-import model.filters.DarkenIntensity;
-import model.filters.DarkenLuma;
-import model.filters.DarkenValue;
 import model.filters.Filter;
-import model.filters.GreenComponent;
-import model.filters.Normal;
-import model.filters.RedComponent;
 import model.pixels.Pixel;
 import model.pixels.RGBAPixel;
 

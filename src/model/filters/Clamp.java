@@ -1,12 +1,11 @@
 package model.filters;
 
 /**
- * A functional class that takes in three number (int or double) arguments:
- * a lower-bound, upper-bound, and a value. The function will return back a double or int (based
- * on the types of arguments pass).
- * If value is greater than upper-bound, then the function will return upper-bound.
- * If value is lower than lower-bound, then the function will return lower-bound.
- * If value is in between upper-bound and lower-bound, value will get returned back.
+ * A functional class that takes in three number (int or double) arguments: a lower-bound,
+ * upper-bound, and a value. The function will return back a double or int (based on the types of
+ * arguments pass). If value is greater than upper-bound, then the function will return upper-bound.
+ * If value is lower than lower-bound, then the function will return lower-bound. If value is in
+ * between upper-bound and lower-bound, value will get returned back.
  */
 public final class Clamp {
 
