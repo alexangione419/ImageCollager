@@ -64,18 +64,13 @@ public class ControllerImpl implements ImageProjectController {
     this.commands.put("help", new Help(this.model, this.view));
     this.commands.put("?", new Help(this.model, this.view));
     this.commands.put("filter-list", new FilterList(this.model, this.view));
-
     this.commands.put("new-project", new NewProject(this.model, this.view, this.sc));
     this.commands.put("add-layer", new AddLayer(this.model, this.view, this.sc));
     this.commands.put("add-image-to-layer", new AddImageToLayer(this.model, this.view, this.sc));
     this.commands.put("set-filter", new SetFilter(this.model, this.view, this.sc));
-
     this.commands.put("load-project", new LoadProject(this.model, this.view, this.sc));
     this.commands.put("save-project", new SaveProject(this.model, this.view, this.sc));
     this.commands.put("save-image", new SaveImage(this.model, this.view, this.sc));
-
-    //this.commands.put("quit", new Quit(this.model, this.view, this.sc));
-    //this.commands.put("q", new Quit(this.model, this.view, this.sc));
 
   }
 

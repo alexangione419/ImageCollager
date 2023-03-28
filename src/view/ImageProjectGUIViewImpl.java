@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +29,7 @@ import model.ImageProjectState;
  * Represents a Generate User Interface for interacting with Image Processing Software.
  */
 public class ImageProjectGUIViewImpl extends JFrame implements
-    ImageProjectGUIView, ActionListener, ItemListener, ListSelectionListener {
+    ImageProjectView, ActionListener, ItemListener {
 
   private ImageProjectState model;
   private String defaultName;
@@ -49,6 +50,7 @@ public class ImageProjectGUIViewImpl extends JFrame implements
     setSize(1200, 900);
     this.model = model;
     this.defaultName = "No project currently loaded";
+    this.toSend = toSend;
 
     //Creates two panels to be top and bottom section
     mainPanel = new JPanel();
@@ -132,8 +134,9 @@ public class ImageProjectGUIViewImpl extends JFrame implements
 
   }
 
-  @Override
-  public void valueChanged(ListSelectionEvent e) {
 
+  @Override
+  public void renderMessage(String instructions) throws IOException {
+    this.toSend.append(instructions);
   }
 }

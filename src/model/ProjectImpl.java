@@ -9,6 +9,18 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+
+import controller.commands.ACommand;
+import controller.commands.AddImageToLayer;
+import controller.commands.AddLayer;
+import controller.commands.Command;
+import controller.commands.FilterList;
+import controller.commands.Help;
+import controller.commands.LoadProject;
+import controller.commands.NewProject;
+import controller.commands.SaveImage;
+import controller.commands.SaveProject;
+import controller.commands.SetFilter;
 import model.filters.BlueComponent;
 import model.filters.BrightenIntensity;
 import model.filters.BrightenLuma;
@@ -41,6 +53,8 @@ public class ProjectImpl implements ImageProject {
   private List<Layer> layers;
   private HashMap<String, Filter> supportedFilters;
 
+  private HashMap<String, ACommand> supportedCommands;
+
   //should be false if loadProject() or createNewProject() hasn't been called
   private boolean hasAOpenProject;
 
@@ -53,6 +67,8 @@ public class ProjectImpl implements ImageProject {
 
     this.activeLayer = 0;
     this.hasAOpenProject = false;
+
+
   }
 
   @Override

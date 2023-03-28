@@ -1,8 +1,14 @@
 import controller.ImageProjectController;
+
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.StringReader;
+
+import controller.ImageProjectGUIController;
 import model.ImageProject;
 import model.ProjectImpl;
 import controller.ControllerImpl;
+import view.ImageProjectGUIViewImpl;
 import view.ImageProjectView;
 import view.PPMProjectTextView;
 
@@ -18,17 +24,17 @@ public class ImageProcessorMain {
    */
   public static void main(String[] args) {
     ImageProject project = new ProjectImpl();
+
     Appendable viewToController = new StringBuilder();
-    //ImageProjectGUIView view = new ImageProjectGUIViewImpl(project, viewToController);
 
-    //Readable rd = new BufferedReader(viewToController);
-    Readable rd = new InputStreamReader(System.in);
+    //ImageProjectView view = new PPMProjectTextView(project, System.out);
+    ImageProjectView view = new ImageProjectGUIViewImpl(project, viewToController);
 
-    //ImageProjectController controller = new ImageProjectGUIController(project, view, rd);
-    ImageProjectView view = new PPMProjectTextView(project, System.out);
+    //Readable rd = new InputStreamReader(System.in);
+    Readable rd = new StringReader(viewToController.toString());
 
-    //ImageProjectController controller = new PPMProjectController(project, view, rd);
-    ImageProjectController controller = new ControllerImpl(project, view, rd);
+    //ImageProjectController controller = new ControllerImpl(project, view, rd);
+    ImageProjectGUIController controller = new ImageProjectGUIController(project, view, rd);
     controller.start();
 
   }
