@@ -7,15 +7,13 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import controller.commands.AddImageToLayer;
 import model.ImageProject;
 import view.ImageProjectGUIViewImpl;
-import view.ImageProjectView;
 
-public class ImageProjectGUIController implements ImageProjectController, Features {
+public class ImageProjectGUIController implements Features {
   boolean running;
   private final ImageProject model;
-  private final ImageProjectGUIViewImpl view;
+  private ImageProjectGUIViewImpl view;
   private final Scanner sc;
 
 
@@ -23,17 +21,12 @@ public class ImageProjectGUIController implements ImageProjectController, Featur
    * Constructs a new {@code PPMProjectController}.
    *
    * @param model the model to control
-   * @param view  the view of the model
    * @throws IllegalArgumentException if any of the given arguments are null
    */
-  public ImageProjectGUIController(ImageProject model, ImageProjectGUIViewImpl view, Readable input)
+  public ImageProjectGUIController(ImageProject model, Readable input)
           throws IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Project argument cannot be null.");
-    }
-
-    if (view == null) {
-      throw new IllegalArgumentException("View argument cannot be null.");
     }
 
     if (input == null) {
@@ -41,35 +34,16 @@ public class ImageProjectGUIController implements ImageProjectController, Featur
     }
 
     this.model = model;
-    this.view = view;
     this.sc = new Scanner(input);
 
   }
 
-  @Override
-  public void start() throws IllegalStateException {
-    this.view.addFeatures(this);
-
-    ImageProjectGUIViewImpl.setDefaultLookAndFeelDecorated(false);
-    ImageProjectGUIViewImpl frame = new ImageProjectGUIViewImpl(this.model, new StringBuilder());
-
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setVisible(true);
-
-    try {
-      // Set cross-platform Java L&F (also called "Metal")
-      UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-
-    } catch (UnsupportedLookAndFeelException e) {
-      // handle exception
-    } catch (ClassNotFoundException e) {
-      // handle exception
-    } catch (InstantiationException e) {
-      // handle exception
-    } catch (IllegalAccessException e) {
-      // handle exception
-    } catch (Exception e) {
+  public void start(ImageProjectGUIViewImpl view) throws IllegalStateException {
+    if (view == null) {
+      throw new IllegalArgumentException("View argument cannot be null.");
     }
+    this.view = view;
+    this.view.addFeatures(this);
 
 
   }
@@ -109,9 +83,7 @@ public class ImageProjectGUIController implements ImageProjectController, Featur
 
   @Override
   public void newProject(int width, int height) {
-    System.out.println("AM I EVEN GETTING GERE");
     this.model.createNewProject(width, height);
-    this.view.resetGUI();
   }
 
   @Override

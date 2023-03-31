@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 import controller.Features;
 import model.ImageProjectState;
@@ -16,21 +18,28 @@ import model.ImageProjectState;
 public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
 
   private ImageProjectState model;
+
   // Variables for GUI
   private JPanel mainPanel;
   private JPanel mainBottomPanel;
+  private JPanel introScreen;
   private JPanel controls;
   private final JButton initialNewProjectButton;
 
   private int desiredWidthForDisplay;
   private int desiredHeightForDisplay;
+  private JTextArea heightInput;
+  private JTextArea widthInput;
 
 
   public ImageProjectGUIViewImpl(ImageProjectState model, Appendable toSend) {
     super();
-    setTitle("Image Processor");
-    setSize(1200, 900);
     this.model = model;
+
+    this.setTitle("Image Processor");
+    this.setSize(1200, 900);
+    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 
     //Creates two panels to be top and bottom section
     this.mainPanel = new JPanel();
@@ -38,25 +47,56 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     this.mainPanel.setLayout(new BoxLayout(this.mainPanel, BoxLayout.LINE_AXIS));
     this.mainPanel.setPreferredSize(new Dimension(1200, 500));
     this.mainBottomPanel.setLayout(new BoxLayout(this.mainBottomPanel, BoxLayout.PAGE_AXIS));
-
     // adds top panel above bottom section
     this.mainBottomPanel.add(this.mainPanel);
     this.add(mainBottomPanel);
 
-    //Creates a button to make the user create a new project
-    this.initialNewProjectButton = new JButton("Create new project.");
-    this.initialNewProjectButton.setActionCommand("createNewProject");
-    this.mainPanel.add(initialNewProjectButton);
+    //Pre-project section -------------------------------------------------------------------------
+    this.introScreen = new JPanel();
+    this.introScreen.setLayout(new GridLayout(3, 0, 10, 10));
+    this.introScreen.setMaximumSize(new Dimension(200, 300));
 
+
+    JTextPane intro = new JTextPane();
+    intro.setEditable(false);
+    // the next 3 lines just center the text in the text pane
+    SimpleAttributeSet center = new SimpleAttributeSet();
+    StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+    intro.setParagraphAttributes(center, true);
+
+    intro.setText("To create a new project, please input valid numerical arguments into the text " +
+            "boxes below, then press create.");
+    this.introScreen.add(intro);
+
+    this.heightInput = new JTextArea();
+    this.heightInput.setText("0");
+    this.widthInput = new JTextArea();
+    this.widthInput.setText("0");
+    this.desiredWidthForDisplay = Integer.parseInt(this.widthInput.getText());
+    this.desiredHeightForDisplay = Integer.parseInt(this.heightInput.getText());
+    JPanel dim = new JPanel();
+    dim.setLayout(new GridLayout(0, 2, 10, 10));
+    dim.add(heightInput);
+    dim.add(widthInput);
+
+    //Creates a button to make the user create a new project when first loading in
+    this.initialNewProjectButton = new JButton("Create");
+    this.introScreen.add(intro);
+    this.introScreen.add(dim);
+    this.introScreen.add(initialNewProjectButton);
+
+    this.mainPanel.add(this.introScreen);
+
+    //----------------------------------------------------------------------------------------------
     // Waits to create rest of GUI until view can see model has an open project
     if (this.model.hasOpenProject()) {
-      this.mainPanel.remove(initialNewProjectButton);
+      this.mainPanel.remove(this.introScreen);
 
-      //----------------------------------------------------------------------------------------------
+
 
       // Creates a panel for displaying an image
       JPanel imageDisplay = new JPanel();
-      imageDisplay.setBorder(BorderFactory.createTitledBorder("shit cum ballz"));
+      imageDisplay.setBorder(BorderFactory.createTitledBorder(this.model.getName()));
       imageDisplay.setLayout(new GridLayout(1, 0, 10, 10));
       this.mainPanel.add(imageDisplay);
 
@@ -100,12 +140,10 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
 
       // divides buttons into two categories to make them look nicer in GUI
       JPanel layerControls = new JPanel();
-      layerControls.setLayout(new BoxLayout(layerControls, BoxLayout.Y_AXIS));
       layerControls.setLayout(new GridLayout(3, 0, 10, 10));
       controls.add(layerControls);
 
       JPanel projectControls = new JPanel();
-      projectControls.setLayout(new BoxLayout(projectControls, BoxLayout.Y_AXIS));
       projectControls.setLayout(new GridLayout(5, 0, 10, 10));
       controls.add(projectControls);
 
@@ -117,9 +155,6 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
       layerControls.add(sFButton);
       JButton nPButton = new JButton("New Project");
       projectControls.add(nPButton);
-      desiredWidthForDisplay = 0;
-      desiredHeightForDisplay = 0;
-
       JButton lPButton = new JButton("Load Project");
       projectControls.add(lPButton);
       JButton sPButton = new JButton("Save Project");
@@ -132,10 +167,10 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
       mainBottomPanel.add(controls);
     }
 
+    this.setVisible(true);
   }
 
   public void addFeatures(Features features) {
-    System.out.println("This better happen");
     this.initialNewProjectButton.addActionListener(evt ->
             features.newProject(this.desiredWidthForDisplay, this.desiredHeightForDisplay));
     
@@ -143,20 +178,7 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    switch (e.getActionCommand()) {
-      case "createNewProject":
-        System.out.println("There is no universe this doesn't print");
-        this.desiredWidthForDisplay =
-                Integer.parseInt(JOptionPane.showInputDialog(
-                        "Enter the numerical width of your new project"));
-        this.desiredHeightForDisplay =
-                Integer.parseInt(JOptionPane.showInputDialog(
-                        "Enter the numerical height of your new project"));
 
-    }
   }
 
-  public void resetGUI() {
-    System.out.println("FUCK FUCK FUCK");
-  }
 }

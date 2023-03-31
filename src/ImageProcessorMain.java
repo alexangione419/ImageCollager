@@ -24,7 +24,6 @@ public class ImageProcessorMain {
    */
   public static void main(String[] args) {
     ImageProject project = new ProjectImpl();
-
     Appendable viewToController = new StringBuilder();
 
     //ImageProjectView view = new PPMProjectTextView(project, System.out);
@@ -34,8 +33,8 @@ public class ImageProcessorMain {
     Readable rd = new StringReader(viewToController.toString());
 
     //ImageProjectController controller = new ControllerImpl(project, view, rd);
-    ImageProjectGUIController controller = new ImageProjectGUIController(project, view, rd);
-    controller.start();
+    ImageProjectGUIController controller = new ImageProjectGUIController(project, rd);
+    controller.start(view);
 
   }
 }
