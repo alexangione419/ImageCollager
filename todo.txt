@@ -9,7 +9,9 @@
 
 [] Make it so the model itself doesn't do anything with files
 
-[] Add a method that asks if the model has quit
+[] Create test for the model's hasOpenProject() and doesLayerExist() methods
+
+[] Fix saveImage, saveProject, and loadProject methods in the GUI controller
 
 [] Create functional objects for saving to different image formats
 

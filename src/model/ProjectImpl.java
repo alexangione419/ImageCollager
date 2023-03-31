@@ -62,58 +62,6 @@ public class ProjectImpl implements ImageProject {
   }
 
   @Override
-  public void saveImage(String name) throws IllegalStateException, IllegalArgumentException,
-      IOException {
-    if (!hasAOpenProject) {
-      throw new IllegalStateException("There's currently no open project.");
-    }
-
-    if (ImageProjectFileUtils.isFileNameValid(name)) {
-
-      String output = "P3\n"
-          + this.getWidth() + " " + this.getHeight() + "\n"
-          + this.getMaxPixelValue() + "\n"
-          + this.currentCanvas() + "\n";
-
-      ImageProjectFileUtils.createFile(name + ".ppm");
-      ImageProjectFileUtils.writeToFile(name + ".ppm", output);
-    }
-  }
-
-  @Override
-  public void saveProject(String name) throws IllegalStateException, IOException {
-    if (!hasAOpenProject) {
-      throw new IllegalStateException("There's currently no open project.");
-    }
-
-    if (ImageProjectFileUtils.isFileNameValid(name)) {
-
-      String output = name + "\n"
-          + this.width + " " + this.height + "\n";
-
-      for (Layer currLayer : this.layers) {
-        output = output.concat(currLayer.getName() + " " + currLayer.getFilter() + "\n");
-
-        int i = 0;
-
-        for (Pixel[] row : currLayer.getLayerData()) {
-          for (Pixel p : row) {
-            output = output.concat(p.toString());
-
-            if (i != ((this.width * this.height) - 1)) {
-              output = output.concat("\n");
-            }
-            i++;
-          }
-        }
-      }
-
-      ImageProjectFileUtils.createFile(name + ".collage");
-      ImageProjectFileUtils.writeToFile(name + ".collage", output);
-    }
-  }
-
-  @Override
   public String currentCanvas() throws IllegalStateException {
     if (!this.hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
@@ -140,94 +88,6 @@ public class ProjectImpl implements ImageProject {
     }
 
     return results;
-  }
-
-  @Override
-  public void loadProject(String file) throws IllegalArgumentException {
-    if (file == null) {
-      throw new IllegalArgumentException("Filepath cannot be null.");
-    }
-
-    if (!ImageProjectFileUtils.isProjectFile(file)) {
-      throw new IllegalArgumentException("File at filepath is not a .collage file.");
-    } else {
-      Scanner sc;
-      try {
-        sc = new Scanner(new FileInputStream(file));
-      } catch (FileNotFoundException e) {
-        throw new IllegalArgumentException("Project file not found at given filepath.");
-      }
-
-      //discards name of project
-      checkNext(sc);
-      sc.next();
-      checkNext(sc);
-
-      int width;
-      int height;
-
-      try {
-        width = sc.nextInt();
-      } catch (InputMismatchException e) {
-        throw new IllegalArgumentException("Invalid project file at given filepath.");
-      }
-      checkNext(sc);
-
-      try {
-        height = sc.nextInt();
-      } catch (InputMismatchException e) {
-        throw new IllegalArgumentException("Invalid project file at given filepath.");
-      }
-
-      checkNext(sc);
-
-      this.createNewProject(width, height);
-
-      while (sc.hasNext()) {
-        String newLayer = sc.next();
-        checkNext(sc);
-        String filter = sc.next();
-
-        if (this.doesLayerExist(newLayer)) {
-          this.setFilter(filter, newLayer);
-        } else {
-          this.addLayer(newLayer);
-          this.setFilter(filter, newLayer);
-        }
-
-        for (int y = 0; y < height; y++) {
-          for (int x = 0; x < width; x++) {
-            checkNext(sc);
-
-            int r = sc.nextInt();
-            checkNext(sc);
-
-            int g = sc.nextInt();
-            checkNext(sc);
-
-            int b = sc.nextInt();
-            checkNext(sc);
-
-            int a = sc.nextInt();
-
-            this.setActiveLayer(newLayer);
-            this.getActiveLayer().setPixelColor(x, y,
-                new RGBAPixel(this.getMaxPixelValue(), r, g, b, a));
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * Ensures that there is more input in file contents within the given scanner.
-   *
-   * @param scanner the scanner containing the file contents
-   */
-  private void checkNext(Scanner scanner) {
-    if (!scanner.hasNext()) {
-      throw new IllegalArgumentException("Invalid project file format");
-    }
   }
 
   @Override
@@ -446,13 +306,8 @@ public class ProjectImpl implements ImageProject {
     this.getActiveLayer().addImageToLayer(imageFile, x, y);
   }
 
-  /**
-   * Returns whether a {@code Layer} whose name is the given String exists in this project.
-   *
-   * @param layerName the name of the layer to look for
-   * @return true if the layer exists; otherwise false.
-   */
-  private boolean doesLayerExist(String layerName) {
+  @Override
+  public boolean doesLayerExist(String layerName) {
     boolean result = false;
 
     for (Layer l : this.layers) {

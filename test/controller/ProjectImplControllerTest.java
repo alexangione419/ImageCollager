@@ -1,11 +1,17 @@
 package controller;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.StringReader;
+import java.util.Scanner;
 import model.ImageProject;
 import model.ProjectImpl;
 import org.junit.After;
@@ -20,7 +26,7 @@ public class ProjectImplControllerTest {
 
   protected ImageProjectController controller;
   protected ImageProjectView view;
-  protected ImageProject g;
+  protected ImageProject model;
 
   @After
   public void cleanup() {
@@ -43,6 +49,373 @@ public class ProjectImplControllerTest {
     f.delete();
   }
 
+    @Test
+  public void validSaveImage() {
+    this.model.createNewProject(2, 2);
+    this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
+
+    try {
+      this.controller.saveImage("P1");
+      this.controller.saveProject("P1");
+    } catch (IOException io) {
+      fail(io.getMessage());
+    }
+
+    Scanner sc;
+
+    try {
+      sc = new Scanner(new FileInputStream("P1.collage"));
+    } catch (FileNotFoundException fnf) {
+      fail("File not found");
+    }
+
+    String curCanvas = this.model.currentCanvas();
+
+    this.controller.loadProject("P1.collage");
+
+    assertEquals(this.model.currentCanvas(), curCanvas);
+    assertEquals("255 0 0 0 0 0 \n0 0 0 0 0 0 ", curCanvas);
+    assertEquals("255 0 0 0 0 0 \n0 0 0 0 0 0 ", this.model.currentCanvas());
+  }
+
+  @Test
+  public void validSaveImageOneLayer() {
+    this.model.createNewProject(3, 4);
+    this.model.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
+    String curCanvas = this.model.currentCanvas();
+
+    try {
+      this.controller.saveImage("smol2");
+      this.controller.saveProject("smol2");
+    } catch (IOException io) {
+      // ignore
+    }
+
+    Scanner sc = null;
+
+    try {
+      sc = new Scanner(new FileInputStream("smol2.ppm"));
+    } catch (FileNotFoundException fnf) {
+      fail("File not found");
+    }
+
+    assertNotNull(sc);
+    assertEquals("P3", sc.next());
+    assertEquals("3", sc.next());
+    assertEquals("4", sc.next());
+    assertEquals("255", sc.next());
+    for (int i = 0; i < 12; i++) {
+      assertEquals(sc.nextInt(), 225);
+    }
+
+    this.controller.loadProject("smol2.collage");
+
+    assertEquals("225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", this.model.currentCanvas());
+
+    assertEquals("225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 \n"
+        + "225 225 225 225 225 225 225 225 225 ", curCanvas);
+
+    assertEquals(curCanvas, this.model.currentCanvas());
+  }
+
+  @Test
+  public void validSaveImageOneLayer2() {
+    this.model.createNewProject(3, 4);
+    this.model.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
+    String curCanvas = this.model.currentCanvas();
+
+    assertEquals(3, this.model.getWidth());
+    assertEquals(4, this.model.getHeight());
+
+    try {
+      this.controller.saveImage("smol2");
+      this.controller.saveProject("smol2");
+      this.controller.loadProject("./res/good.collage");
+    } catch (IOException io) {
+      // ignore
+    }
+
+    assertEquals(2, this.model.getWidth());
+    assertEquals(2, this.model.getHeight());
+    assertNotEquals("255 255 255 255 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 \n"
+        + "255 255 255 255 0 0 0 0 \n"
+        + "0 0 0 0 0 0 0 0 ", curCanvas);
+
+    assertEquals("127 0 128 127 0 128 \n"
+        + "0 0 128 127 127 255 ", this.model.currentCanvas());
+
+  }
+
+  @Test
+  public void validSaveImageMultipleLayers() {
+    this.model.createNewProject(3, 4);
+    this.model.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
+    this.model.addLayer("Layer2");
+    this.model.addImageToLayer("Layer2", "./res/smolLow.ppm", 0, 0);
+
+    try {
+      this.controller.saveImage("smolLow2");
+    } catch (IOException io) {
+      // welp
+    }
+
+    Scanner sc = null;
+    try {
+      sc = new Scanner(new FileInputStream("smolLow2.ppm"));
+    } catch (FileNotFoundException fnf) {
+      fail("File not found");
+    }
+
+    assertNotNull(sc);
+    assertEquals("P3", sc.next());
+    assertEquals("3", sc.next());
+    assertEquals("4", sc.next());
+    assertEquals("255", sc.next());
+    for (int i = 0; i < 12; i++) {
+      assertEquals(sc.nextInt(), 119);
+    }
+  }
+
+  @Test
+  public void badSaveImage() {
+    try {
+      try {
+        this.controller.saveImage(null);
+      } catch (IOException e) {
+        //ignore
+      }
+      fail("Tried to access the width with no loaded Project");
+    } catch (IllegalStateException e) {
+      assertEquals("There's currently no open project.", e.getMessage());
+    }
+
+    this.model.createNewProject(3, 3);
+
+    try {
+      try {
+        this.controller.saveImage(null);
+      } catch (IOException e) {
+        //ignore
+      }
+      fail("Null passed as an argument");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be null.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.controller.saveImage("");
+      } catch (IOException e) {
+        //ignore
+      }
+      fail("Whitespace passed as an argument");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.controller.saveImage("\n");
+      } catch (IOException e) {
+        //ignore
+      }
+      fail("Whitespace passed as an argument");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.controller.saveImage(System.lineSeparator());
+      } catch (IOException e) {
+        //ignore
+      }
+      fail("Whitespace passed as an argument");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+  }
+
+  @Test
+  public void badLoadProject() {
+    try {
+      this.controller.loadProject(null);
+      fail("Null passed as an argument");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Filepath cannot be null.", e.getMessage());
+    }
+
+    try {
+      this.controller.loadProject("tako.ppm");
+      fail("Invalid filepath");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File at filepath is not a .collage file.", e.getMessage());
+    }
+
+    try {
+      this.controller.loadProject("tako.collage");
+      fail("Invalid filepath");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Project file not found at given filepath.", e.getMessage());
+    }
+
+    try {
+      this.controller.loadProject("./res/bad.collage");
+      fail("bad project file");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Invalid project file at given filepath.", e.getMessage());
+    }
+  }
+
+  @Test
+  public void loadProject() {
+    this.model.createNewProject(3, 4);
+    this.model.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
+
+    String curCanvas = this.model.currentCanvas();
+
+    assertEquals(3, this.model.getWidth());
+    assertEquals(4, this.model.getHeight());
+
+    this.controller.loadProject("./res/good.collage");
+
+    assertEquals(2, this.model.getWidth());
+    assertEquals(2, this.model.getHeight());
+    assertEquals(3, this.model.getNumberOfLayers());
+
+    this.model.setActiveLayer(0);
+    assertEquals("normal", this.model.getActiveLayer().getFilter());
+
+    this.model.setActiveLayer(1);
+    assertEquals("red-component", this.model.getActiveLayer().getFilter());
+
+    this.model.setActiveLayer(2);
+    assertEquals("normal", this.model.getActiveLayer().getFilter());
+
+    assertNotEquals(curCanvas, this.model.currentCanvas());
+
+  }
+
+  @Test
+  public void validSaveProject() {
+    this.model.createNewProject(3, 4);
+    this.model.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
+
+    try {
+      this.controller.saveProject("P1");
+    } catch (IOException io) {
+      fail(io.getMessage());
+    }
+
+    Scanner sc = null;
+    try {
+      sc = new Scanner(new FileInputStream("P1.collage"));
+    } catch (FileNotFoundException fnf) {
+      fail("File not found");
+    }
+    assertNotNull(sc);
+
+    assertEquals("P1", sc.next());
+    assertEquals("3", sc.next());
+    assertEquals("4", sc.next());
+    assertEquals("Layer1", sc.next());
+    assertEquals("normal", sc.next());
+
+    for (int i = 0; i < 12; i++) {
+      assertEquals("225 225 225 255",
+          sc.next() + " " + sc.next() + " " + sc.next() + " " + sc.next());
+    }
+  }
+
+  @Test
+  public void badSaveProject() {
+    try {
+      try {
+        this.controller.saveProject(null);
+      } catch (IOException e) {
+        //ignore
+      }
+      fail("Tried to save project with no loaded Project");
+    } catch (IllegalStateException e) {
+      assertEquals("There's currently no open project.", e.getMessage());
+    }
+
+    this.model.createNewProject(4, 4);
+
+    try {
+      try {
+        this.controller.saveProject(null);
+      } catch (IOException e) {
+        //ignore
+      }
+      fail("Invalid file name");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be null.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.controller.saveProject("");
+      } catch (IOException e) {
+        //ignore
+      }
+      fail("Invalid file name");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.controller.saveProject("\n");
+      } catch (IOException e) {
+        //ignore
+      }
+      fail("Invalid file name");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.controller.saveProject(" ");
+      } catch (IOException e) {
+        //ignore
+      }
+      fail("Invalid file name");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.controller.saveProject(System.lineSeparator());
+      } catch (IOException e) {
+        //ignore
+      }
+      fail("Invalid file name");
+    } catch (IllegalArgumentException e) {
+      assertEquals("File name cannot be whitespace.", e.getMessage());
+    }
+
+    try {
+      try {
+        this.controller.saveProject("P1.txt");
+      } catch (IOException e) {
+        //ignore
+      }
+      fail("Invalid file name");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Name must be valid filename with no file extension.",
+          e.getMessage());
+    }
+  }
+
   @Test
   public void invalidConstruction() {
 
@@ -55,8 +428,8 @@ public class ProjectImplControllerTest {
     }
 
     try {
-      this.g = new ProjectImpl();
-      this.controller = new ControllerImpl(this.g, null, null);
+      this.model = new ProjectImpl();
+      this.controller = new ControllerImpl(this.model, null, null);
       fail("View is null");
     } catch (IllegalArgumentException e) {
       assertEquals("The View for the Controller cannot be null.",
@@ -64,9 +437,9 @@ public class ProjectImplControllerTest {
     }
 
     try {
-      this.g = new ProjectImpl();
-      this.view = new PPMProjectTextView(this.g, System.out);
-      this.controller = new ControllerImpl(this.g, this.view, null);
+      this.model = new ProjectImpl();
+      this.view = new PPMProjectTextView(this.model, System.out);
+      this.controller = new ControllerImpl(this.model, this.view, null);
       fail("Output is null");
     } catch (IllegalArgumentException e) {
       assertEquals("The Readable for the Controller cannot be null.",
@@ -79,10 +452,10 @@ public class ProjectImplControllerTest {
     Readable input = new StringReader("quit y");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.g.createNewProject(32, 32);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.model.createNewProject(32, 32);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -94,10 +467,10 @@ public class ProjectImplControllerTest {
     Readable input = new StringReader("new-project 2 2 quit y");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.g.createNewProject(32, 32);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.model.createNewProject(32, 32);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals(
@@ -113,10 +486,10 @@ public class ProjectImplControllerTest {
     Readable input = new StringReader("new-project 2 2 quit n quit y");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.g.createNewProject(32, 32);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.model.createNewProject(32, 32);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.\nAwaiting command:\n"
@@ -133,10 +506,10 @@ public class ProjectImplControllerTest {
     Readable input = new StringReader("huh what quit y");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.g.createNewProject(32, 32);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.model.createNewProject(32, 32);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -155,10 +528,10 @@ public class ProjectImplControllerTest {
     Readable input = new StringReader("huh what a abb aff jjj quit y");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.g.createNewProject(32, 32);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.model.createNewProject(32, 32);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -181,10 +554,10 @@ public class ProjectImplControllerTest {
     Readable input = new StringReader("new-project 2 2 quit y");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.g.createNewProject(32, 32);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.model.createNewProject(32, 32);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -196,9 +569,9 @@ public class ProjectImplControllerTest {
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!",
         output.toString().split("Welcome to our Image Processor.\n")[1]);
-    assertEquals(2, this.g.getWidth());
-    assertEquals(2, this.g.getHeight());
-    assertEquals(1, this.g.getNumberOfLayers());
+    assertEquals(2, this.model.getWidth());
+    assertEquals(2, this.model.getHeight());
+    assertEquals(1, this.model.getNumberOfLayers());
   }
 
   @Test
@@ -206,10 +579,10 @@ public class ProjectImplControllerTest {
     Readable input = new StringReader("help quit y");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.g.createNewProject(32, 32);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.model.createNewProject(32, 32);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -238,10 +611,10 @@ public class ProjectImplControllerTest {
     Readable input = new StringReader("? quit y");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.g.createNewProject(32, 32);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.model.createNewProject(32, 32);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -270,9 +643,9 @@ public class ProjectImplControllerTest {
     Readable input = new StringReader("filter-list quit y");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -291,9 +664,9 @@ public class ProjectImplControllerTest {
     Readable input = new StringReader("new-project 2 2 filter-list quit y");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -307,7 +680,7 @@ public class ProjectImplControllerTest {
 
     //checks if each filter is in the model's hashmap
     for (String s : filters.split("\n")) {
-      assertTrue(this.g.getFilters().containsKey(s));
+      assertTrue(this.model.getFilters().containsKey(s));
     }
   }
 
@@ -316,9 +689,9 @@ public class ProjectImplControllerTest {
     Readable input = new StringReader("add-layer");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -340,9 +713,9 @@ public class ProjectImplControllerTest {
     Readable input = new StringReader("new-project 2 2 add-layer");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -365,9 +738,9 @@ public class ProjectImplControllerTest {
     Readable input = new StringReader("new-project 2 2 add-layer quit y quit y");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -382,9 +755,9 @@ public class ProjectImplControllerTest {
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!",
         output.toString().split("Welcome to our Image Processor.\n")[1]);
-    assertEquals(2, this.g.getWidth());
-    assertEquals(2, this.g.getHeight());
-    assertEquals(2, this.g.getNumberOfLayers());
+    assertEquals(2, this.model.getWidth());
+    assertEquals(2, this.model.getHeight());
+    assertEquals(2, this.model.getNumberOfLayers());
   }
 
   @Test
@@ -394,9 +767,9 @@ public class ProjectImplControllerTest {
         + "quit y");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -411,9 +784,9 @@ public class ProjectImplControllerTest {
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!",
         output.toString().split("Welcome to our Image Processor.\n")[1]);
-    assertEquals(2, this.g.getWidth());
-    assertEquals(2, this.g.getHeight());
-    assertEquals(1, this.g.getNumberOfLayers());
+    assertEquals(2, this.model.getWidth());
+    assertEquals(2, this.model.getHeight());
+    assertEquals(1, this.model.getNumberOfLayers());
   }
 
   @Test
@@ -426,9 +799,9 @@ public class ProjectImplControllerTest {
         + "quit y");
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -448,9 +821,9 @@ public class ProjectImplControllerTest {
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!",
         output.toString().split("Welcome to our Image Processor.\n")[1]);
-    assertEquals(2, this.g.getWidth());
-    assertEquals(2, this.g.getHeight());
-    assertEquals(5, this.g.getNumberOfLayers());
+    assertEquals(2, this.model.getWidth());
+    assertEquals(2, this.model.getHeight());
+    assertEquals(5, this.model.getNumberOfLayers());
   }
 
   @Test
@@ -459,9 +832,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -485,9 +858,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -504,9 +877,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -523,9 +896,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -542,9 +915,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -562,9 +935,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -578,9 +951,9 @@ public class ProjectImplControllerTest {
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!",
         output.toString().split("Welcome to our Image Processor.\n")[1]);
-    assertEquals(2, this.g.getWidth());
-    assertEquals(2, this.g.getHeight());
-    assertEquals(1, this.g.getNumberOfLayers());
+    assertEquals(2, this.model.getWidth());
+    assertEquals(2, this.model.getHeight());
+    assertEquals(1, this.model.getNumberOfLayers());
   }
 
   //adding an image to a layer that doesn't exist
@@ -592,9 +965,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -608,9 +981,9 @@ public class ProjectImplControllerTest {
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!",
         output.toString().split("Welcome to our Image Processor.\n")[1]);
-    assertEquals(2, this.g.getWidth());
-    assertEquals(2, this.g.getHeight());
-    assertEquals(1, this.g.getNumberOfLayers());
+    assertEquals(2, this.model.getWidth());
+    assertEquals(2, this.model.getHeight());
+    assertEquals(1, this.model.getNumberOfLayers());
   }
 
   @Test
@@ -622,9 +995,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
     assertEquals("Welcome to our Image Processor.",
@@ -640,9 +1013,9 @@ public class ProjectImplControllerTest {
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!",
         output.toString().split("Welcome to our Image Processor.\n")[1]);
-    assertEquals(2, this.g.getWidth());
-    assertEquals(2, this.g.getHeight());
-    assertEquals(1, this.g.getNumberOfLayers());
+    assertEquals(2, this.model.getWidth());
+    assertEquals(2, this.model.getHeight());
+    assertEquals(1, this.model.getNumberOfLayers());
   }
 
   @Test
@@ -652,9 +1025,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -672,9 +1045,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -692,9 +1065,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -720,9 +1093,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -742,15 +1115,15 @@ public class ProjectImplControllerTest {
   }
 
   @Test
-  public void badLoadProject() {
+  public void badLoadProjectInput() {
     Readable input = new StringReader("new-project 2 2 "
         + "load-project ");
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -767,9 +1140,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -794,9 +1167,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -815,16 +1188,16 @@ public class ProjectImplControllerTest {
   }
 
   @Test
-  public void loadProject() {
+  public void loadProjectInput() {
     Readable input = new StringReader("new-project 2 2 "
         + "load-project ./res/good.collage "
         + "quit y");
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     this.controller.start();
 
@@ -838,18 +1211,18 @@ public class ProjectImplControllerTest {
         output.toString().split("Welcome to our Image Processor.\n")[1]);
 
     assertEquals("127 0 128 127 0 128 \n"
-        + "0 0 128 127 127 255 ", this.g.currentCanvas());
+        + "0 0 128 127 127 255 ", this.model.currentCanvas());
   }
 
   @Test
-  public void badSaveProject() {
+  public void badSaveProjectInput() {
     Readable input = new StringReader("save-project ");
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -872,9 +1245,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -890,9 +1263,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -917,9 +1290,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     this.controller.start();
 
@@ -934,14 +1307,14 @@ public class ProjectImplControllerTest {
   }
 
   @Test
-  public void badSaveImage() {
+  public void badSaveImageInput() {
     Readable input = new StringReader("save-image ");
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -964,9 +1337,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -982,9 +1355,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     try {
       this.controller.start();
@@ -1009,9 +1382,9 @@ public class ProjectImplControllerTest {
 
     Appendable output = new StringBuilder();
 
-    this.g = new ProjectImpl();
-    this.view = new PPMProjectTextView(this.g, output);
-    this.controller = new ControllerImpl(this.g, this.view, input);
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
 
     this.controller.start();
 

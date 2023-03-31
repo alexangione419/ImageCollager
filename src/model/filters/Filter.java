@@ -30,4 +30,11 @@ public interface Filter {
 
     return bottom;
   }
+
+  static void applyToAll() {
+
+
+
+  }
+
 }

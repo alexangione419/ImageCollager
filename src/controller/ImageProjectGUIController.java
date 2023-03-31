@@ -10,7 +10,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import model.ImageProject;
 import view.ImageProjectGUIViewImpl;
 
-public class ImageProjectGUIController implements Features {
+public class ImageProjectGUIController implements ImageProjectController, Features {
   boolean running;
   private final ImageProject model;
   private ImageProjectGUIViewImpl view;
@@ -18,7 +18,7 @@ public class ImageProjectGUIController implements Features {
 
 
   /**
-   * Constructs a new {@code PPMProjectController}.
+   * Constructs a new {@code ImageProjectGUIController}.
    *
    * @param model the model to control
    * @throws IllegalArgumentException if any of the given arguments are null

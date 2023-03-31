@@ -1,5 +1,6 @@
 package controller.commands;
 
+import controller.ImageProjectController;
 import java.io.IOException;
 import java.util.Scanner;
 import model.ImageProject;
@@ -10,7 +11,8 @@ import view.ImageProjectView;
  */
 public final class SaveProject extends ACommand {
 
-  Scanner sc;
+  private Scanner sc;
+  private ImageProjectController controller;
 
   /**
    * Constructs a new {@code SaveProject}.
@@ -19,9 +21,11 @@ public final class SaveProject extends ACommand {
    * @param view  the view to use to render messages
    * @param sc    the Scanner with the current user input
    */
-  public SaveProject(ImageProject model, ImageProjectView view, Scanner sc) {
+  public SaveProject(ImageProject model, ImageProjectView view,
+      ImageProjectController controller, Scanner sc) {
     super(model, view);
     this.sc = sc;
+    this.controller = controller;
   }
 
   @Override
@@ -43,7 +47,7 @@ public final class SaveProject extends ACommand {
 
     try {
       try {
-        this.model.saveProject(fileName);
+        this.controller.saveProject(fileName);
         this.view.renderMessage("Project was saved to as " + fileName + ".collage.\n");
       } catch (IllegalArgumentException e) {
         this.view.renderMessage("The name for the file is invalid. It must not contain any periods."

@@ -53,4 +53,12 @@ public interface ImageProjectState {
    */
   boolean hasOpenProject();
 
+  /**
+   * Returns whether a {@code Layer} whose name is the given String exists in this project.
+   *
+   * @param layerName the name of the layer to look for
+   * @return true if the layer exists; otherwise false.
+   */
+  boolean doesLayerExist(String layerName);
+
 }
