@@ -28,7 +28,7 @@ public class ImageProcessorMain {
     Appendable viewToController = new StringBuilder();
 
     //ImageProjectView view = new PPMProjectTextView(project, System.out);
-    ImageProjectView view = new ImageProjectGUIViewImpl(project, viewToController);
+    ImageProjectGUIViewImpl view = new ImageProjectGUIViewImpl(project, viewToController);
 
     //Readable rd = new InputStreamReader(System.in);
     Readable rd = new StringReader(viewToController.toString());

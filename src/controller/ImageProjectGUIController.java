@@ -1,19 +1,21 @@
 package controller;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import controller.commands.AddImageToLayer;
 import model.ImageProject;
 import view.ImageProjectGUIViewImpl;
 import view.ImageProjectView;
 
-public class ImageProjectGUIController implements ImageProjectController{
+public class ImageProjectGUIController implements ImageProjectController, Features{
   boolean running;
   private final ImageProject model;
-  private final ImageProjectView view;
+  private final ImageProjectGUIViewImpl view;
   private final Scanner sc;
 
 
@@ -24,7 +26,7 @@ public class ImageProjectGUIController implements ImageProjectController{
    * @param view  the view of the model
    * @throws IllegalArgumentException if any of the given arguments are null
    */
-  public ImageProjectGUIController(ImageProject model, ImageProjectView view, Readable input)
+  public ImageProjectGUIController(ImageProject model, ImageProjectGUIViewImpl view, Readable input)
           throws IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Project argument cannot be null.");
@@ -46,6 +48,8 @@ public class ImageProjectGUIController implements ImageProjectController{
 
   @Override
   public void start() throws IllegalStateException {
+    view.addFeatures(this);
+
     ImageProjectGUIViewImpl.setDefaultLookAndFeelDecorated(false);
     ImageProjectGUIViewImpl frame = new ImageProjectGUIViewImpl(this.model, new StringBuilder());
 
@@ -68,7 +72,54 @@ public class ImageProjectGUIController implements ImageProjectController{
     }
 
 
+  }
 
+  @Override
+  public void addImageToLayer(String layer, String image, int x, int y) {
+    this.model.addImageToLayer(layer, image, x, y);
+  }
 
+  @Override
+  public void addLayer(String layerName) {
+    this.model.addLayer(layerName);
+  }
+
+  @Override
+  public void loadProject(String filepath) {
+    this.model.loadProject(filepath);
+  }
+
+  @Override
+  public void saveProject(String name) {
+    try {
+      this.model.saveProject(name);
+    } catch (IOException io) {
+      // welp
+    }
+  }
+
+  @Override
+  public void saveImage(String name) {
+    try {
+      this.model.saveImage(name);
+    } catch (IOException io) {
+      // welp
+    }
+  }
+
+  @Override
+  public void newProject(int width, int height) {
+    this.model.createNewProject(width, height);
+    this.view.resetGUI();
+  }
+
+  @Override
+  public void setFilter(String filterName, String layerName) {
+    this.model.setFilter(filterName, layerName);
+  }
+
+  @Override
+  public void exit() {
+    System.exit(0);
   }
 }

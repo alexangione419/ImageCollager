@@ -11,16 +11,6 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import controller.commands.ACommand;
-import controller.commands.AddImageToLayer;
-import controller.commands.AddLayer;
-import controller.commands.Command;
-import controller.commands.FilterList;
-import controller.commands.Help;
-import controller.commands.LoadProject;
-import controller.commands.NewProject;
-import controller.commands.SaveImage;
-import controller.commands.SaveProject;
-import controller.commands.SetFilter;
 import model.filters.BlueComponent;
 import model.filters.BrightenIntensity;
 import model.filters.BrightenLuma;

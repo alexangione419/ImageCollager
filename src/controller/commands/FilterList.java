@@ -24,7 +24,7 @@ public final class FilterList extends ACommand {
 
   @Override
   public void run() {
-    if (!this.model.hasOpenProject()) {
+    if (this.model.hasOpenProject()) {
       try {
         this.view.renderMessage("Please create or open a new project to use that command.\n");
       } catch (IOException e) {

@@ -126,12 +126,6 @@ public interface ImageProject extends ImageProjectState {
    */
   HashMap<String, Filter> getFilters();
 
-  /**
-   * Returns whether this {@code ImageProject} has an opened project.
-   *
-   * @return whether this {@code ImageProject} has an opened project
-   */
-  boolean hasOpenProject();
 
   /**
    * Adds an image, specified by imageFile, to the {@code Layer} whose name matches layerName.

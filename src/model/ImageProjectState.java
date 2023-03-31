@@ -46,4 +46,11 @@ public interface ImageProjectState {
    */
   int getMaxPixelValue();
 
+  /**
+   * Returns whether this {@code ImageProject} has an opened project.
+   *
+   * @return whether this {@code ImageProject} has an opened project
+   */
+  boolean hasOpenProject();
+
 }
