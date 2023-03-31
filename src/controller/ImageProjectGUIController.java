@@ -12,7 +12,7 @@ import model.ImageProject;
 import view.ImageProjectGUIViewImpl;
 import view.ImageProjectView;
 
-public class ImageProjectGUIController implements ImageProjectController, Features{
+public class ImageProjectGUIController implements ImageProjectController, Features {
   boolean running;
   private final ImageProject model;
   private final ImageProjectGUIViewImpl view;
@@ -48,7 +48,7 @@ public class ImageProjectGUIController implements ImageProjectController, Featur
 
   @Override
   public void start() throws IllegalStateException {
-    view.addFeatures(this);
+    this.view.addFeatures(this);
 
     ImageProjectGUIViewImpl.setDefaultLookAndFeelDecorated(false);
     ImageProjectGUIViewImpl frame = new ImageProjectGUIViewImpl(this.model, new StringBuilder());
@@ -109,6 +109,7 @@ public class ImageProjectGUIController implements ImageProjectController, Featur
 
   @Override
   public void newProject(int width, int height) {
+    System.out.println("AM I EVEN GETTING GERE");
     this.model.createNewProject(width, height);
     this.view.resetGUI();
   }

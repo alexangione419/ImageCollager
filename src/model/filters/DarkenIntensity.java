@@ -7,7 +7,7 @@ import model.pixels.RGBAPixel;
 /**
  * A filter darkens a {@code ImageProject} based on each pixel's intensity.
  */
-public class DarkenIntensity implements Filter {
+public class DarkenIntensity extends AbstractDarken {
 
   @Override
   public Pixel[][] apply(Layer layer) {
@@ -19,11 +19,8 @@ public class DarkenIntensity implements Filter {
 
         int sum = p.getRed() + p.getGreen() + p.getBlue();
         int ave = sum / 3;
-        int r = Clamp.execute(p.getRed() - ave, 0, layer.getMaxPixel());
-        int g = Clamp.execute(p.getGreen() - ave, 0, layer.getMaxPixel());
-        int b = Clamp.execute(p.getBlue() - ave, 0, layer.getMaxPixel());
 
-        layerToModify[x][y] = new RGBAPixel(layer.getMaxPixel(), r, g, b, p.getAlpha());
+        layerToModify[x][y] = super.darken(ave, p, layer);
       }
     }
 

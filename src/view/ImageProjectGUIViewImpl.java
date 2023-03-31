@@ -3,19 +3,10 @@ package view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import controller.Features;
-import controller.ImageProjectGUIController;
 import model.ImageProjectState;
 
 
@@ -29,7 +20,7 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
   private JPanel mainPanel;
   private JPanel mainBottomPanel;
   private JPanel controls;
-  private JButton initialNewProjectButton;
+  private final JButton initialNewProjectButton;
 
   private int desiredWidthForDisplay;
   private int desiredHeightForDisplay;
@@ -42,34 +33,32 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     this.model = model;
 
     //Creates two panels to be top and bottom section
-    mainPanel = new JPanel();
-    mainBottomPanel = new JPanel();
-    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.LINE_AXIS));
-    mainPanel.setPreferredSize(new Dimension(1200, 500));
-    mainBottomPanel.setLayout(new BoxLayout(mainBottomPanel, BoxLayout.PAGE_AXIS));
+    this.mainPanel = new JPanel();
+    this.mainBottomPanel = new JPanel();
+    this.mainPanel.setLayout(new BoxLayout(this.mainPanel, BoxLayout.LINE_AXIS));
+    this.mainPanel.setPreferredSize(new Dimension(1200, 500));
+    this.mainBottomPanel.setLayout(new BoxLayout(this.mainBottomPanel, BoxLayout.PAGE_AXIS));
 
     // adds top panel above bottom section
-    mainBottomPanel.add(mainPanel);
-    add(mainBottomPanel);
+    this.mainBottomPanel.add(this.mainPanel);
+    this.add(mainBottomPanel);
 
     //Creates a button to make the user create a new project
     this.initialNewProjectButton = new JButton("Create new project.");
     this.initialNewProjectButton.setActionCommand("createNewProject");
-    this.initialNewProjectButton.addActionListener(this);
-
-    mainPanel.add(initialNewProjectButton);
+    this.mainPanel.add(initialNewProjectButton);
 
     // Waits to create rest of GUI until view can see model has an open project
     if (this.model.hasOpenProject()) {
-      mainPanel.remove(initialNewProjectButton);
+      this.mainPanel.remove(initialNewProjectButton);
 
       //----------------------------------------------------------------------------------------------
 
       // Creates a panel for displaying an image
       JPanel imageDisplay = new JPanel();
-      imageDisplay.setBorder(BorderFactory.createTitledBorder(this.model.getName()));
+      imageDisplay.setBorder(BorderFactory.createTitledBorder("shit cum ballz"));
       imageDisplay.setLayout(new GridLayout(1, 0, 10, 10));
-      mainPanel.add(imageDisplay);
+      this.mainPanel.add(imageDisplay);
 
       // adds image to that panel
       JLabel imageLabel = new JLabel();
@@ -142,9 +131,11 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
 
       mainBottomPanel.add(controls);
     }
+
   }
 
   public void addFeatures(Features features) {
+    System.out.println("This better happen");
     this.initialNewProjectButton.addActionListener(evt ->
             features.newProject(this.desiredWidthForDisplay, this.desiredHeightForDisplay));
     
@@ -154,6 +145,7 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     switch (e.getActionCommand()) {
       case "createNewProject":
+        System.out.println("There is no universe this doesn't print");
         this.desiredWidthForDisplay =
                 Integer.parseInt(JOptionPane.showInputDialog(
                         "Enter the numerical width of your new project"));
@@ -165,6 +157,6 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
   }
 
   public void resetGUI() {
-
+    System.out.println("FUCK FUCK FUCK");
   }
 }

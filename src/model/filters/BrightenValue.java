@@ -7,7 +7,7 @@ import model.pixels.RGBAPixel;
 /**
  * A filter that brightens a {@code ImageProject} based on each pixel's greatest component.
  */
-public class BrightenValue implements Filter {
+public class BrightenValue extends AbstractBrighten {
 
   @Override
   public Pixel[][] apply(Layer layer) {
@@ -18,12 +18,7 @@ public class BrightenValue implements Filter {
         Pixel p = layerToModify[x][y];
 
         int max = Math.max(p.getRed(), Math.max(p.getGreen(), p.getBlue()));
-
-        int r = Clamp.execute(p.getRed() + max, 0, layer.getMaxPixel());
-        int g = Clamp.execute(p.getGreen() + max, 0, layer.getMaxPixel());
-        int b = Clamp.execute(p.getBlue() + max, 0, layer.getMaxPixel());
-
-        layerToModify[x][y] = new RGBAPixel(layer.getMaxPixel(), r, g, b, p.getAlpha());
+        layerToModify[x][y] = super.brighten(max, p, layer);
       }
     }
 

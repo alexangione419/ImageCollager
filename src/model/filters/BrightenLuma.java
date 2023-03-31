@@ -7,7 +7,7 @@ import model.pixels.RGBAPixel;
 /**
  * A filter that brightens a {@code ImageProject} based on the luma value.
  */
-public class BrightenLuma implements Filter {
+public class BrightenLuma extends AbstractBrighten {
 
   @Override
   public Pixel[][] apply(Layer layer) {
@@ -18,12 +18,7 @@ public class BrightenLuma implements Filter {
         Pixel p = layerToModify[x][y];
 
         int luma = (int) ((0.2126 * p.getRed()) + (0.7152 * p.getGreen()) + (0.0722 * p.getBlue()));
-
-        int r = Clamp.execute(p.getRed() + luma, 0, layer.getMaxPixel());
-        int g = Clamp.execute(p.getGreen() + luma, 0, layer.getMaxPixel());
-        int b = Clamp.execute(p.getBlue() + luma, 0, layer.getMaxPixel());
-
-        layerToModify[x][y] = new RGBAPixel(layer.getMaxPixel(), r, g, b, p.getAlpha());
+        layerToModify[x][y] = super.brighten(luma, p, layer);
       }
     }
 
