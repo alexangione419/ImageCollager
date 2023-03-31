@@ -84,6 +84,7 @@ public class ImageProjectGUIController implements Features {
   @Override
   public void newProject(int width, int height) {
     this.model.createNewProject(width, height);
+    this.view.runMainGUI();
   }
 
   @Override
