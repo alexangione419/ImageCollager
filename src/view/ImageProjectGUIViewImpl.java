@@ -39,7 +39,7 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     this.model = model;
 
     this.setTitle("Image Processor");
-    this.setSize(1200, 900);
+    this.setSize(800, 500);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
@@ -103,27 +103,31 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
   }
 
   public void addFeatures(Features features) {
+//    this.initialNewProjectButton.addActionListener(evt ->
+//            features.newProject(this.desiredWidthForDisplay, this.desiredHeightForDisplay));
     this.initialNewProjectButton.addActionListener(evt ->
-            features.newProject(this.desiredWidthForDisplay, this.desiredHeightForDisplay));
+            features.newProject(200, 200));
+
     this.initialLoadNewProjectButton.addActionListener(evt ->
             features.loadProject("P1.collage"));
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    if (e.getActionCommand().equalsIgnoreCase("createNew")) {
-      this.desiredHeightForDisplay = Integer.parseInt(JOptionPane.showInputDialog("Please enter numerical representation of height."));
-      this.desiredWidthForDisplay = Integer.parseInt(JOptionPane.showInputDialog("Please enter numerical representation of width."));
-    }
+//    if (e.getActionCommand().equalsIgnoreCase("createNew")) {
+//      this.desiredHeightForDisplay = Integer.parseInt(JOptionPane.showInputDialog("Please enter numerical representation of height."));
+//      this.desiredWidthForDisplay = Integer.parseInt(JOptionPane.showInputDialog("Please enter numerical representation of width."));
+//    }
 
   }
 
   public void runMainGUI() {
     this.mainPanel.remove(this.introScreen);
+    this.setSize(1200, 900);
 
     // Creates a panel for displaying an image
     JPanel imageDisplay = new JPanel();
-    imageDisplay.setBorder(BorderFactory.createTitledBorder("this"));
+    imageDisplay.setBorder(BorderFactory.createTitledBorder(this.model.getName()));
     imageDisplay.setLayout(new GridLayout(1, 0, 10, 10));
     this.mainPanel.add(imageDisplay);
 
