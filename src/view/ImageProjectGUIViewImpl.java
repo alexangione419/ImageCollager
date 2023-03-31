@@ -26,6 +26,14 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
   private JPanel controls;
   private final JButton initialNewProjectButton;
   private final JButton initialLoadNewProjectButton;
+  private JButton nPButton;
+  private JButton aITLButton;
+  private JButton nLButton;
+  private JButton sFButton;
+  private JButton lPButton;
+  private JButton sPButton;
+  private JButton eButton;
+  private JButton sIButton;
 
   private int desiredWidthForDisplay;
   private int desiredHeightForDisplay;
@@ -66,8 +74,7 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
     intro.setParagraphAttributes(center, true);
 
-    intro.setText("To create a new project, please input valid numerical arguments into the text " +
-            "boxes below, then press create.");
+    intro.setText("Please either create a new project or load an existing one.");
     this.introScreen.add(intro);
 
 //    this.heightInput = new JTextArea();
@@ -97,6 +104,42 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     this.introScreen.add(initialButtons);
 
     this.mainPanel.add(this.introScreen);
+
+
+    //prepares buttons for mainGUI use
+    // does not use buttons until runMainGUI is run
+    // Panel representing important commands
+    this.controls = new JPanel();
+
+    // divides buttons into two categories to make them look nicer in GUI
+    JPanel layerControls = new JPanel();
+    layerControls.setLayout(new GridLayout(3, 0, 10, 10));
+    controls.add(layerControls);
+
+    JPanel projectControls = new JPanel();
+    projectControls.setLayout(new GridLayout(5, 0, 10, 10));
+    controls.add(projectControls);
+
+    this.nLButton = new JButton("Add New Layer");
+    layerControls.add(this.nLButton);
+    this.aITLButton = new JButton("Add Image to Current Layer");
+    layerControls.add(aITLButton);
+    this.sFButton = new JButton("Set Filter on Current Layer");
+    layerControls.add(this.sFButton);
+    this.nPButton = new JButton("New Project");
+    projectControls.add(this.nPButton);
+    this.lPButton = new JButton("Load Project");
+    projectControls.add(this.lPButton);
+    this.sPButton = new JButton("Save Project");
+    projectControls.add(this.sPButton);
+    this.sIButton = new JButton("Save Image");
+    projectControls.add(this.sIButton);
+    this.eButton = new JButton("Exit");
+    projectControls.add(this.eButton);
+
+
+
+
     this.setVisible(true);
 
 
@@ -110,6 +153,9 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
 
     this.initialLoadNewProjectButton.addActionListener(evt ->
             features.loadProject("P1.collage"));
+
+    this.eButton.addActionListener(evt ->
+            features.exit());
   }
 
   @Override
@@ -166,34 +212,6 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     mainPanel.add(radioPanel);
     //----------------------------------------------------------------------------------------------
 
-    // Panel representing important commands
-    controls = new JPanel();
-
-    // divides buttons into two categories to make them look nicer in GUI
-    JPanel layerControls = new JPanel();
-    layerControls.setLayout(new GridLayout(3, 0, 10, 10));
-    controls.add(layerControls);
-
-    JPanel projectControls = new JPanel();
-    projectControls.setLayout(new GridLayout(5, 0, 10, 10));
-    controls.add(projectControls);
-
-    JButton nLButton = new JButton("Add New Layer");
-    layerControls.add(nLButton);
-    JButton aITLButton = new JButton("Add Image to Current Layer");
-    layerControls.add(aITLButton);
-    JButton sFButton = new JButton("Set Filter on Current Layer");
-    layerControls.add(sFButton);
-    JButton nPButton = new JButton("New Project");
-    projectControls.add(nPButton);
-    JButton lPButton = new JButton("Load Project");
-    projectControls.add(lPButton);
-    JButton sPButton = new JButton("Save Project");
-    projectControls.add(sPButton);
-    JButton sIButton = new JButton("Save Image");
-    projectControls.add(sIButton);
-    JButton eButton = new JButton("Exit");
-    projectControls.add(eButton);
 
     mainBottomPanel.add(controls);
 
