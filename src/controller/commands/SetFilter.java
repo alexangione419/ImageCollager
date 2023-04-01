@@ -10,7 +10,7 @@ import view.ImageProjectView;
  */
 public final class SetFilter extends ACommand {
 
-  Scanner sc;
+  private Scanner sc;
 
   /**
    * Constructs a new {@code SetFilter}.

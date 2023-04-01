@@ -1,12 +1,5 @@
 package controller;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import model.ImageProject;
 import controller.commands.ACommand;
 import controller.commands.AddImageToLayer;
 import controller.commands.AddLayer;
@@ -17,10 +10,10 @@ import controller.commands.NewProject;
 import controller.commands.SaveImage;
 import controller.commands.SaveProject;
 import controller.commands.SetFilter;
-import model.ImageProjectFileUtils;
-import model.Layer;
-import model.pixels.Pixel;
-import model.pixels.RGBAPixel;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Scanner;
+import model.ImageProject;
 import view.ImageProjectView;
 
 /**
@@ -75,9 +68,9 @@ public class ControllerImpl implements ImageProjectController {
     this.commands.put("add-layer", new AddLayer(this.model, this.view, this.sc));
     this.commands.put("add-image-to-layer", new AddImageToLayer(this.model, this.view, this.sc));
     this.commands.put("set-filter", new SetFilter(this.model, this.view, this.sc));
-    this.commands.put("load-project", new LoadProject(this.model, this.view, this, this.sc));
-    this.commands.put("save-project", new SaveProject(this.model, this.view, this, this.sc));
-    this.commands.put("save-image", new SaveImage(this.model, this.view, this, this.sc));
+    this.commands.put("load-project", new LoadProject(this.model, this.view, this.sc));
+    this.commands.put("save-project", new SaveProject(this.model, this.view, this.sc));
+    this.commands.put("save-image", new SaveImage(this.model, this.view, this.sc));
 
   }
 
@@ -155,151 +148,17 @@ public class ControllerImpl implements ImageProjectController {
   @Override
   public void saveImage(String name) throws IllegalStateException, IllegalArgumentException,
       IOException {
-    if (!this.model.hasOpenProject()) {
-      throw new IllegalStateException("There's currently no open project.");
-    }
-
-    if (ImageProjectFileUtils.isFileNameValid(name)) {
-
-      String output = "P3\n"
-          + this.model.getWidth() + " " + this.model.getHeight() + "\n"
-          + this.model.getMaxPixelValue() + "\n"
-          + this.model.currentCanvas() + "\n";
-
-      ImageProjectFileUtils.createFile(name + ".ppm");
-      ImageProjectFileUtils.writeToFile(name + ".ppm", output);
-    }
+    new SaveImage(this.model,this.view, this.sc).save(name);
   }
 
   @Override
   public void saveProject(String name) throws IllegalStateException, IOException {
-    if (!this.model.hasOpenProject()) {
-      throw new IllegalStateException("There's currently no open project.");
-    }
-
-    if (ImageProjectFileUtils.isFileNameValid(name)) {
-
-      String output = name + "\n"
-          + this.model.getWidth() + " " + this.model.getHeight() + "\n";
-
-      Layer[] layers = new Layer[this.model.getNumberOfLayers() - 1];
-      String prevActiveLayerName = this.model.getActiveLayer().getName();
-
-      for (int i = 0; i < this.model.getNumberOfLayers(); i++) {
-        this.model.setActiveLayer(i);
-        layers[i] = this.model.getActiveLayer();
-      }
-
-      this.model.setActiveLayer(prevActiveLayerName);
-
-      for (Layer currLayer : layers) {
-        output = output.concat(currLayer.getName() + " " + currLayer.getFilter() + "\n");
-
-        int i = 0;
-
-        for (Pixel[] row : currLayer.getLayerData()) {
-          for (Pixel p : row) {
-            output = output.concat(p.toString());
-
-            if (i != ((this.model.getWidth() * this.model.getHeight()) - 1)) {
-              output = output.concat("\n");
-            }
-            i++;
-          }
-        }
-      }
-
-      ImageProjectFileUtils.createFile(name + ".collage");
-      ImageProjectFileUtils.writeToFile(name + ".collage", output);
-    }
+    new SaveProject(this.model, this.view, this.sc).save(name);
   }
 
   @Override
   public void loadProject(String file) throws IllegalArgumentException {
-    if (file == null) {
-      throw new IllegalArgumentException("Filepath cannot be null.");
-    }
-
-    if (!ImageProjectFileUtils.isProjectFile(file)) {
-      throw new IllegalArgumentException("File at filepath is not a .collage file.");
-    } else {
-      Scanner sc;
-      try {
-        sc = new Scanner(new FileInputStream(file));
-      } catch (FileNotFoundException e) {
-        throw new IllegalArgumentException("Project file not found at given filepath.");
-      }
-
-      //discards name of project
-      checkNext(sc);
-      sc.next();
-      checkNext(sc);
-
-      int width;
-      int height;
-
-      try {
-        width = sc.nextInt();
-      } catch (InputMismatchException e) {
-        throw new IllegalArgumentException("Invalid project file at given filepath.");
-      }
-      checkNext(sc);
-
-      try {
-        height = sc.nextInt();
-      } catch (InputMismatchException e) {
-        throw new IllegalArgumentException("Invalid project file at given filepath.");
-      }
-
-      checkNext(sc);
-
-      this.model.createNewProject(width, height);
-
-      while (sc.hasNext()) {
-        String newLayer = sc.next();
-        checkNext(sc);
-        String filter = sc.next();
-
-        if (this.model.doesLayerExist(newLayer)) {
-          this.model.setFilter(filter, newLayer);
-        } else {
-          this.model.addLayer(newLayer);
-          this.model.setFilter(filter, newLayer);
-        }
-
-        for (int y = 0; y < height; y++) {
-          for (int x = 0; x < width; x++) {
-            checkNext(sc);
-
-            int r = sc.nextInt();
-            checkNext(sc);
-
-            int g = sc.nextInt();
-            checkNext(sc);
-
-            int b = sc.nextInt();
-            checkNext(sc);
-
-            int a = sc.nextInt();
-
-            this.model.setActiveLayer(newLayer);
-            this.model.getActiveLayer().setPixelColor(x, y,
-                new RGBAPixel(this.model.getMaxPixelValue(), r, g, b, a));
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * Ensures that there is more input in file contents within the given scanner.
-   *
-   * @param scanner the scanner containing the file contents
-   */
-  private void checkNext(Scanner scanner) {
-    if (!scanner.hasNext()) {
-      throw new IllegalArgumentException("Invalid project file format");
-    }
+    new LoadProject(this.model, this.view, this.sc).load(file);
   }
 
 }

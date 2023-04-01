@@ -4,7 +4,6 @@ import java.util.List;
 import model.Layer;
 import model.pixels.Pixel;
 import model.pixels.PixelUtils;
-import model.pixels.RGBAPixel;
 
 /**
  * A filter that takes the HSL values of each pixel on a layer and multiplies the lightness levels

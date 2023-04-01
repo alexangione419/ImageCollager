@@ -1,16 +1,14 @@
 package controller;
 
+import controller.commands.LoadProject;
+import controller.commands.SaveImage;
+import controller.commands.SaveProject;
 import java.io.IOException;
 import java.util.Scanner;
-
-import javax.swing.JFrame;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import model.ImageProject;
 import view.ImageProjectGUIViewImpl;
 
-public class ImageProjectGUIController implements ImageProjectController, Features {
+public class ImageProjectGUIController implements Features {
   boolean running;
   private final ImageProject model;
   private ImageProjectGUIViewImpl view;
@@ -60,13 +58,13 @@ public class ImageProjectGUIController implements ImageProjectController, Featur
 
   @Override
   public void loadProject(String filepath) {
-    this.model.loadProject(filepath);
+    new LoadProject(this.model).load(filepath);
   }
 
   @Override
   public void saveProject(String name) {
     try {
-      this.model.saveProject(name);
+      new SaveProject(this.model).save(name);
     } catch (IOException io) {
       // welp
     }
@@ -75,7 +73,7 @@ public class ImageProjectGUIController implements ImageProjectController, Featur
   @Override
   public void saveImage(String name) {
     try {
-      this.model.saveImage(name);
+      new SaveImage(this.model).save(name);
     } catch (IOException io) {
       // welp
     }

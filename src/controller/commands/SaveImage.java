@@ -4,6 +4,7 @@ import controller.ImageProjectController;
 import java.io.IOException;
 import java.util.Scanner;
 import model.ImageProject;
+import model.ImageProjectFileUtils;
 import view.ImageProjectView;
 
 /**
@@ -21,11 +22,18 @@ public final class SaveImage extends ACommand {
    * @param view  the view to use to render messages
    * @param sc    the Scanner with the current user input
    */
-  public SaveImage(ImageProject model, ImageProjectView view,
-      ImageProjectController controller, Scanner sc) {
+  public SaveImage(ImageProject model, ImageProjectView view, Scanner sc) {
     super(model, view);
     this.sc = sc;
-    this.controller = controller;
+  }
+
+  /**
+   * Constructs a new {@code SaveImage} with no view or scanner.
+   * This constructor should be used to use the save method directly.
+   * @param model the model to use
+   */
+  public SaveImage(ImageProject model) {
+    super(model, null);
   }
 
   @Override
@@ -47,7 +55,7 @@ public final class SaveImage extends ACommand {
 
     try {
       try {
-        this.controller.saveImage(fileName);
+        this.save(fileName);
         this.view.renderMessage("Image was saved to as " + fileName + ".ppm.\n");
       } catch (IllegalArgumentException e) {
         this.view.renderMessage("The name for the file is invalid. It must not contain any periods."
@@ -55,6 +63,23 @@ public final class SaveImage extends ACommand {
       }
     } catch (IOException e) {
       //ignore
+    }
+  }
+
+  public void save(String name) throws IOException {
+    if (!this.model.hasOpenProject()) {
+      throw new IllegalStateException("There's currently no open project.");
+    }
+
+    if (ImageProjectFileUtils.isFileNameValid(name)) {
+
+      String output = "P3\n"
+          + this.model.getWidth() + " " + this.model.getHeight() + "\n"
+          + this.model.getMaxPixelValue() + "\n"
+          + this.model.currentCanvas() + "\n";
+
+      ImageProjectFileUtils.createFile(name + ".ppm");
+      ImageProjectFileUtils.writeToFile(name + ".ppm", output);
     }
   }
 }

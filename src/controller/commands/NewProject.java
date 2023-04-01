@@ -12,7 +12,7 @@ import view.ImageProjectView;
  */
 public final class NewProject extends ACommand {
 
-  Scanner sc;
+  private Scanner sc;
 
   /**
    * Constructs a new {@code NewProject}.

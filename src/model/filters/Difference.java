@@ -2,7 +2,6 @@ package model.filters;
 
 import java.util.List;
 import model.Layer;
-import model.LayerImpl;
 import model.pixels.Pixel;
 import model.pixels.PixelUtils;
 import model.pixels.RGBAPixel;

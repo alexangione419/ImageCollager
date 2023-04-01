@@ -2,7 +2,6 @@ package model.filters;
 
 import model.Layer;
 import model.pixels.Pixel;
-import model.pixels.RGBAPixel;
 
 /**
  * A filter darkens a {@code ImageProject} based on each pixel's intensity.

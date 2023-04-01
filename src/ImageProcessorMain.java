@@ -1,16 +1,8 @@
-import controller.ImageProjectController;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-
 import controller.ImageProjectGUIController;
+import java.io.InputStreamReader;
 import model.ImageProject;
 import model.ProjectImpl;
-import controller.ControllerImpl;
 import view.ImageProjectGUIViewImpl;
-import view.ImageProjectView;
-import view.PPMProjectTextView;
 
 /**
  * The main class of this ImageProcessor. The program starts in this class.

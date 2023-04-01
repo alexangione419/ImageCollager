@@ -1,16 +1,10 @@
 package model;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import controller.commands.ACommand;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
-
-import controller.commands.ACommand;
 import model.filters.BlueComponent;
 import model.filters.BrightenIntensity;
 import model.filters.BrightenLuma;
@@ -25,9 +19,7 @@ import model.filters.Multiply;
 import model.filters.Normal;
 import model.filters.RedComponent;
 import model.filters.Screen;
-import model.pixels.Pixel;
 import model.pixels.PixelUtils;
-import model.pixels.RGBAPixel;
 
 /**
  * A class that represents a PPM Image Project. PPM is an image file format that contains rows and

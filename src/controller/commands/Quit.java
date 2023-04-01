@@ -11,7 +11,7 @@ import view.ImageProjectView;
  */
 public final class Quit extends ACommand {
 
-  Scanner sc;
+  private Scanner sc;
 
   /**
    * Constructs a new {@code Quit}.
