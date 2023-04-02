@@ -14,6 +14,8 @@ From there the user can type in the following commands (case-sensitive):
 
 1. **help**: Outputs every valid command the user can input along with their descriptions.
 2. **?**: Does the same as the help command.
+3. **quit**: Exits the program.
+4. **q**: Exits the program.
 3. **filter-list**: Outputs every supported filter that the user can apply to a layer.
 4. **new-project**: Starts a new project once given two more additional inputs: 
    two non-zero positive integers.
