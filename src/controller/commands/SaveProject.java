@@ -83,7 +83,7 @@ public final class SaveProject extends ACommand {
       String output = fileName + "\n"
           + this.model.getWidth() + " " + this.model.getHeight() + "\n";
 
-      Layer[] layers = new Layer[this.model.getNumberOfLayers() - 1];
+      Layer[] layers = new Layer[this.model.getNumberOfLayers()];
       String prevActiveLayerName = this.model.getActiveLayer().getName();
 
       for (int i = 0; i < this.model.getNumberOfLayers(); i++) {

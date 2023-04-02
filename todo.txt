@@ -13,6 +13,8 @@
 
 [] Fix saveImage, saveProject, and loadProject methods in the GUI controller
 
+[] Make it so that every command that requires a number, rejects any doubles.
+
 [] Create functional objects for saving to different image formats
 
 [X] Figure out if it's necessary to have a HSLPixel class; I think giving the RGBAPixel class

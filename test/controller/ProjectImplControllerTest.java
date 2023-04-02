@@ -49,8 +49,14 @@ public class ProjectImplControllerTest {
     f.delete();
   }
 
-    @Test
+  @Test
   public void validSaveImage() {
+    Readable input = new StringReader("quit y");
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.model.createNewProject(2, 2);
     this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
 
@@ -80,6 +86,12 @@ public class ProjectImplControllerTest {
 
   @Test
   public void validSaveImageOneLayer() {
+    Readable input = new StringReader("quit y");
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.model.createNewProject(3, 4);
     this.model.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
     String curCanvas = this.model.currentCanvas();
@@ -125,6 +137,12 @@ public class ProjectImplControllerTest {
 
   @Test
   public void validSaveImageOneLayer2() {
+    Readable input = new StringReader("quit y");
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.model.createNewProject(3, 4);
     this.model.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
     String curCanvas = this.model.currentCanvas();
@@ -154,6 +172,12 @@ public class ProjectImplControllerTest {
 
   @Test
   public void validSaveImageMultipleLayers() {
+    Readable input = new StringReader("quit y");
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.model.createNewProject(3, 4);
     this.model.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
     this.model.addLayer("Layer2");
@@ -184,6 +208,13 @@ public class ProjectImplControllerTest {
 
   @Test
   public void badSaveImage() {
+    Readable input = new StringReader("quit y");
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
+
     try {
       try {
         this.controller.saveImage(null);
@@ -244,6 +275,14 @@ public class ProjectImplControllerTest {
 
   @Test
   public void badLoadProject() {
+    Readable input = new StringReader("quit y");
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
+    this.model.createNewProject(3, 4);
+
     try {
       this.controller.loadProject(null);
       fail("Null passed as an argument");
@@ -275,6 +314,12 @@ public class ProjectImplControllerTest {
 
   @Test
   public void loadProject() {
+    Readable input = new StringReader("quit y");
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.model.createNewProject(3, 4);
     this.model.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
 
@@ -304,6 +349,12 @@ public class ProjectImplControllerTest {
 
   @Test
   public void validSaveProject() {
+    Readable input = new StringReader("quit y");
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
     this.model.createNewProject(3, 4);
     this.model.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
 
@@ -335,6 +386,13 @@ public class ProjectImplControllerTest {
 
   @Test
   public void badSaveProject() {
+    Readable input = new StringReader("quit y");
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
+
     try {
       try {
         this.controller.saveProject(null);
@@ -515,8 +573,8 @@ public class ProjectImplControllerTest {
     assertEquals("Welcome to our Image Processor.",
         output.toString().split("\n")[0]);
 
-    assertEquals("Awaiting command:\nInvalid Command\n"
-            + "Awaiting command:\nInvalid Command\n"
+    assertEquals("Awaiting command:\nInvalid Command, try again.\n"
+            + "Awaiting command:\nInvalid Command, try again.\n"
             + "Awaiting command:\n"
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!",
@@ -537,16 +595,43 @@ public class ProjectImplControllerTest {
     assertEquals("Welcome to our Image Processor.",
         output.toString().split("\n")[0]);
 
-    assertEquals("Awaiting command:\nInvalid Command\n"
-            + "Awaiting command:\nInvalid Command\n"
-            + "Awaiting command:\nInvalid Command\n"
-            + "Awaiting command:\nInvalid Command\n"
-            + "Awaiting command:\nInvalid Command\n"
-            + "Awaiting command:\nInvalid Command\n"
+    assertEquals("Awaiting command:\nInvalid Command, try again.\n"
+            + "Awaiting command:\nInvalid Command, try again.\n"
+            + "Awaiting command:\nInvalid Command, try again.\n"
+            + "Awaiting command:\nInvalid Command, try again.\n"
+            + "Awaiting command:\nInvalid Command, try again.\n"
+            + "Awaiting command:\nInvalid Command, try again.\n"
             + "Awaiting command:\n"
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!",
         output.toString().split("Welcome to our Image Processor.\n")[1]);
+  }
+
+  @Test
+  public void badNewProject() {
+    Readable input = new StringReader("new-project 2.5 2.5 quit y");
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.model.createNewProject(2, 2);
+    this.controller = new ControllerImpl(this.model, this.view, input);
+    this.controller.start();
+
+    assertEquals("Welcome to our Image Processor.",
+        output.toString().split("\n")[0]);
+
+    assertEquals("Awaiting command:\n"
+            + "Invalid argument, try again.\n"
+            + "Awaiting command:\n"
+            + "Invalid Command, try again.\n"
+            + "Awaiting command:\n"
+            + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
+            + "Bye Bye!",
+        output.toString().split("Welcome to our Image Processor.\n")[1]);
+    assertEquals(2, this.model.getWidth());
+    assertEquals(2, this.model.getHeight());
+    assertEquals(1, this.model.getNumberOfLayers());
   }
 
   @Test
@@ -750,7 +835,7 @@ public class ProjectImplControllerTest {
             + "Created new project with canvas size of 2x2.\n"
             + "Awaiting command:\n"
             + "Layer quit was created.\n"
-            + "Awaiting command:\nInvalid Command\n"
+            + "Awaiting command:\nInvalid Command, try again.\n"
             + "Awaiting command:\n"
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!",
@@ -946,7 +1031,7 @@ public class ProjectImplControllerTest {
     assertEquals("Awaiting command:\n"
             + "Created new project with canvas size of 2x2.\n"
             + "Awaiting command:\n"
-            + "Invalid arguments. Try again:\n"
+            + "Invalid arguments, try again.\n"
             + "Awaiting command:\n"
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!",
@@ -976,7 +1061,68 @@ public class ProjectImplControllerTest {
     assertEquals("Awaiting command:\n"
             + "Created new project with canvas size of 2x2.\n"
             + "Awaiting command:\n"
-            + "Invalid arguments. Try again:\n"
+            + "Invalid arguments, try again.\n"
+            + "Awaiting command:\n"
+            + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
+            + "Bye Bye!",
+        output.toString().split("Welcome to our Image Processor.\n")[1]);
+    assertEquals(2, this.model.getWidth());
+    assertEquals(2, this.model.getHeight());
+    assertEquals(1, this.model.getNumberOfLayers());
+  }
+
+  //giving a doubles as coordinates
+  @Test
+  public void badAddImageLayer8() {
+    Readable input = new StringReader("new-project 2 2 "
+        + "add-image-to-layer Layer1 ./res/smo.ppm 0.5 0.5 "
+        + "quit y");
+
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
+    this.controller.start();
+
+    assertEquals("Welcome to our Image Processor.",
+        output.toString().split("\n")[0]);
+
+    assertEquals("Awaiting command:\n"
+            + "Created new project with canvas size of 2x2.\n"
+            + "Awaiting command:\n"
+            + "Invalid argument, try again.\n"
+            + "Awaiting command:\n"
+            + "Invalid Command, try again.\n"
+            + "Awaiting command:\n"
+            + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
+            + "Bye Bye!",
+        output.toString().split("Welcome to our Image Processor.\n")[1]);
+    assertEquals(2, this.model.getWidth());
+    assertEquals(2, this.model.getHeight());
+    assertEquals(1, this.model.getNumberOfLayers());
+  }
+
+  @Test
+  public void badAddImageLayer9() {
+    Readable input = new StringReader("new-project 2 2 "
+        + "add-image-to-layer Layer1 ./res/smo.ppm 3 3 "
+        + "quit y");
+
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
+    this.controller.start();
+
+    assertEquals("Welcome to our Image Processor.",
+        output.toString().split("\n")[0]);
+
+    assertEquals("Awaiting command:\n"
+            + "Created new project with canvas size of 2x2.\n"
+            + "Awaiting command:\n"
+            + "Invalid arguments, try again.\n"
             + "Awaiting command:\n"
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!",
@@ -1006,7 +1152,7 @@ public class ProjectImplControllerTest {
     assertEquals("Awaiting command:\n"
             + "Created new project with canvas size of 2x2.\n"
             + "Awaiting command:\n"
-            + "Invalid arguments. Try again:\n"
+            + "Invalid arguments, try again.\n"
             + "Awaiting command:\n"
             + "Added ./res/smol.ppm to Layer Layer1 at (0, 0).\n"
             + "Awaiting command:\n"

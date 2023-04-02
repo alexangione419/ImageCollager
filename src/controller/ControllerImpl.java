@@ -137,7 +137,7 @@ public class ControllerImpl implements ImageProjectController {
         this.commands.get(currCommand).run();
       } else {
         try {
-          this.view.renderMessage("Invalid Command\n");
+          this.view.renderMessage("Invalid Command, try again.\n");
         } catch (IOException io) {
           //pass
         }

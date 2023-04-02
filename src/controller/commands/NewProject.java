@@ -1,6 +1,7 @@
 package controller.commands;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import model.ImageProject;
 import view.ImageProjectView;
@@ -28,30 +29,35 @@ public final class NewProject extends ACommand {
 
   @Override
   public void run() {
-    if (!this.sc.hasNextInt()) {
+
+    int size[] = new int[2];
+
+    for (int i = 0; i < size.length; i++) {
+      if (!this.sc.hasNext()) {
+        throw new IllegalStateException("No input detected.");
+      }
+
       try {
-        this.view.renderMessage("Invalid argument, try again.\n");
-      } catch (IOException e) {
-        //ignore
+        size[i] = this.sc.nextInt();
+      }
+
+      catch (InputMismatchException e) {
+        try {
+          this.view.renderMessage("Invalid argument, try again.\n");
+          this.sc.next();
+          return;
+        }
+        catch (IOException io) {
+          //ignore
+        }
       }
     }
-    int width = this.sc.nextInt();
-
-    if (!this.sc.hasNextInt()) {
-      try {
-        this.view.renderMessage("Invalid argument, try again.\n");
-      } catch (IOException e) {
-        //ignore
-      }
-    }
-
-    int height = this.sc.nextInt();
 
     try {
-      this.model.createNewProject(width, height);
+      this.model.createNewProject(size[0], size[1]);
       try {
         this.view.renderMessage("Created new project with canvas size of "
-            + width + "x" + height + ".\n");
+            + size[0] + "x" + size[1] + ".\n");
       } catch (IOException e) {
         //ignore
       }

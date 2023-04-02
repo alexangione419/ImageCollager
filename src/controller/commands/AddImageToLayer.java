@@ -1,6 +1,7 @@
 package controller.commands;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import model.ImageProject;
 import view.ImageProjectView;
@@ -35,37 +36,48 @@ public final class AddImageToLayer extends ACommand {
     }
 
     // Make sure there is input to read
-    if (!sc.hasNext()) {
+    if (!this.sc.hasNext()) {
       throw new IllegalStateException("No input detected.");
     }
 
     String layer = this.sc.next();
 
-    if (!sc.hasNext()) {
+    if (!this.sc.hasNext()) {
       throw new IllegalStateException("No input detected.");
     }
 
     String filePath = this.sc.next();
 
-    if (!sc.hasNextInt()) {
-      throw new IllegalStateException("No input detected.");
+    int[] coords = new int[2];
+
+    for (int i = 0; i < coords.length; i++) {
+      if (!this.sc.hasNext()) {
+        throw new IllegalStateException("No input detected.");
+      }
+
+      try {
+        coords[i] = this.sc.nextInt();
+      }
+
+      catch (InputMismatchException e) {
+        try {
+          this.view.renderMessage("Invalid argument, try again.\n");
+          this.sc.next();
+          return;
+        }
+        catch (IOException io) {
+          //ignore
+        }
+      }
     }
-
-    int x = this.sc.nextInt();
-
-    if (!sc.hasNextInt()) {
-      throw new IllegalStateException("No input detected.");
-    }
-
-    int y = this.sc.nextInt();
 
     try {
       try {
-        this.model.addImageToLayer(layer, filePath, x, y);
+        this.model.addImageToLayer(layer, filePath, coords[0], coords[1]);
         this.view.renderMessage("Added " + filePath + " to Layer " + layer
-            + " at (" + x + ", " + y + ").\n");
+            + " at (" + coords[0] + ", " + coords[1] + ").\n");
       } catch (IllegalArgumentException e) {
-        this.view.renderMessage("Invalid arguments. Try again:\n");
+        this.view.renderMessage("Invalid arguments, try again.\n");
       }
     } catch (IOException e) {
       //ignore

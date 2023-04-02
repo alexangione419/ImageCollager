@@ -42,7 +42,7 @@ public final class LoadProject extends ACommand {
   @Override
   public void run() {
     // Make sure there is input to read
-    if (!sc.hasNext()) {
+    if (!this.sc.hasNext()) {
       throw new IllegalStateException("No input detected.");
     }
 
