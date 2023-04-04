@@ -1,6 +1,8 @@
 package model;
 
 import controller.commands.ACommand;
+
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +21,10 @@ import model.filters.Multiply;
 import model.filters.Normal;
 import model.filters.RedComponent;
 import model.filters.Screen;
+import model.pixels.Pixel;
 import model.pixels.PixelUtils;
+
+import static java.awt.image.BufferedImage.TYPE_CUSTOM;
 
 /**
  * A class that represents a PPM Image Project. PPM is an image file format that contains rows and
@@ -34,6 +39,7 @@ public class ProjectImpl implements ImageProject {
   private int activeLayer;
   private List<Layer> layers;
   private HashMap<String, Filter> supportedFilters;
+  private Pixel[][] currentProjectListRender;
 
   private HashMap<String, ACommand> supportedCommands;
 
@@ -53,33 +59,58 @@ public class ProjectImpl implements ImageProject {
 
   }
 
-  @Override
-  public String currentCanvas() throws IllegalStateException {
+//  @Override
+//  public String currentCanvas() throws IllegalStateException {
+//    if (!this.hasAOpenProject) {
+//      throw new IllegalStateException("There's currently no open project.");
+//    }
+//
+//    String results = "";
+//
+//    for (int y = 0; y < this.getHeight(); y++) {
+//      for (int x = 0; x < this.getWidth(); x++) {
+//        Layer[] layers = new Layer[this.layers.size()];
+//
+//        for (int i = 0; i < this.layers.size(); i++) {
+//          layers[i] = this.layers.get(i);
+//        }
+//
+//        results = results.concat(
+//            PixelUtils.convertRGBAtoRGB(
+//                PixelUtils.finalColorAt(x, y, (double) this.getMaxPixelValue(), layers))
+//                .toStringRGB());
+//      }
+//      if (y != this.getHeight() - 1) {
+//        results = results.concat("\n");
+//      }
+//    }
+//
+//    return results;
+//  }
+
+  public Pixel[][] currentCanvas() throws IllegalStateException {
     if (!this.hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
     }
 
-    String results = "";
+    Pixel[][] newRepresentation = new Pixel[this.getWidth()][this.height];
+
 
     for (int y = 0; y < this.getHeight(); y++) {
       for (int x = 0; x < this.getWidth(); x++) {
-        Layer[] layers = new Layer[this.layers.size()];
 
+        Layer[] layers = new Layer[this.layers.size()];
         for (int i = 0; i < this.layers.size(); i++) {
           layers[i] = this.layers.get(i);
         }
 
-        results = results.concat(
-            PixelUtils.convertRGBAtoRGB(
-                PixelUtils.finalColorAt(x, y, (double) this.getMaxPixelValue(), layers))
-                .toStringRGB());
-      }
-      if (y != this.getHeight() - 1) {
-        results = results.concat("\n");
+        newRepresentation[x][y] = PixelUtils.convertRGBAtoRGB(
+                                PixelUtils.finalColorAt(x, y,
+                                        (double) this.getMaxPixelValue(), layers));
       }
     }
-
-    return results;
+    this.currentProjectListRender = newRepresentation;
+    return newRepresentation;
   }
 
   @Override
@@ -312,6 +343,20 @@ public class ProjectImpl implements ImageProject {
     }
 
     return result;
+  }
+
+  @Override
+  public BufferedImage getImageRepresentation() {
+    BufferedImage image = new BufferedImage(this.width, this.height, TYPE_CUSTOM);
+
+
+    for (int i = 0; i < this.height; i++) {
+      for (int j = 0; j < this.width; j++) {
+
+        image.setRGB(i, j, 2);
+      }
+    }
+    return null;
   }
 
   /**

@@ -86,6 +86,11 @@ expand the functionality of our code.
   "Text" will use the text-based view and controller, while "GUI" will use the GUI view 
   and controller. 
 
+* The currentCanvas method in our model was changed from creating a String representation of our 
+current project image to creating a 2D list of Pixels, representing the image of our current 
+project. This was done both to ensure that string representations of our project were not being
+created in the model, and so that creating a BufferedImage of our project would be much easier.
+
 ## Bug Fixes
 
 * The loadProject() method now works properly

@@ -84,4 +84,5 @@ public interface Pixel {
    */
   String toStringHSL();
 
+
 }

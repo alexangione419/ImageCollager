@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import model.ImageProject;
 import model.ImageProjectFileUtils;
+import model.pixels.Pixel;
 import view.ImageProjectView;
 
 /**
@@ -76,10 +77,29 @@ public final class SaveImage extends ACommand {
       String output = "P3\n"
           + this.model.getWidth() + " " + this.model.getHeight() + "\n"
           + this.model.getMaxPixelValue() + "\n"
-          + this.model.currentCanvas() + "\n";
+          + this.makeCanvasString() + "\n";
 
       ImageProjectFileUtils.createFile(name + ".ppm");
       ImageProjectFileUtils.writeToFile(name + ".ppm", output);
     }
   }
+
+  private String makeCanvasString() {
+    StringBuilder result = new StringBuilder();
+    Pixel[][] listToStringify = this.model.currentCanvas();
+
+    for (int y = 0; y < listToStringify[0].length; y++) {
+      for (Pixel[] pixels : listToStringify) {
+        Pixel pix = pixels[y];
+        result.append(pix.getRed()).append(" ")
+                .append(pix.getGreen()).append(" ").append(pix.getBlue()).append(" ");
+      }
+      if (y != listToStringify[0].length - 1) {
+        result.append("\n");
+      }
+    }
+
+    return result.toString();
+  }
+
 }

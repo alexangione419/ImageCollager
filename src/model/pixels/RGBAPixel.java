@@ -1,5 +1,7 @@
 package model.pixels;
 
+import java.util.Objects;
+
 /**
  * Represents a pixel on a {@code ImageProject}. A {@code RGBAPixel} has a red, green, blue, and
  * alpha component.
@@ -26,7 +28,7 @@ public final class RGBAPixel implements Pixel {
    * @throws IllegalArgumentException if the model is null OR if red, green, or blue is less than 0
    */
   public RGBAPixel(int maxPixelValue, int red, int green, int blue)
-      throws IllegalArgumentException {
+          throws IllegalArgumentException {
     if (maxPixelValue <= 0) {
       throw new IllegalArgumentException("Max Pixel Value should be greater than 0.");
     }
@@ -35,22 +37,22 @@ public final class RGBAPixel implements Pixel {
 
     if (red < 0 || green < 0 || blue < 0) {
       throw new IllegalArgumentException("The values of the red, green, and blue component "
-          + "must all be 0 or greater.");
+              + "must all be 0 or greater.");
     }
 
     if (red > this.maxPixelValue) {
       throw new IllegalArgumentException("This Pixel's red component cannot have a value greater "
-          + "than " + this.maxPixelValue + ".");
+              + "than " + this.maxPixelValue + ".");
     }
 
     if (green > this.maxPixelValue) {
       throw new IllegalArgumentException("This Pixel's green component cannot have a value greater "
-          + "than " + this.maxPixelValue + ".");
+              + "than " + this.maxPixelValue + ".");
     }
 
     if (blue > this.maxPixelValue) {
       throw new IllegalArgumentException("This Pixel's blue component cannot have a value greater "
-          + "than " + this.maxPixelValue + ".");
+              + "than " + this.maxPixelValue + ".");
     }
 
     this.red = red;
@@ -74,13 +76,13 @@ public final class RGBAPixel implements Pixel {
    *                                  than 0
    */
   public RGBAPixel(int maxPixelValue, int red, int green, int blue, int alpha)
-      throws IllegalArgumentException {
+          throws IllegalArgumentException {
     this(maxPixelValue, red, green, blue);
 
     if (alpha > this.maxPixelValue) {
       throw new IllegalArgumentException(
-          "This RGBAPixel's alpha component cannot have a value greater "
-              + "than " + this.maxPixelValue);
+              "This RGBAPixel's alpha component cannot have a value greater "
+                      + "than " + this.maxPixelValue);
     }
 
     this.alpha = alpha;
@@ -187,4 +189,32 @@ public final class RGBAPixel implements Pixel {
   public String toStringHSL() {
     return this.hue + " " + this.saturation + " " + this.lightness + " ";
   }
+
+  @Override
+  public boolean equals(Object o) {
+    // If the object is compared with itself then return true
+    if (o == this) {
+      return true;
+    }
+
+    if (!(o instanceof RGBAPixel)) {
+      return false;
+    }
+
+    RGBAPixel p = (RGBAPixel) o;
+
+    // Compare the data members and return accordingly
+    return Double.compare(this.red, p.red) == 0
+            && Double.compare(this.blue, p.blue) == 0
+            && Double.compare(this.green, p.green) == 0
+            && Double.compare(this.alpha, p.alpha) == 0
+            && Double.compare(this.maxPixelValue, p.maxPixelValue) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.red, this.green, this.blue,
+            this.hue, this.saturation, this.lightness, this.alpha, this.maxPixelValue);
+  }
 }
+

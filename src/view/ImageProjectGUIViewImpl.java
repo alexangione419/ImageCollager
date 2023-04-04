@@ -5,18 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
+
+import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import model.ImageProjectState;
@@ -25,7 +15,7 @@ import model.ImageProjectState;
 /**
  * Represents a Generate User Interface for interacting with Image Processing Software.
  */
-public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
+public class ImageProjectGUIViewImpl extends JFrame {
 
   private ImageProjectState model;
 
@@ -45,11 +35,6 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
   private JButton eButton;
   private JButton sIButton;
 
-  private int desiredWidthForDisplay;
-  private int desiredHeightForDisplay;
-  private String filename;
-  private JTextArea heightInput;
-  private JTextArea widthInput;
 
 
   public ImageProjectGUIViewImpl(ImageProjectState model) {
@@ -87,25 +72,13 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     intro.setText("Please either create a new project or load an existing one.");
     this.introScreen.add(intro);
 
-//    this.heightInput = new JTextArea();
-//    this.heightInput.setText("200");
-//    this.widthInput = new JTextArea();
-//    this.widthInput.setText("200");
-//    this.desiredWidthForDisplay = Integer.parseInt(this.widthInput.getText());
-//    this.desiredHeightForDisplay = Integer.parseInt(this.heightInput.getText());
-//    JPanel dim = new JPanel();
-//    dim.setLayout(new GridLayout(0, 2, 10, 10));
-//    dim.add(heightInput);
-//    dim.add(widthInput);
-
     JPanel initialButtons = new JPanel();
     initialButtons.setLayout(new GridLayout(0, 2, 10, 10));
     //Creates a button to make the user create a new project when first loading in
     this.initialNewProjectButton = new JButton("Create");
-    this.initialNewProjectButton.setActionCommand("createNew");
-    this.initialNewProjectButton.addActionListener(this);
     //Creates a button to make the user load a project when they first load in
     this.initialLoadNewProjectButton = new JButton("Load");
+
     initialButtons.add(this.initialNewProjectButton);
     initialButtons.add(this.initialLoadNewProjectButton);
 
@@ -156,26 +129,40 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
   }
 
   public void addFeatures(Features features) {
-//    this.initialNewProjectButton.addActionListener(evt ->
-//            features.newProject(this.desiredWidthForDisplay, this.desiredHeightForDisplay));
     this.initialNewProjectButton.addActionListener(evt ->
-            features.newProject(200, 200));
+            features.newProject(this.getDesiredWidth(), this.getDesiredHeight()));
 
     this.initialLoadNewProjectButton.addActionListener(evt ->
-            features.loadProject("P1.collage"));
+            features.loadProject(this.getNameToLoad()));
 
     this.eButton.addActionListener(evt ->
             features.exit());
   }
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-//    if (e.getActionCommand().equalsIgnoreCase("createNew")) {
-//      this.desiredHeightForDisplay = Integer.parseInt(JOptionPane.showInputDialog("Please enter numerical representation of height."));
-//      this.desiredWidthForDisplay = Integer.parseInt(JOptionPane.showInputDialog("Please enter numerical representation of width."));
-//    }
-
+  private int getDesiredWidth() {
+    int w = 0;
+    while (w == 0) {
+      w = Integer.parseInt(JOptionPane.showInputDialog("Please enter numerical representation of width."));
+    }
+    return w;
   }
+
+  private int getDesiredHeight() {
+    int h = 0;
+    while (h == 0) {
+      h = Integer.parseInt(JOptionPane.showInputDialog("Please enter numerical representation of height."));
+    }
+    return h;
+  }
+
+  private String getNameToLoad() {
+    String s = "";
+    while (s.equalsIgnoreCase("")) {
+      s = JOptionPane.showInputDialog("Please enter name of project to load.");
+    }
+    return s;
+  }
+
 
   public void runMainGUI() {
     this.mainPanel.remove(this.introScreen);
@@ -190,7 +177,7 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     // adds image to that panel
     JLabel imageLabel = new JLabel();
     JScrollPane imageScrollPane = new JScrollPane(imageLabel);
-    imageLabel.setIcon(new ImageIcon("images.jpg"));
+    imageLabel.setIcon(new ImageIcon(this.model.getImageRepresentation()));
     imageScrollPane.setPreferredSize(new Dimension(900, 500));
     imageDisplay.add(imageScrollPane);
     //----------------------------------------------------------------------------------------------
@@ -201,13 +188,13 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     radioPanel.setBorder(BorderFactory.createTitledBorder("Layers"));
     radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
 
-    JRadioButton[] radioButtons = new JRadioButton[5];
+    JRadioButton[] radioButtons = new JRadioButton[this.model.getNumberOfLayers()];
     //should eventually be number of layers in model
 
     ButtonGroup rGroup1 = new ButtonGroup();
 
     for (int i = 0; i < radioButtons.length; i++) {
-      radioButtons[i] = new JRadioButton("Layer " + (i + 1));
+      radioButtons[i] = new JRadioButton("Layer " + (i + 1)); // MAKE IT THE NAME OF ACTIVE LAYER
       radioButtons[i].setAlignmentX(JRadioButton.CENTER_ALIGNMENT);
 
       radioButtons[i].setActionCommand("RB" + (i + 1));

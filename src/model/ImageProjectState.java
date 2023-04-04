@@ -1,5 +1,9 @@
 package model;
 
+import java.awt.image.BufferedImage;
+
+import model.pixels.Pixel;
+
 /**
  * An interface containing the various state functions needed in an Image Project. This interface is
  * separate from the Image Project interface so that sections of code that rely on having access to
@@ -60,5 +64,20 @@ public interface ImageProjectState {
    * @return true if the layer exists; otherwise false.
    */
   boolean doesLayerExist(String layerName);
+
+  /**
+   * Returns a buffered image of the current state of the project
+   * @return a BufferedImage of the current project state
+   */
+  BufferedImage getImageRepresentation();
+
+  /**
+   * Outputs a String that represents what the current canvas looks like as an image. The String
+   * should contain the RGBA values of every pixel on the canvas.
+   *
+   * @return a String that represents the current canvas
+   * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
+   */
+  Pixel[][] currentCanvas() throws IllegalStateException;
 
 }

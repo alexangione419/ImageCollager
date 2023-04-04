@@ -1,5 +1,6 @@
 package controller;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -16,6 +17,9 @@ import model.ImageProject;
 import model.ProjectImpl;
 import org.junit.After;
 import org.junit.Test;
+
+import model.pixels.Pixel;
+import model.pixels.RGBAPixel;
 import view.ImageProjectView;
 import view.PPMProjectTextView;
 
@@ -74,12 +78,13 @@ public class ProjectImplControllerTest {
     } catch (FileNotFoundException fnf) {
       fail("File not found");
     }
-
-    String curCanvas = this.model.currentCanvas();
+    //checks that after saving the image, the loaded project is as expected
+    Pixel[][] curCanvas = this.model.currentCanvas();
 
     this.controller.loadProject("P1.collage");
 
-    assertEquals(this.model.currentCanvas(), curCanvas);
+    assertArrayEquals(this.model.currentCanvas(), curCanvas);
+
     assertEquals("255 0 0 0 0 0 \n0 0 0 0 0 0 ", curCanvas);
     assertEquals("255 0 0 0 0 0 \n0 0 0 0 0 0 ", this.model.currentCanvas());
   }
@@ -94,7 +99,7 @@ public class ProjectImplControllerTest {
     this.controller = new ControllerImpl(this.model, this.view, input);
     this.model.createNewProject(3, 4);
     this.model.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
-    String curCanvas = this.model.currentCanvas();
+    Pixel[][] curCanvas = this.model.currentCanvas();
 
     try {
       this.controller.saveImage("smol2");
@@ -121,18 +126,25 @@ public class ProjectImplControllerTest {
     }
 
     this.controller.loadProject("smol2.collage");
+    Pixel[][] full = new RGBAPixel[][]{
+            {new RGBAPixel(255,225, 225, 225),
+                    new RGBAPixel(255,225, 225, 225),
+                    new RGBAPixel(255,225, 225, 225)},
+            {new RGBAPixel(255,225, 225, 225),
+                    new RGBAPixel(255,225, 225, 225),
+                    new RGBAPixel(255,225, 225, 225)},
+            {new RGBAPixel(255,225, 225, 225),
+                    new RGBAPixel(255,225, 225, 225),
+                    new RGBAPixel(255,225, 225, 225)},
+            {new RGBAPixel(255,225, 225, 225),
+                    new RGBAPixel(255,225, 225, 225),
+                    new RGBAPixel(255,225, 225, 225)}};
 
-    assertEquals("225 225 225 225 225 225 225 225 225 \n"
-        + "225 225 225 225 225 225 225 225 225 \n"
-        + "225 225 225 225 225 225 225 225 225 \n"
-        + "225 225 225 225 225 225 225 225 225 ", this.model.currentCanvas());
+    assertArrayEquals(full, this.model.currentCanvas());
 
-    assertEquals("225 225 225 225 225 225 225 225 225 \n"
-        + "225 225 225 225 225 225 225 225 225 \n"
-        + "225 225 225 225 225 225 225 225 225 \n"
-        + "225 225 225 225 225 225 225 225 225 ", curCanvas);
+    assertArrayEquals(full, curCanvas);
 
-    assertEquals(curCanvas, this.model.currentCanvas());
+    assertArrayEquals(curCanvas, this.model.currentCanvas());
   }
 
   @Test
@@ -145,7 +157,7 @@ public class ProjectImplControllerTest {
     this.controller = new ControllerImpl(this.model, this.view, input);
     this.model.createNewProject(3, 4);
     this.model.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
-    String curCanvas = this.model.currentCanvas();
+    Pixel[][] curCanvas = this.model.currentCanvas();
 
     assertEquals(3, this.model.getWidth());
     assertEquals(4, this.model.getHeight());
@@ -160,13 +172,27 @@ public class ProjectImplControllerTest {
 
     assertEquals(2, this.model.getWidth());
     assertEquals(2, this.model.getHeight());
-    assertNotEquals("255 255 255 255 0 0 0 0 \n"
-        + "0 0 0 0 0 0 0 0 \n"
-        + "255 255 255 255 0 0 0 0 \n"
-        + "0 0 0 0 0 0 0 0 ", curCanvas);
+    Pixel[][] arr = new RGBAPixel[][]{
+            {new RGBAPixel(255,225, 225, 225),
+                    new RGBAPixel(255,225, 225, 0),
+                    new RGBAPixel(255,0, 0, 0)},
+            {new RGBAPixel(255,0, 0, 0),
+                    new RGBAPixel(255,0, 0, 0),
+                    new RGBAPixel(255,0, 0, 0)},
+            {new RGBAPixel(255,225, 225, 225),
+                    new RGBAPixel(255,225, 225, 0),
+                    new RGBAPixel(255,0, 0, 0)},
+            {new RGBAPixel(255,0, 0, 0),
+                    new RGBAPixel(255,0, 0, 0),
+                    new RGBAPixel(255,0, 0, 0)}};
+    assertNotEquals(arr, curCanvas);
 
-    assertEquals("127 0 128 127 0 128 \n"
-        + "0 0 128 127 127 255 ", this.model.currentCanvas());
+    Pixel[][] arr2 = new RGBAPixel[][]{
+            {new RGBAPixel(255,127, 0, 128),
+                    new RGBAPixel(255,127, 0, 128)},
+            {new RGBAPixel(255,0, 0, 128),
+                    new RGBAPixel(255,127, 127, 225)}};
+    assertArrayEquals(arr2, this.model.currentCanvas());
 
   }
 
@@ -323,7 +349,7 @@ public class ProjectImplControllerTest {
     this.model.createNewProject(3, 4);
     this.model.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
 
-    String curCanvas = this.model.currentCanvas();
+    Pixel[][] curCanvas = this.model.currentCanvas();
 
     assertEquals(3, this.model.getWidth());
     assertEquals(4, this.model.getHeight());

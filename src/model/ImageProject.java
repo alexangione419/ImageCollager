@@ -2,20 +2,13 @@ package model;
 
 import java.util.HashMap;
 import model.filters.Filter;
+import model.pixels.Pixel;
 
 /**
  * An interface for creating image projects that contain {@code Layers}.
  */
 public interface ImageProject extends ImageProjectState {
 
-  /**
-   * Outputs a String that represents what the current canvas looks like as an image. The String
-   * should contain the RGBA values of every pixel on the canvas.
-   *
-   * @return a String that represents the current canvas
-   * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
-   */
-  String currentCanvas() throws IllegalStateException;
 
   /**
    * Creates a new project with the specified width and height.
