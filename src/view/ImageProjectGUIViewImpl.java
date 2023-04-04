@@ -24,6 +24,12 @@ public class ImageProjectGUIViewImpl extends JFrame {
   private JPanel mainBottomPanel;
   private JPanel introScreen;
   private JPanel controls;
+  private JPanel imageDisplay;
+  private JLabel imageLabel;
+  private JScrollPane imageScrollPane;
+  private JPanel radioPanel;
+
+
   private final JButton initialNewProjectButton;
   private final JButton initialLoadNewProjectButton;
   private JButton nPButton;
@@ -48,9 +54,9 @@ public class ImageProjectGUIViewImpl extends JFrame {
 
     //Creates two panels to be top and bottom section
     this.mainPanel = new JPanel();
-    this.mainBottomPanel = new JPanel();
     this.mainPanel.setLayout(new BoxLayout(this.mainPanel, BoxLayout.LINE_AXIS));
     this.mainPanel.setPreferredSize(new Dimension(1200, 500));
+    this.mainBottomPanel = new JPanel();
     this.mainBottomPanel.setLayout(new BoxLayout(this.mainBottomPanel, BoxLayout.PAGE_AXIS));
     // adds top panel above bottom section
     this.mainBottomPanel.add(this.mainPanel);
@@ -120,8 +126,10 @@ public class ImageProjectGUIViewImpl extends JFrame {
     this.eButton = new JButton("Exit");
     projectControls.add(this.eButton);
 
-
-
+    //initializes components used in main panel
+    this.imageDisplay = new JPanel();
+    this.imageLabel = new JLabel();
+    this.radioPanel = new JPanel();
 
     this.setVisible(true);
 
@@ -141,18 +149,42 @@ public class ImageProjectGUIViewImpl extends JFrame {
     this.initialLoadNewProjectButton.addActionListener(evt ->
             features.loadProject(this.getNameToLoad()));
 
+    // Tells the controller when to load a new project
+    this.lPButton.addActionListener(evt ->
+            features.loadProject(this.getNameToLoad()));
+
+    // Tells the controller to add an image to the current Layer
     this.aITLButton.addActionListener(evt ->
             features.addImageToLayer(this.getDesiredLayerName(), this.getDesiredImage(), this.getDesiredX(), this.getDesiredY()));
+
+    // Tells the controller which filter to add to the current Layer
+    this.sFButton.addActionListener(evt ->
+            features.setFilter(this.getDesiredFilter(), this.getDesiredLayerName()));
+
+    // tells the controller to save the project to a file
+    this.sPButton.addActionListener(evt ->
+            features.saveProject(this.getNameToSaveProject()));
+
+    // tells the controller to save the current project as an image
+    this.sIButton.addActionListener(evt ->
+            features.saveImage(this.getDesiredImageName()));
+
+    // tells the controller to add a Layer
+    this.nLButton.addActionListener(evt ->
+            features.addLayer(this.getDesiredLayerName()));
 
     // Tells the controller when to quit
     this.eButton.addActionListener(evt ->
             features.exit());
+
+    this.repaint();
   }
 
   private int getDesiredWidth() {
     int w = 0;
     while (w == 0) {
-      w = Integer.parseInt(JOptionPane.showInputDialog("Please enter numerical representation of width."));
+      w = Integer.parseInt(JOptionPane.showInputDialog("Please enter" +
+              " numerical representation of width in pixels."));
     }
     return w;
   }
@@ -160,7 +192,8 @@ public class ImageProjectGUIViewImpl extends JFrame {
   private int getDesiredHeight() {
     int h = 0;
     while (h == 0) {
-      h = Integer.parseInt(JOptionPane.showInputDialog("Please enter numerical representation of height."));
+      h = Integer.parseInt(JOptionPane.showInputDialog("Please enter" +
+              " numerical representation of height in pixels."));
     }
     return h;
   }
@@ -189,6 +222,14 @@ public class ImageProjectGUIViewImpl extends JFrame {
     return s;
   }
 
+  private String getDesiredImageName() {
+    String s = "";
+    while (s.equalsIgnoreCase("")) {
+      s = JOptionPane.showInputDialog("Please enter name to save image as.");
+    }
+    return s;
+  }
+
   private int getDesiredX() {
     int h = -1;
     while (h == -1) {
@@ -207,29 +248,47 @@ public class ImageProjectGUIViewImpl extends JFrame {
     return h;
   }
 
+  private String getDesiredFilter() {
+    String h = "";
+    while (h == "") {
+      h = JOptionPane.showInputDialog("Please one of the following valid filters.\n" +
+              "normal, red-component, green-component, blue-component, brighten-value," +
+              " brighten-intensity, brighten-luma, darken-value, darken-intensity, darken-luma, " +
+              "difference, multiply, screen");
+    }
+    return h;
+  }
+
+  private String getNameToSaveProject() {
+    String s = "";
+    while (s.equalsIgnoreCase("")) {
+      s = JOptionPane.showInputDialog("Please enter name to save project as.");
+    }
+    return s;
+  }
   public void runMainGUI() {
-    this.mainPanel.remove(this.introScreen);
+    this.resetMainPanel();
     this.setSize(1200, 900);
 
     // Creates a panel for displaying an image
-    JPanel imageDisplay = new JPanel();
-    imageDisplay.setBorder(BorderFactory.createTitledBorder(this.model.getName()));
-    imageDisplay.setLayout(new GridLayout(1, 0, 10, 10));
+    this.imageDisplay = new JPanel();
+    this.imageDisplay.setLayout(new GridLayout(1, 0, 10, 10));
+    this.imageDisplay.setBorder(BorderFactory.createTitledBorder(this.model.getName()));
     this.mainPanel.add(imageDisplay);
 
     // adds image to that panel
-    JLabel imageLabel = new JLabel();
-    JScrollPane imageScrollPane = new JScrollPane(imageLabel);
-    imageLabel.setIcon(new ImageIcon(this.model.getImageRepresentation()));
-    imageScrollPane.setPreferredSize(new Dimension(900, 500));
-    imageDisplay.add(imageScrollPane);
+    this.imageLabel = new JLabel();
+    this.imageScrollPane = new JScrollPane(this.imageLabel);
+    this.imageLabel.setIcon(new ImageIcon(this.model.getImageRepresentation()));
+    this.imageScrollPane.setPreferredSize(new Dimension(900, 500));
+    this.imageDisplay.add(this.imageScrollPane);
     //----------------------------------------------------------------------------------------------
 
     // radio buttons representing Layers
-    JPanel radioPanel = new JPanel();
-    radioPanel.setPreferredSize(new Dimension(300, 500));
-    radioPanel.setBorder(BorderFactory.createTitledBorder("Layers"));
-    radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.PAGE_AXIS));
+    this.radioPanel = new JPanel();
+    this.radioPanel.setPreferredSize(new Dimension(300, 500));
+    this.radioPanel.setBorder(BorderFactory.createTitledBorder("Layers"));
+    this.radioPanel.setLayout(new BoxLayout(this.radioPanel, BoxLayout.PAGE_AXIS));
 
     JRadioButton[] radioButtons = new JRadioButton[this.model.getNumberOfLayers()];
     //should eventually be number of layers in model
@@ -243,18 +302,26 @@ public class ImageProjectGUIViewImpl extends JFrame {
       radioButtons[i].setActionCommand("RB" + (i + 1));
       rGroup1.add(radioButtons[i]);
 
-      radioPanel.add(radioButtons[i]);
+      this.radioPanel.add(radioButtons[i]);
 
     }
     radioButtons[0].doClick();
     //radioDisplay = new JLabel("Should say what filter is clicked?");
     //radioPanel.add(radioDisplay);
-    mainPanel.add(radioPanel);
+    this.mainPanel.add(this.radioPanel);
     //----------------------------------------------------------------------------------------------
 
-    mainBottomPanel.add(controls);
+    this.mainBottomPanel.add(controls);
+    this.repaint();
 
+  }
 
+  private void resetMainPanel() {
+    this.mainPanel.remove(this.introScreen);
+    this.mainPanel.remove(this.imageDisplay);
+    this.mainPanel.remove(this.imageLabel);
+    this.mainPanel.remove(this.radioPanel);
+    this.repaint();
   }
 
 
