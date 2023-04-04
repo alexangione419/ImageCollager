@@ -24,7 +24,7 @@ import model.filters.Screen;
 import model.pixels.Pixel;
 import model.pixels.PixelUtils;
 
-import static java.awt.image.BufferedImage.TYPE_CUSTOM;
+import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
 
 /**
  * A class that represents a PPM Image Project. PPM is an image file format that contains rows and
@@ -39,8 +39,6 @@ public class ProjectImpl implements ImageProject {
   private int activeLayer;
   private List<Layer> layers;
   private HashMap<String, Filter> supportedFilters;
-  private Pixel[][] currentProjectListRender;
-
   private HashMap<String, ACommand> supportedCommands;
 
   //should be false if loadProject() or createNewProject() hasn't been called
@@ -55,7 +53,6 @@ public class ProjectImpl implements ImageProject {
 
     this.activeLayer = 0;
     this.hasAOpenProject = false;
-
 
   }
 
@@ -109,7 +106,6 @@ public class ProjectImpl implements ImageProject {
                                         (double) this.getMaxPixelValue(), layers));
       }
     }
-    this.currentProjectListRender = newRepresentation;
     return newRepresentation;
   }
 
@@ -347,16 +343,18 @@ public class ProjectImpl implements ImageProject {
 
   @Override
   public BufferedImage getImageRepresentation() {
-    BufferedImage image = new BufferedImage(this.width, this.height, TYPE_CUSTOM);
+    BufferedImage image = new BufferedImage(this.width, this.height, TYPE_3BYTE_BGR);
+    Pixel[][] proj = this.currentCanvas();
 
+    for (int i = 0; i < this.width; i++) {
+      for (int j = 0; j < this.height; j++) {
+        int rgbVal = (proj[i][j].getRed() << 16)
+                + (proj[i][j].getGreen() << 8) + proj[i][j].getBlue();
+        image.setRGB(i, j, rgbVal);
 
-    for (int i = 0; i < this.height; i++) {
-      for (int j = 0; j < this.width; j++) {
-
-        image.setRGB(i, j, 2);
       }
     }
-    return null;
+    return image;
   }
 
   /**
