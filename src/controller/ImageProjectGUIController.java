@@ -42,27 +42,29 @@ public class ImageProjectGUIController implements Features {
     }
     this.view = view;
     this.view.addFeatures(this);
-
-
   }
 
   @Override
-  public void addImageToLayer(String layer, String image, int x, int y) {
+  public void addImageToLayer(String layer, String image, int x, int y)
+          throws IllegalArgumentException{
     this.model.addImageToLayer(layer, image, x, y);
+    this.view.runMainGUI();
   }
 
   @Override
-  public void addLayer(String layerName) {
+  public void addLayer(String layerName) throws IllegalArgumentException, IllegalStateException{
     this.model.addLayer(layerName);
+    this.view.runMainGUI();
   }
 
   @Override
-  public void loadProject(String filepath) {
+  public void loadProject(String filepath) throws IllegalArgumentException {
     new LoadProject(this.model).load(filepath);
+    this.view.runMainGUI();
   }
 
   @Override
-  public void saveProject(String name) {
+  public void saveProject(String name){
     try {
       new SaveProject(this.model).save(name);
     } catch (IOException io) {
@@ -86,8 +88,10 @@ public class ImageProjectGUIController implements Features {
   }
 
   @Override
-  public void setFilter(String filterName, String layerName) {
+  public void setFilter(String filterName, String layerName) throws IllegalStateException,
+          IllegalArgumentException {
     this.model.setFilter(filterName, layerName);
+    this.view.runMainGUI();
   }
 
   @Override

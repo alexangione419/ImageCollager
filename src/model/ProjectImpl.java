@@ -56,35 +56,6 @@ public class ProjectImpl implements ImageProject {
 
   }
 
-//  @Override
-//  public String currentCanvas() throws IllegalStateException {
-//    if (!this.hasAOpenProject) {
-//      throw new IllegalStateException("There's currently no open project.");
-//    }
-//
-//    String results = "";
-//
-//    for (int y = 0; y < this.getHeight(); y++) {
-//      for (int x = 0; x < this.getWidth(); x++) {
-//        Layer[] layers = new Layer[this.layers.size()];
-//
-//        for (int i = 0; i < this.layers.size(); i++) {
-//          layers[i] = this.layers.get(i);
-//        }
-//
-//        results = results.concat(
-//            PixelUtils.convertRGBAtoRGB(
-//                PixelUtils.finalColorAt(x, y, (double) this.getMaxPixelValue(), layers))
-//                .toStringRGB());
-//      }
-//      if (y != this.getHeight() - 1) {
-//        results = results.concat("\n");
-//      }
-//    }
-//
-//    return results;
-//  }
-
   public Pixel[][] currentCanvas() throws IllegalStateException {
     if (!this.hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
@@ -138,7 +109,12 @@ public class ProjectImpl implements ImageProject {
     this.supportedFilters.put("multiply", new Multiply(this.layers));
     this.supportedFilters.put("screen", new Screen(this.layers));
 
-    this.layers.add(new LayerImpl("Layer1", this));
+    // creates the initial white background layer
+    Layer initialLayer = new LayerImpl("Layer1", this);
+    initialLayer.clearLayer();
+    initialLayer.makeVisible();
+    this.layers.add(initialLayer);
+
   }
 
   @Override
@@ -317,7 +293,8 @@ public class ProjectImpl implements ImageProject {
   }
 
   @Override
-  public void addImageToLayer(String layerName, String imageFile, int x, int y) {
+  public void addImageToLayer(String layerName, String imageFile, int x, int y)
+          throws IllegalArgumentException {
     if (!this.doesLayerExist(layerName)) {
       throw new IllegalArgumentException("Layer not found in current project.");
     }
@@ -348,10 +325,11 @@ public class ProjectImpl implements ImageProject {
 
     for (int i = 0; i < this.width; i++) {
       for (int j = 0; j < this.height; j++) {
+        // uses bitwise operations to shift three color values into a single one BufferedImage can
+        // understand
         int rgbVal = (proj[i][j].getRed() << 16)
                 + (proj[i][j].getGreen() << 8) + proj[i][j].getBlue();
         image.setRGB(i, j, rgbVal);
-
       }
     }
     return image;

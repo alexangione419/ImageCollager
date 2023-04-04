@@ -90,8 +90,13 @@ public interface Layer {
   void setPixelColor(int x, int y, Pixel pixel);
 
   /**
-   * Clears the current layer making it black and translucent.
+   * Clears this layer making it white and translucent.
    */
   void clearLayer();
+
+  /**
+   * Makes this layer fully opaque, with an alpha of 255
+   */
+  void makeVisible();
 
 }

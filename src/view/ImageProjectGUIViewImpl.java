@@ -129,12 +129,22 @@ public class ImageProjectGUIViewImpl extends JFrame {
   }
 
   public void addFeatures(Features features) {
+    // Tells the controller to create a new project
     this.initialNewProjectButton.addActionListener(evt ->
             features.newProject(this.getDesiredWidth(), this.getDesiredHeight()));
 
+    // Tells the controller when to create a new project
+    this.nPButton.addActionListener(evt ->
+            features.newProject(this.getDesiredWidth(), this.getDesiredHeight()));
+
+    // Tells the controller when to load a new project
     this.initialLoadNewProjectButton.addActionListener(evt ->
             features.loadProject(this.getNameToLoad()));
 
+    this.aITLButton.addActionListener(evt ->
+            features.addImageToLayer(this.getDesiredLayerName(), this.getDesiredImage(), this.getDesiredX(), this.getDesiredY()));
+
+    // Tells the controller when to quit
     this.eButton.addActionListener(evt ->
             features.exit());
   }
@@ -163,6 +173,39 @@ public class ImageProjectGUIViewImpl extends JFrame {
     return s;
   }
 
+  private String getDesiredLayerName() {
+    String s = "";
+    while (s.equalsIgnoreCase("")) {
+      s = JOptionPane.showInputDialog("Please enter name of Layer.");
+    }
+    return s;
+  }
+
+  private String getDesiredImage() {
+    String s = "";
+    while (s.equalsIgnoreCase("")) {
+      s = JOptionPane.showInputDialog("Please enter name of image to add.");
+    }
+    return s;
+  }
+
+  private int getDesiredX() {
+    int h = -1;
+    while (h == -1) {
+      h = Integer.parseInt(JOptionPane.showInputDialog("Please enter desired x" +
+              " location of the image's top left."));
+    }
+    return h;
+  }
+
+  private int getDesiredY() {
+    int h = -1;
+    while (h == -1) {
+      h = Integer.parseInt(JOptionPane.showInputDialog("Please enter desired y" +
+              " location of the image's top left."));
+    }
+    return h;
+  }
 
   public void runMainGUI() {
     this.mainPanel.remove(this.introScreen);
@@ -208,7 +251,6 @@ public class ImageProjectGUIViewImpl extends JFrame {
     //radioPanel.add(radioDisplay);
     mainPanel.add(radioPanel);
     //----------------------------------------------------------------------------------------------
-
 
     mainBottomPanel.add(controls);
 
