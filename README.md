@@ -1,7 +1,13 @@
 # ImageProcessor
 
-Our Processor uses a Project and a Layer class for the bulk of the processor
-The layer data is a list of pixels in the layer class.
+Our project class is the main class making up our model. This class implements the majority of the 
+functionality required for our Image Processor, not including file operations. This class contains
+a list of Layers, which make up the image representation of the project. This list is made up of 
+Layer objects.
+
+The layer class mainly consists of a 2D array of Pixels that represents the pixel makeup of the 
+image on that layer. It also stores a version of the image with no filters added to it. It contains
+a reference back to the project it is held in. 
 
 ## How to Use (Text view)
 
@@ -98,3 +104,11 @@ created in the model, and so that creating a BufferedImage of our project would 
   for their additional inputs. These commands now check to make sure that they are only given
   integers.
 * The controller will respond accordingly when given bad input, thus not causing the program to end.
+
+### Image Citation
+* The Google Chrome logo used in our project was a png we converted to a p6 ppm file. We then 
+converted that p6 ppm file to a p3 ppm file. The logo was used in accordance with Google's policy
+for school projects found [here](https://about.google/brand-resource-center/guidance/#go-for-it).
+We used the website [here](https://anyconv.com/png-to-ppm-converter/) to convert from a png to a
+p6 ppm, then we used [this](https://github.com/thomasebsmith/ppm-converter) repository to convert
+from p6 to p3. 
