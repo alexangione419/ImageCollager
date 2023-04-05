@@ -23,15 +23,17 @@ public class ImageProcessorMain {
   public static void main(String[] args) {
     ImageProject project = new ProjectImpl();
 
-    if (args[0].equalsIgnoreCase("Text")) {
-      ImageProjectView view = new PPMProjectTextView(project, System.out);
-      Readable rd = new InputStreamReader(System.in);
-      ImageProjectController controller = new ControllerImpl(project, view, rd);
+    if (args.length > 0) {
+      if (args[0].equalsIgnoreCase("Text")) {
+        ImageProjectView view = new PPMProjectTextView(project, System.out);
+        Readable rd = new InputStreamReader(System.in);
+        ImageProjectController controller = new ControllerImpl(project, view, rd);
 
-      controller.start();
+        controller.start();
+      }
     }
 
-    else if (args[0].equalsIgnoreCase("GUI")) {
+    else {
       ImageProjectGUIViewImpl view = new ImageProjectGUIViewImpl(project);
       Readable rd = new InputStreamReader(System.in);
       ImageProjectGUIController controller = new ImageProjectGUIController(project, rd);
@@ -39,5 +41,4 @@ public class ImageProcessorMain {
       controller.start(view);
     }
   }
-
 }
