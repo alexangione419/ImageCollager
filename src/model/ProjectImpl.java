@@ -61,7 +61,7 @@ public class ProjectImpl implements ImageProject {
       throw new IllegalStateException("There's currently no open project.");
     }
 
-    Pixel[][] newRepresentation = new Pixel[this.getWidth()][this.height];
+    Pixel[][] newRepresentation = new Pixel[this.width][this.height];
 
 
     for (int y = 0; y < this.getHeight(); y++) {

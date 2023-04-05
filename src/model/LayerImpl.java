@@ -102,19 +102,6 @@ public final class LayerImpl implements Layer {
       throw new IllegalArgumentException("File not found");
     }
 
-//    StringBuilder builder = new StringBuilder();
-//
-//    //read the file line by line, and populate a string. This will throw away any comment lines
-//    while (sc.hasNext("#") && sc.hasNextLine()) {
-//      String s = sc.nextLine();
-//      if (s.charAt(0) != '#') {
-//        builder.append(s).append(System.lineSeparator());
-//      }
-//    }
-
-    //now set up the scanner to read from the string we just built
-//    sc = new Scanner(builder.toString());
-
     String token;
     token = sc.next();
 
@@ -125,10 +112,6 @@ public final class LayerImpl implements Layer {
     int width = sc.nextInt();
     int height = sc.nextInt();
     int maxValue = sc.nextInt();
-
-    // ensures the image will not out of the bounds of the layer
-//    int xLim = Clamp.execute(x + width, 0, this.project.getWidth());
-//    int yLim = Clamp.execute(y + height, 0, this.project.getHeight());
 
     for (int y2 = y; y2 < y + height; y2++) {
       for (int x2 = x; x2 < x + width; x2++) {
@@ -141,7 +124,7 @@ public final class LayerImpl implements Layer {
           || (x2 >= this.project.getWidth())) {
           continue;
         }
-        
+
         this.currentLayer[x2][y2] = new RGBAPixel(this.getMaxPixel(), r, g, b);
         this.unfilteredLayer[x2][y2] = new RGBAPixel(this.getMaxPixel(), r, g, b);
       }
@@ -172,10 +155,10 @@ public final class LayerImpl implements Layer {
     for (int x = 0; x < this.project.getWidth(); x++) {
       for (int y = 0; y < this.project.getHeight(); y++) {
         this.currentLayer[x][y] =
-            new RGBAPixel(this.getMaxPixel(), 255, 255, 255, 0);
+            new RGBAPixel(this.getMaxPixel(), 255, 255, 255, 255);
 
         this.unfilteredLayer[x][y] =
-                new RGBAPixel(this.getMaxPixel(), 255, 255, 255, 0);
+                new RGBAPixel(this.getMaxPixel(), 255, 255, 255, 255);
       }
     }
   }
