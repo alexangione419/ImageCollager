@@ -93,7 +93,7 @@ public final class PixelUtils {
             * (backgroundAlpha / maxPixelVal)
             * (1 - curAlpha / maxPixelVal)) * (1 / alphaPercentage);
 
-      } else if ((i == 0) && (curAlpha != 0)) {
+      } else if (i == 0) {
         finalColor[0] = curRed;
         finalColor[1] = curGreen;
         finalColor[2] = curBlue;
