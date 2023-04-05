@@ -15,11 +15,10 @@ import java.io.StringReader;
 import java.util.Scanner;
 import model.ImageProject;
 import model.ProjectImpl;
-import org.junit.After;
-import org.junit.Test;
-
 import model.pixels.Pixel;
 import model.pixels.RGBAPixel;
+import org.junit.After;
+import org.junit.Test;
 import view.ImageProjectView;
 import view.PPMProjectTextView;
 

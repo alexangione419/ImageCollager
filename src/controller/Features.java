@@ -1,7 +1,5 @@
 package controller;
 
-import java.io.IOException;
-
 public interface Features {
   void addImageToLayer(String layer, String image, int x, int y);
   void addLayer(String layerName);

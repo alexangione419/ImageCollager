@@ -1,8 +1,5 @@
 C. Testing
 - getImageRepresentation(Model)
-- makeVisible (Layer)
-- setName (Model)
-- confirm for getName(model)
 
 D. For Design
   - Move Layer buttons under Layer

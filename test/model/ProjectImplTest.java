@@ -6,15 +6,11 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
 import model.filters.Filter;
 import model.filters.Normal;
 import model.pixels.Pixel;
 import model.pixels.RGBAPixel;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -731,5 +727,90 @@ public class ProjectImplTest {
     this.model.setActiveLayer(1);
     assertEquals("Cancun", this.model.getActiveLayerName());
 
+  }
+
+
+  @Test
+  public void testGetName() {
+    try {
+      this.model.getName();
+      fail();
+    }
+    catch (IllegalStateException e) {
+      assertEquals("There's currently no open project.", e.getMessage());
+    }
+
+    this.model.createNewProject(3, 3);
+    assertEquals(this.model.getName(), "Untitled Project");
+
+    this.model.setName("Project1");
+    assertEquals(this.model.getName(), "Project1");
+  }
+
+  @Test
+  public void testSetName() {
+    try {
+      this.model.setName("Project 1");
+      fail();
+    }
+    catch (IllegalStateException e) {
+      assertEquals("There's currently no open project.", e.getMessage());
+    }
+
+    this.model.createNewProject(3, 3);
+    assertEquals(this.model.getName(), "Untitled Project");
+
+    try {
+      this.model.setName(null);
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Project name cannot be null.", e.getMessage());
+    }
+
+    try {
+      this.model.setName("");
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Project name cannot be an empty string or "
+          + "just whitespace.", e.getMessage());
+    }
+
+    try {
+      this.model.setName(System.lineSeparator());
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Project name cannot be an empty string or "
+          + "just whitespace.", e.getMessage());
+    }
+
+    try {
+      this.model.setName("\n");
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Project name cannot contain a space or a linebreak.", e.getMessage());
+    }
+
+    try {
+      this.model.setName(" ");
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Project name cannot contain a space or a linebreak.", e.getMessage());
+    }
+
+    try {
+      this.model.setName("Project 1");
+      fail();
+    }
+    catch (IllegalArgumentException e) {
+      assertEquals("Project name cannot contain a space or a linebreak.", e.getMessage());
+    }
+
+    this.model.setName("Project1");
+    assertEquals(this.model.getName(), "Project1");
   }
 }

@@ -1,9 +1,7 @@
 import controller.ControllerImpl;
 import controller.ImageProjectController;
 import controller.ImageProjectGUIController;
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import model.ImageProject;
 import model.ProjectImpl;
 import view.ImageProjectGUIViewImpl;

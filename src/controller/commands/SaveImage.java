@@ -1,10 +1,10 @@
 package controller.commands;
 
 import controller.ImageProjectController;
+import controller.ImageProjectFileUtils;
 import java.io.IOException;
 import java.util.Scanner;
 import model.ImageProject;
-import controller.ImageProjectFileUtils;
 import model.pixels.Pixel;
 import view.ImageProjectView;
 

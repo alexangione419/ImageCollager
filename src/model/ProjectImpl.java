@@ -1,7 +1,8 @@
 package model;
 
-import controller.commands.ACommand;
+import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
 
+import controller.commands.ACommand;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +24,6 @@ import model.filters.RedComponent;
 import model.filters.Screen;
 import model.pixels.Pixel;
 import model.pixels.PixelUtils;
-
-import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
 
 /**
  * A class that represents a PPM Image Project. PPM is an image file format that contains rows and
@@ -132,6 +131,28 @@ public class ProjectImpl implements ImageProject {
       throw new IllegalStateException("There's currently no open project.");
     }
     return Objects.requireNonNullElse(this.name, "Untitled Project");
+  }
+
+  @Override
+  public void setName(String name) throws IllegalStateException, IllegalArgumentException{
+    if (!hasAOpenProject) {
+      throw new IllegalStateException("There's currently no open project.");
+    }
+
+    if (name == null) {
+      throw new IllegalArgumentException("Project name cannot be null.");
+    }
+
+    if (name.isBlank() || name.equals(System.lineSeparator())) {
+      throw new IllegalArgumentException("Project name cannot be an empty string or "
+          + "just whitespace.");
+    }
+
+    if (name.contains("\n") || name.contains(" ")) {
+      throw new IllegalArgumentException("Project name cannot contain a space or a linebreak.");
+    }
+
+    this.name = name;
   }
 
   @Override
@@ -365,9 +386,5 @@ public class ProjectImpl implements ImageProject {
     }
 
     return result;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 }

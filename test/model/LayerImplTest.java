@@ -8,7 +8,6 @@ import static org.junit.Assert.fail;
 import model.pixels.Pixel;
 import model.pixels.PixelUtils;
 import model.pixels.RGBAPixel;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -115,36 +114,35 @@ public class LayerImplTest {
     this.project3x4.createNewProject(3, 4);
     this.project3x4.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
 
-
     assertArrayEquals(new RGBAPixel[][]{
-            {new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)}}, this.project3x4.currentCanvas());
+        {new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)}}, this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("red-component", "Layer1");
 
     assertArrayEquals(new RGBAPixel[][]{
-            {new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0)},
-            {new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0)},
-            {new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0)}}, this.project3x4.currentCanvas());
+        {new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0)},
+        {new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0)},
+        {new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0)}}, this.project3x4.currentCanvas());
 
     for (Pixel[] pList : this.project3x4.getActiveLayer().getUnfilteredLayer()) {
       for (Pixel p : pList) {
@@ -164,18 +162,18 @@ public class LayerImplTest {
     this.project3x4.getActiveLayer().setPixelColor(0, 0, 0, 0, 0, 255);
 
     assertArrayEquals(new RGBAPixel[][]{
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255)},
-            {new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255)},
-            {new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255)}}, this.project3x4.currentCanvas());
+        {new RGBAPixel(255, 0, 0, 0),
+            new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255)},
+        {new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255)},
+        {new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255)}}, this.project3x4.currentCanvas());
 
     Pixel turquoiseGreen = new RGBAPixel(255, 30, 89, 69);
     Pixel pastelBlue = new RGBAPixel(255, 93, 155, 155);
@@ -187,18 +185,18 @@ public class LayerImplTest {
 
     assertArrayEquals(new RGBAPixel[][]{
             {new RGBAPixel(255, 30, 89, 69),
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255)},
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255)},
             {new RGBAPixel(255, 93, 155, 155),
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255)},
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255)},
             {new RGBAPixel(255, 76, 47, 39),
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255)}},
-            this.project3x4.currentCanvas());
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255)}},
+        this.project3x4.currentCanvas());
   }
 
   @Test
@@ -218,34 +216,34 @@ public class LayerImplTest {
     this.project3x4.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
 
     Pixel[][] threeFoursWithImage = new RGBAPixel[][]{
-            {new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)}};
+        {new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)}};
     assertArrayEquals(threeFoursWithImage, this.project3x4.currentCanvas());
 
     this.project3x4.getActiveLayer().clearLayer();
     Pixel[][] threeFoursWhite = new RGBAPixel[][]{
-            {new RGBAPixel(255, 255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255, 255)},
-            {new RGBAPixel(255, 255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255, 255)},
-            {new RGBAPixel(255, 255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255, 255)}};
+        {new RGBAPixel(255, 0, 0, 0, 255),
+            new RGBAPixel(255, 0, 0, 0, 255),
+            new RGBAPixel(255, 0, 0, 0, 255),
+            new RGBAPixel(255, 0, 0, 0, 255)},
+        {new RGBAPixel(255, 0, 0, 0, 255),
+            new RGBAPixel(255, 0, 0, 0, 255),
+            new RGBAPixel(255, 0, 0, 0, 255),
+            new RGBAPixel(255, 0, 0, 0, 255)},
+        {new RGBAPixel(255, 0, 0, 0, 255),
+            new RGBAPixel(255, 0, 0, 0, 255),
+            new RGBAPixel(255, 0, 0, 0, 255),
+            new RGBAPixel(255, 0, 0, 0, 255)}};
     assertArrayEquals(threeFoursWhite, this.project3x4.currentCanvas());
   }
 
@@ -256,35 +254,35 @@ public class LayerImplTest {
     this.project3x4.addImageToLayer("Layer1", "./res/smol.ppm", 0, 0);
 
     Pixel[][] threeFoursWithImage = new RGBAPixel[][]{
-            {new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)}};
+        {new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)}};
     assertArrayEquals(threeFoursWithImage, this.project3x4.currentCanvas());
 
     this.project3x4.addImageToLayer("Layer1", "./res/smolLow.ppm", 2, 2);
 
     assertArrayEquals(new RGBAPixel[][]{
-            {new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 119, 119, 119),
-                    new RGBAPixel(255, 119, 119, 119)}}, this.project3x4.currentCanvas());
+        {new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 119, 119, 119),
+            new RGBAPixel(255, 119, 119, 119)}}, this.project3x4.currentCanvas());
   }
 
   @Test
@@ -349,167 +347,167 @@ public class LayerImplTest {
     this.project3x4.setFilter("normal", "Layer1");
 
     assertArrayEquals(new RGBAPixel[][]{
-            {new RGBAPixel(255, 30, 89, 69),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 93, 155, 155),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 76, 47, 39),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)}}, this.project3x4.currentCanvas());
+        {new RGBAPixel(255, 30, 89, 69),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 93, 155, 155),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 76, 47, 39),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)}}, this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("red-component", "Layer1");
 
     assertArrayEquals(new RGBAPixel[][]{
-            {new RGBAPixel(255, 30, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0)},
-            {new RGBAPixel(255, 93, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0)},
-            {new RGBAPixel(255, 76, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0),
-                    new RGBAPixel(255, 225, 0, 0)}}, this.project3x4.currentCanvas());
+        {new RGBAPixel(255, 30, 0, 0),
+            new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0)},
+        {new RGBAPixel(255, 93, 0, 0),
+            new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0)},
+        {new RGBAPixel(255, 76, 0, 0),
+            new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0),
+            new RGBAPixel(255, 225, 0, 0)}}, this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("green-component", "Layer1");
 
     assertArrayEquals(new RGBAPixel[][]{
-            {new RGBAPixel(255, 0, 89, 0),
-                    new RGBAPixel(255, 0, 225, 0),
-                    new RGBAPixel(255, 0, 225, 0),
-                    new RGBAPixel(255, 0, 225, 0)},
-            {new RGBAPixel(255, 0, 155, 0),
-                    new RGBAPixel(255, 0, 225, 0),
-                    new RGBAPixel(255, 0, 225, 0),
-                    new RGBAPixel(255, 0, 225, 0)},
-            {new RGBAPixel(255, 0, 47, 0),
-                    new RGBAPixel(255, 0, 225, 0),
-                    new RGBAPixel(255, 0, 225, 0),
-                    new RGBAPixel(255, 0, 225, 0)}}, this.project3x4.currentCanvas());
+        {new RGBAPixel(255, 0, 89, 0),
+            new RGBAPixel(255, 0, 225, 0),
+            new RGBAPixel(255, 0, 225, 0),
+            new RGBAPixel(255, 0, 225, 0)},
+        {new RGBAPixel(255, 0, 155, 0),
+            new RGBAPixel(255, 0, 225, 0),
+            new RGBAPixel(255, 0, 225, 0),
+            new RGBAPixel(255, 0, 225, 0)},
+        {new RGBAPixel(255, 0, 47, 0),
+            new RGBAPixel(255, 0, 225, 0),
+            new RGBAPixel(255, 0, 225, 0),
+            new RGBAPixel(255, 0, 225, 0)}}, this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("blue-component", "Layer1");
 
     assertArrayEquals(new RGBAPixel[][]{
-            {new RGBAPixel(255, 0, 0, 69),
-                    new RGBAPixel(255, 0, 0, 225),
-                    new RGBAPixel(255, 0, 0, 225),
-                    new RGBAPixel(255, 0, 0, 225)},
-            {new RGBAPixel(255, 0, 0, 155),
-                    new RGBAPixel(255, 0, 0, 225),
-                    new RGBAPixel(255, 0, 0, 225),
-                    new RGBAPixel(255, 0, 0, 225)},
-            {new RGBAPixel(255, 0, 0, 39),
-                    new RGBAPixel(255, 0, 0, 225),
-                    new RGBAPixel(255, 0, 0, 225),
-                    new RGBAPixel(255, 0, 0, 225)}}, this.project3x4.currentCanvas());
+        {new RGBAPixel(255, 0, 0, 69),
+            new RGBAPixel(255, 0, 0, 225),
+            new RGBAPixel(255, 0, 0, 225),
+            new RGBAPixel(255, 0, 0, 225)},
+        {new RGBAPixel(255, 0, 0, 155),
+            new RGBAPixel(255, 0, 0, 225),
+            new RGBAPixel(255, 0, 0, 225),
+            new RGBAPixel(255, 0, 0, 225)},
+        {new RGBAPixel(255, 0, 0, 39),
+            new RGBAPixel(255, 0, 0, 225),
+            new RGBAPixel(255, 0, 0, 225),
+            new RGBAPixel(255, 0, 0, 225)}}, this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("brighten-intensity", "Layer1");
 
     assertArrayEquals(new RGBAPixel[][]{
-                    {new RGBAPixel(255, 92, 151, 131),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255)},
-                    {new RGBAPixel(255, 227, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255)},
-                    {new RGBAPixel(255, 130, 101, 93),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255)}},
-            this.project3x4.currentCanvas());
+            {new RGBAPixel(255, 92, 151, 131),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 227, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 130, 101, 93),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255)}},
+        this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("darken-intensity", "Layer1");
 
     assertArrayEquals(new RGBAPixel[][]{
             {new RGBAPixel(255, 0, 27, 7),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0)},
             {new RGBAPixel(255, 0, 21, 21),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0)},
             {new RGBAPixel(255, 22, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)}},
-            this.project3x4.currentCanvas());
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0)}},
+        this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("brighten-luma", "Layer1");
 
     assertArrayEquals(new RGBAPixel[][]{
-                    {new RGBAPixel(255, 105, 164, 144),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255)},
-                    {new RGBAPixel(255, 234, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255)},
-                    {new RGBAPixel(255, 128, 99, 91),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255)}},
-            this.project3x4.currentCanvas());
+            {new RGBAPixel(255, 105, 164, 144),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 234, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 128, 99, 91),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255)}},
+        this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("darken-luma", "Layer1");
 
     assertArrayEquals(new RGBAPixel[][]{
-                    {new RGBAPixel(255, 0, 14, 0),
-                            new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0)},
-                    {new RGBAPixel(255, 0, 14, 14),
-                            new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0)},
-                    {new RGBAPixel(255, 24, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0)}},
-            this.project3x4.currentCanvas());
+            {new RGBAPixel(255, 0, 14, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0)},
+            {new RGBAPixel(255, 0, 14, 14),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0)},
+            {new RGBAPixel(255, 24, 0, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0)}},
+        this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("brighten-value", "Layer1");
 
     assertArrayEquals(new RGBAPixel[][]{
-                    {new RGBAPixel(255, 119, 178, 158),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255)},
-                    {new RGBAPixel(255, 248, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255)},
-                    {new RGBAPixel(255, 152, 123, 115),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255)}},
-            this.project3x4.currentCanvas());
+            {new RGBAPixel(255, 119, 178, 158),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 248, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 152, 123, 115),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255)}},
+        this.project3x4.currentCanvas());
     this.project3x4.setFilter("darken-value", "Layer1");
 
     assertArrayEquals(new RGBAPixel[][]{
-                    {new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0)},
-                    {new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0)},
-                    {new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0),
-                            new RGBAPixel(255, 0, 0, 0)}},
-            this.project3x4.currentCanvas());
+            {new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0)},
+            {new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0)},
+            {new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0),
+                new RGBAPixel(255, 0, 0, 0)}},
+        this.project3x4.currentCanvas());
 
   }
 
@@ -530,84 +528,88 @@ public class LayerImplTest {
     this.project3x4.setFilter("normal", "Layer1");
 
     assertArrayEquals(new RGBAPixel[][]{
-            {new RGBAPixel(255, 30, 89, 69),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 93, 155, 155),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 76, 47, 39),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)}}, this.project3x4.currentCanvas());
+        {new RGBAPixel(255, 30, 89, 69),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 93, 155, 155),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 76, 47, 39),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)}},
+        this.project3x4.currentCanvas());
 
     this.project3x4.addLayer("Layer2");
     this.project3x4.getActiveLayer().setPixelColor(0, 0, purple);
     this.project3x4.getActiveLayer().setPixelColor(1, 0, purple);
     this.project3x4.getActiveLayer().setPixelColor(2, 0, purple);
 
-    assertEquals(new RGBAPixel[][]{
-            {new RGBAPixel(255, 255, 0, 255),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 255, 0, 255),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 255, 0, 255),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)}}, this.project3x4.currentCanvas());
+    assertArrayEquals(new RGBAPixel[][]{
+        {new RGBAPixel(255, 255, 0, 255),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 255, 0, 255),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 255, 0, 255),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)}},
+        this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("difference", "Layer2");
 
     assertNotEquals(new RGBAPixel[][]{
-            {new RGBAPixel(255, 255, 0, 255),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 255, 0, 255),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 255, 0, 255),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)}}, this.project3x4.currentCanvas());
+        {new RGBAPixel(255, 255, 0, 255),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 255, 0, 255),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 255, 0, 255),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)}},
+        this.project3x4.currentCanvas());
 
     assertArrayEquals(new RGBAPixel[][]{
-            {new RGBAPixel(255, 225, 89, 186),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 162, 155, 100),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 179, 47, 216),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)}}, this.project3x4.currentCanvas());
-
+        {new RGBAPixel(255, 225, 89, 186),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 162, 155, 100),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 179, 47, 216),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)}},
+        this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("normal", "Layer2");
 
     assertArrayEquals(new RGBAPixel[][]{
             {new RGBAPixel(255, 255, 0, 255),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
+                new RGBAPixel(255, 225, 225, 225),
+                new RGBAPixel(255, 225, 225, 225),
+                new RGBAPixel(255, 225, 225, 225)},
             {new RGBAPixel(255, 255, 0, 255),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
+                new RGBAPixel(255, 225, 225, 225),
+                new RGBAPixel(255, 225, 225, 225),
+                new RGBAPixel(255, 225, 225, 225)},
             {new RGBAPixel(255, 255, 0, 255),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)}}, this.project3x4.currentCanvas());
+                new RGBAPixel(255, 225, 225, 225),
+                new RGBAPixel(255, 225, 225, 225),
+                new RGBAPixel(255, 225, 225, 225)}},
+        this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("multiply", "Layer2");
 
@@ -616,42 +618,42 @@ public class LayerImplTest {
     assertEquals(0.48627, pastelBlue.getLight(), 0.00001);
     assertEquals(0.22549, mahoganyBrown.getLight(), 0.00001);
 
-    Pixel purpGreen = PixelUtils.convertHSLtoRGBA(
-            purple.getHue(), purple.getSaturation(), 0.11665);
-    Pixel purpBlue = PixelUtils.convertHSLtoRGBA(
-            purple.getHue(), purple.getSaturation(), 0.243135);
-    Pixel purpBrown = PixelUtils.convertHSLtoRGBA(
-            purple.getHue(), purple.getSaturation(), 0.112745);
+    RGBAPixel purpGreen = PixelUtils.convertHSLtoRGBA(
+        purple.getHue(), purple.getSaturation(), 0.11665);
+    RGBAPixel purpBlue = PixelUtils.convertHSLtoRGBA(
+        purple.getHue(), purple.getSaturation(), 0.243135);
+    RGBAPixel purpBrown = PixelUtils.convertHSLtoRGBA(
+        purple.getHue(), purple.getSaturation(), 0.112745);
 
-    assertEquals(new RGBAPixel[][]{{(RGBAPixel) purpGreen,
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-                    {(RGBAPixel) purpBlue,
-                            new RGBAPixel(255, 225, 225, 225),
-                            new RGBAPixel(255, 225, 225, 225),
-                            new RGBAPixel(255, 225, 225, 225)},
-                    {(RGBAPixel) purpBrown,
-                            new RGBAPixel(255, 225, 225, 225),
-                            new RGBAPixel(255, 225, 225, 225),
-                            new RGBAPixel(255, 225, 225, 225)}},
-            this.project3x4.currentCanvas());
+    assertArrayEquals(new RGBAPixel[][]{{purpGreen,
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+            {purpBlue,
+                new RGBAPixel(255, 225, 225, 225),
+                new RGBAPixel(255, 225, 225, 225),
+                new RGBAPixel(255, 225, 225, 225)},
+            {purpBrown,
+                new RGBAPixel(255, 225, 225, 225),
+                new RGBAPixel(255, 225, 225, 225),
+                new RGBAPixel(255, 225, 225, 225)}},
+        this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("normal", "Layer2");
 
     assertArrayEquals(new RGBAPixel[][]{
-            {new RGBAPixel(255, 255, 0, 255),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 255, 0, 255),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)},
-            {new RGBAPixel(255, 255, 0, 255),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225),
-                    new RGBAPixel(255, 225, 225, 225)}}, this.project3x4.currentCanvas());
+        {new RGBAPixel(255, 255, 0, 255),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 255, 0, 255),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {new RGBAPixel(255, 255, 0, 255),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)}}, this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("screen", "Layer2");
 
@@ -661,28 +663,28 @@ public class LayerImplTest {
     assertEquals(0.22549, mahoganyBrown.getLight(), 0.00001);
 
     purpGreen = PixelUtils.convertHSLtoRGBA(
-            purple.getHue(), purple.getSaturation(),
-            (1 - ((1 - 0.5) * (1 - turquoiseGreen.getLight()))));
+        purple.getHue(), purple.getSaturation(),
+        (1 - ((1 - 0.5) * (1 - turquoiseGreen.getLight()))));
     purpBlue = PixelUtils.convertHSLtoRGBA(
-            purple.getHue(), purple.getSaturation(),
-            (1 - ((1 - 0.5) * (1 - pastelBlue.getLight()))));
+        purple.getHue(), purple.getSaturation(),
+        (1 - ((1 - 0.5) * (1 - pastelBlue.getLight()))));
     purpBrown = PixelUtils.convertHSLtoRGBA(
-            purple.getHue(), purple.getSaturation(),
-            (1 - ((1 - 0.5) * (1 - mahoganyBrown.getLight()))));
+        purple.getHue(), purple.getSaturation(),
+        (1 - ((1 - 0.5) * (1 - mahoganyBrown.getLight()))));
 
-    assertEquals(new RGBAPixel[][]{{(RGBAPixel) purpGreen,
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255),
-                    new RGBAPixel(255, 255, 255, 255)},
-                    {(RGBAPixel) purpBlue,
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255)},
-                    {(RGBAPixel) purpBrown,
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255),
-                            new RGBAPixel(255, 255, 255, 255, 255)}},
-            this.project3x4.currentCanvas());
+    assertArrayEquals(new RGBAPixel[][]{{purpGreen,
+            new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255)},
+            {purpBlue,
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255)},
+            {purpBrown,
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255, 255)}},
+        this.project3x4.currentCanvas());
 
   }
 
@@ -697,6 +699,37 @@ public class LayerImplTest {
     }
   }
 
+  @Test
+  public void testMakeVisible() {
+    this.project3x4.createNewProject(2, 2);
+
+    assertArrayEquals(new RGBAPixel[][]{
+            {new RGBAPixel(255, 255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255, 255),
+                new RGBAPixel(255, 255, 255, 255, 255)}},
+        this.project3x4.currentCanvas());
+
+    this.project3x4.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 0);
+    this.project3x4.getActiveLayer().setPixelColor(1, 0, 0, 255, 0, 0);
+    this.project3x4.getActiveLayer().setPixelColor(0, 1, 0, 0, 255, 0);
+
+    assertArrayEquals(new RGBAPixel[][]{
+            {new RGBAPixel(255, 0, 0, 0, 255),
+                new RGBAPixel(255, 0, 0, 0, 255)},
+            {new RGBAPixel(255, 0, 0, 0, 255),
+                new RGBAPixel(255, 255, 255, 255, 255)}},
+        this.project3x4.currentCanvas());
+
+    this.project3x4.getActiveLayer().makeVisible();
+
+    assertArrayEquals(new RGBAPixel[][]{
+            {new RGBAPixel(255, 255, 0, 0, 255),
+                new RGBAPixel(255, 0, 0, 255, 255)},
+            {new RGBAPixel(255, 0, 255, 0, 255),
+                new RGBAPixel(255, 255, 255, 255, 255)}},
+        this.project3x4.currentCanvas());
+  }
 
 }
 

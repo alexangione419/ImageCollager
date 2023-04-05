@@ -2,8 +2,6 @@ package model;
 
 import java.awt.image.BufferedImage;
 
-import model.pixels.Pixel;
-
 /**
  * An interface containing the various state functions needed in an Image Project. This interface is
  * separate from the Image Project interface so that sections of code that rely on having access to
@@ -18,6 +16,12 @@ public interface ImageProjectState {
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
   String getName() throws IllegalStateException;
+
+  /**
+   * Allows for the setting/changing of the name of the project.
+   * @param name the name to change the project's name to
+   */
+  void setName(String name) throws IllegalStateException, IllegalArgumentException;
 
   /**
    * Returns the width size of this {@code ImageProject}.
@@ -71,8 +75,6 @@ public interface ImageProjectState {
    */
   BufferedImage getImageRepresentation();
 
-
-
   /**
    * Sets the active layer to the {@code Layer} at the given layer index.
    *
@@ -89,9 +91,4 @@ public interface ImageProjectState {
    */
   String getActiveLayerName();
 
-  /**
-   * Allows for the setting/changing of the name of the project.
-   * @param name the name to change the project's name to
-   */
-  void setName(String name);
 }

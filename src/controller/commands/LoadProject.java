@@ -1,12 +1,12 @@
 package controller.commands;
 
+import controller.ImageProjectFileUtils;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import model.ImageProject;
-import controller.ImageProjectFileUtils;
 import model.pixels.RGBAPixel;
 import view.ImageProjectView;
 

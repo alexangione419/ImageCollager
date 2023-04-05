@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
-import model.filters.Clamp;
 import model.filters.Filter;
 import model.pixels.Pixel;
 import model.pixels.RGBAPixel;
@@ -135,7 +134,7 @@ public final class LayerImpl implements Layer {
   @Override
   public void setPixelColor(int x, int y, int r, int g, int b, int a) {
     this.currentLayer[x][y] = new RGBAPixel(this.getMaxPixel(), r, g, b, a);
-    this.unfilteredLayer[x][y] = new RGBAPixel(this.getMaxPixel(), r, g, b);
+    this.unfilteredLayer[x][y] = new RGBAPixel(this.getMaxPixel(), r, g, b, a);
   }
 
   @Override
@@ -154,11 +153,7 @@ public final class LayerImpl implements Layer {
 
     for (int x = 0; x < this.project.getWidth(); x++) {
       for (int y = 0; y < this.project.getHeight(); y++) {
-        this.currentLayer[x][y] =
-            new RGBAPixel(this.getMaxPixel(), 255, 255, 255, 255);
-
-        this.unfilteredLayer[x][y] =
-                new RGBAPixel(this.getMaxPixel(), 255, 255, 255, 255);
+        this.setPixelColor(x, y, 255, 255, 255, 0);
       }
     }
   }
@@ -167,15 +162,11 @@ public final class LayerImpl implements Layer {
   public void makeVisible() {
     for (int x = 0; x < this.project.getWidth(); x++) {
       for (int y = 0; y < this.project.getHeight(); y++) {
-        this.currentLayer[x][y] =
-                new RGBAPixel(this.getMaxPixel(), this.currentLayer[x][y].getRed(),
-                        this.currentLayer[x][y].getGreen(), this.currentLayer[x][y].getBlue(),
-                        255);
-
-        this.unfilteredLayer[x][y] =
-                new RGBAPixel(this.getMaxPixel(), this.currentLayer[x][y].getRed(),
-                        this.currentLayer[x][y].getGreen(), this.currentLayer[x][y].getBlue(),
-                        255);
+        this.setPixelColor(x, y,
+            this.currentLayer[x][y].getRed(),
+            this.currentLayer[x][y].getGreen(),
+            this.currentLayer[x][y].getBlue(),
+            this.getMaxPixel());
       }
     }
   }
