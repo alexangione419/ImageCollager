@@ -85,8 +85,14 @@ public class ProjectImplControllerTest {
 
     assertArrayEquals(this.model.currentCanvas(), curCanvas);
 
-    assertEquals("255 0 0 0 0 0 \n0 0 0 0 0 0 ", curCanvas);
-    assertEquals("255 0 0 0 0 0 \n0 0 0 0 0 0 ", this.model.currentCanvas());
+    assertArrayEquals(new RGBAPixel[][]{{new RGBAPixel(255, 255, 0, 0),
+                    new RGBAPixel(255, 255, 255, 255)},
+                    {new RGBAPixel(255, 255, 255, 255),
+                            new RGBAPixel(255, 255, 255, 255)}}, curCanvas);
+    assertArrayEquals(new RGBAPixel[][]{{new RGBAPixel(255, 255, 0, 0),
+            new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)}}, this.model.currentCanvas());
   }
 
   @Test
@@ -129,14 +135,14 @@ public class ProjectImplControllerTest {
     Pixel[][] full = new RGBAPixel[][]{
             {new RGBAPixel(255,225, 225, 225),
                     new RGBAPixel(255,225, 225, 225),
-                    new RGBAPixel(255,225, 225, 225)},
-            {new RGBAPixel(255,225, 225, 225),
                     new RGBAPixel(255,225, 225, 225),
                     new RGBAPixel(255,225, 225, 225)},
             {new RGBAPixel(255,225, 225, 225),
                     new RGBAPixel(255,225, 225, 225),
+                    new RGBAPixel(255,225, 225, 225),
                     new RGBAPixel(255,225, 225, 225)},
             {new RGBAPixel(255,225, 225, 225),
+                    new RGBAPixel(255,225, 225, 225),
                     new RGBAPixel(255,225, 225, 225),
                     new RGBAPixel(255,225, 225, 225)}};
 
@@ -189,9 +195,9 @@ public class ProjectImplControllerTest {
 
     Pixel[][] arr2 = new RGBAPixel[][]{
             {new RGBAPixel(255,127, 0, 128),
-                    new RGBAPixel(255,127, 0, 128)},
-            {new RGBAPixel(255,0, 0, 128),
-                    new RGBAPixel(255,127, 127, 225)}};
+                    new RGBAPixel(255,0, 0, 128)},
+            {new RGBAPixel(255,127, 0, 128),
+                    new RGBAPixel(255,127, 127, 255)}};
     assertArrayEquals(arr2, this.model.currentCanvas());
 
   }
@@ -1382,8 +1388,13 @@ public class ProjectImplControllerTest {
             + "Bye Bye!",
         output.toString().split("Welcome to our Image Processor.\n")[1]);
 
-    assertEquals("127 0 128 127 0 128 \n"
-        + "0 0 128 127 127 255 ", this.model.currentCanvas());
+
+    assertArrayEquals(new RGBAPixel[][]
+            {{new RGBAPixel(255, 127, 0, 128),
+                    new RGBAPixel(255, 0, 0, 128)},
+            {new RGBAPixel(255, 127, 0, 128),
+                    new RGBAPixel(255, 127, 127, 255)}},
+            this.model.currentCanvas());
   }
 
   @Test
