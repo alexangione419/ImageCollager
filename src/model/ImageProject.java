@@ -38,15 +38,6 @@ public interface ImageProject extends ImageProjectState {
    */
   void setActiveLayer(String layerName) throws IllegalArgumentException, IllegalStateException;
 
-  /**
-   * Sets the active layer to the {@code Layer} at the given layer index.
-   *
-   * @param layerIndex the name of the layer to set as active
-   * @throws IllegalArgumentException if the layer index is greater than the number of layers or
-   *                                  less than 0.
-   * @throws IllegalStateException    if this {@code ImageProject} doesn't have a loaded project
-   */
-  void setActiveLayer(int layerIndex) throws IllegalArgumentException, IllegalStateException;
 
   /**
    * Adds a new layer to this project with the specified name. The active layer of this
@@ -99,4 +90,13 @@ public interface ImageProject extends ImageProjectState {
    * @param y         the y position to place the picture at
    */
   void addImageToLayer(String layerName, String imageFile, int x, int y);
+
+  /**
+   * Outputs a Pixel[][] that represents what the current canvas looks like as an image. The list
+   * should contain the RGBA values of every pixel on the canvas.
+   *
+   * @return a Pixel[][] that represents the current canvas
+   * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
+   */
+  Pixel[][] currentCanvas() throws IllegalStateException;
 }

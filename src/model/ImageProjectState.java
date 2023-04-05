@@ -71,13 +71,21 @@ public interface ImageProjectState {
    */
   BufferedImage getImageRepresentation();
 
-  /**
-   * Outputs a String that represents what the current canvas looks like as an image. The String
-   * should contain the RGBA values of every pixel on the canvas.
-   *
-   * @return a String that represents the current canvas
-   * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
-   */
-  Pixel[][] currentCanvas() throws IllegalStateException;
 
+
+  /**
+   * Sets the active layer to the {@code Layer} at the given layer index.
+   *
+   * @param layerIndex the name of the layer to set as active
+   * @throws IllegalArgumentException if the layer index is greater than the number of layers or
+   *                                  less than 0.
+   * @throws IllegalStateException    if this {@code ImageProject} doesn't have a loaded project
+   */
+  void setActiveLayer(int layerIndex) throws IllegalArgumentException, IllegalStateException;
+
+  /**
+   * Gets the name of the projects active layer.
+   * @return the name of the currently active layer.
+   */
+  String getActiveLayerName();
 }

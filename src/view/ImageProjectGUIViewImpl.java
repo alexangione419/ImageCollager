@@ -5,8 +5,10 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import model.ImageProjectState;
@@ -15,11 +17,12 @@ import model.ImageProjectState;
 /**
  * Represents a Generate User Interface for interacting with Image Processing Software.
  */
-public class ImageProjectGUIViewImpl extends JFrame {
+public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
 
   private ImageProjectState model;
 
-  // Variables for GUI
+  int currentLayerIndex;
+
   private JPanel mainPanel;
   private JPanel mainBottomPanel;
   private JPanel introScreen;
@@ -28,8 +31,6 @@ public class ImageProjectGUIViewImpl extends JFrame {
   private JLabel imageLabel;
   private JScrollPane imageScrollPane;
   private JPanel radioPanel;
-
-
   private final JButton initialNewProjectButton;
   private final JButton initialLoadNewProjectButton;
   private JButton nPButton;
@@ -50,6 +51,7 @@ public class ImageProjectGUIViewImpl extends JFrame {
     this.setTitle("Image Processor");
     this.setSize(800, 500);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    this.currentLayerIndex = 0;
 
 
     //Creates two panels to be top and bottom section
@@ -155,11 +157,12 @@ public class ImageProjectGUIViewImpl extends JFrame {
 
     // Tells the controller to add an image to the current Layer
     this.aITLButton.addActionListener(evt ->
-            features.addImageToLayer(this.getDesiredLayerName(), this.getDesiredImage(), this.getDesiredX(), this.getDesiredY()));
+            features.addImageToLayer(this.model.getActiveLayerName(), this.getDesiredImage(),
+                    this.getDesiredX(), this.getDesiredY()));
 
     // Tells the controller which filter to add to the current Layer
     this.sFButton.addActionListener(evt ->
-            features.setFilter(this.getDesiredFilter(), this.getDesiredLayerName()));
+            features.setFilter(this.getDesiredFilter(), this.model.getActiveLayerName()));
 
     // tells the controller to save the project to a file
     this.sPButton.addActionListener(evt ->
@@ -184,7 +187,7 @@ public class ImageProjectGUIViewImpl extends JFrame {
     int w = 0;
     while (w == 0) {
       w = Integer.parseInt(JOptionPane.showInputDialog("Please enter" +
-              " numerical representation of width in pixels."));
+              " project width as a number of pixels."));
     }
     return w;
   }
@@ -193,7 +196,7 @@ public class ImageProjectGUIViewImpl extends JFrame {
     int h = 0;
     while (h == 0) {
       h = Integer.parseInt(JOptionPane.showInputDialog("Please enter" +
-              " numerical representation of height in pixels."));
+              " project height as a number of pixels."));
     }
     return h;
   }
@@ -201,7 +204,15 @@ public class ImageProjectGUIViewImpl extends JFrame {
   private String getNameToLoad() {
     String s = "";
     while (s.equalsIgnoreCase("")) {
-      s = JOptionPane.showInputDialog("Please enter name of project to load.");
+      final JFileChooser fileChooser = new JFileChooser(".");
+      fileChooser.setFileFilter(new FileNameExtensionFilter("Collages Only",
+              "collage"));
+      fileChooser.setDialogTitle("Select a project to load.");
+      if (fileChooser.showOpenDialog(ImageProjectGUIViewImpl.this)
+              == JFileChooser.APPROVE_OPTION) {
+        File f = fileChooser.getSelectedFile();
+        s = f.getAbsolutePath();
+      }
     }
     return s;
   }
@@ -217,7 +228,14 @@ public class ImageProjectGUIViewImpl extends JFrame {
   private String getDesiredImage() {
     String s = "";
     while (s.equalsIgnoreCase("")) {
-      s = JOptionPane.showInputDialog("Please enter name of image to add.");
+      final JFileChooser fileChooser = new JFileChooser(".");
+      fileChooser.setFileFilter(new FileNameExtensionFilter("PPM Images", "ppm"));
+      fileChooser.setDialogTitle("Select an image to add.");
+      if (fileChooser.showOpenDialog(ImageProjectGUIViewImpl.this)
+              == JFileChooser.APPROVE_OPTION) {
+        File f = fileChooser.getSelectedFile();
+        s = f.getAbsolutePath();
+      }
     }
     return s;
   }
@@ -291,28 +309,28 @@ public class ImageProjectGUIViewImpl extends JFrame {
     this.radioPanel.setLayout(new BoxLayout(this.radioPanel, BoxLayout.PAGE_AXIS));
 
     JRadioButton[] radioButtons = new JRadioButton[this.model.getNumberOfLayers()];
-    //should eventually be number of layers in model
 
     ButtonGroup rGroup1 = new ButtonGroup();
 
     for (int i = 0; i < radioButtons.length; i++) {
-      radioButtons[i] = new JRadioButton("Layer " + (i + 1)); // MAKE IT THE NAME OF ACTIVE LAYER
+      this.model.setActiveLayer(i);
+      radioButtons[i] = new JRadioButton(this.model.getActiveLayerName());
       radioButtons[i].setAlignmentX(JRadioButton.CENTER_ALIGNMENT);
-
-      radioButtons[i].setActionCommand("RB" + (i + 1));
+      radioButtons[i].setActionCommand("RB" + i);
+      radioButtons[i].addActionListener(this);
       rGroup1.add(radioButtons[i]);
 
       this.radioPanel.add(radioButtons[i]);
 
     }
-    radioButtons[0].doClick();
-    //radioDisplay = new JLabel("Should say what filter is clicked?");
-    //radioPanel.add(radioDisplay);
+    radioButtons[this.currentLayerIndex].doClick();
+
     this.mainPanel.add(this.radioPanel);
     //----------------------------------------------------------------------------------------------
 
     this.mainBottomPanel.add(controls);
     this.repaint();
+    this.revalidate();
 
   }
 
@@ -322,7 +340,16 @@ public class ImageProjectGUIViewImpl extends JFrame {
     this.mainPanel.remove(this.imageLabel);
     this.mainPanel.remove(this.radioPanel);
     this.repaint();
+    this.revalidate();
   }
 
 
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    if (e.getActionCommand().substring(0, 2).equalsIgnoreCase("RB")) {
+      int index = Integer.parseInt(e.getActionCommand().substring(2, 3));
+      this.model.setActiveLayer(index);
+      this.currentLayerIndex = index;
+    }
+  }
 }

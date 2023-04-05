@@ -513,18 +513,18 @@ public class ProjectImplTest {
   public void validAddImageToLayer() {
     this.model.createNewProject(3, 4);
     Pixel[][] threeFours = new RGBAPixel[][]{
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)}};
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)}};
 
     assertArrayEquals(threeFours, this.model.currentCanvas());
 
@@ -553,22 +553,22 @@ public class ProjectImplTest {
     this.model.createNewProject(4, 4);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
     Pixel[][] fourFours = new RGBAPixel[][]{
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},};
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)}};
 
     assertArrayEquals(fourFours, this.model.currentCanvas());
 
@@ -587,14 +587,14 @@ public class ProjectImplTest {
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
     Pixel[][] fourTwos = new RGBAPixel[][]{
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)}};
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)}};
     assertArrayEquals(fourTwos, this.model.currentCanvas());
   }
 
@@ -604,18 +604,18 @@ public class ProjectImplTest {
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
     Pixel[][] threeFours = new RGBAPixel[][]{
-            {new RGBAPixel(255, 0, 0, 0),
-            new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)}};
+            {new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)}};
     assertArrayEquals(threeFours, this.model.currentCanvas());
   }
 
@@ -624,12 +624,12 @@ public class ProjectImplTest {
     this.model.createNewProject(2, 2);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
-    Pixel[][] zeros = new RGBAPixel[][]{
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)}};
-    assertArrayEquals(zeros, this.model.currentCanvas());
+    Pixel[][] blank = new RGBAPixel[][]{
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)}};
+    assertArrayEquals(blank, this.model.currentCanvas());
 
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
@@ -645,10 +645,10 @@ public class ProjectImplTest {
     this.model.createNewProject(2, 2);
     assertEquals("Layer1", this.model.getActiveLayer().getName());
     Pixel[][] twoTwos = new RGBAPixel[][]{
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)}};
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)}};
 
     assertArrayEquals(twoTwos, this.model.currentCanvas());
 
@@ -661,18 +661,18 @@ public class ProjectImplTest {
 
     Pixel[][] twoTwosWithColor = new RGBAPixel[][]{
             {new RGBAPixel(255, 127, 0, 128),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)}};
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)}};
     assertArrayEquals(twoTwosWithColor, this.model.currentCanvas());
     this.model.setActiveLayer(2);
     this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 0, 200);
 
     Pixel[][] twoTwosWithColor2 = new RGBAPixel[][]{
             {new RGBAPixel(255, 27, 200, 27),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)}};
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)}};
     assertArrayEquals(twoTwosWithColor2, this.model.currentCanvas());
 
   }
@@ -683,10 +683,10 @@ public class ProjectImplTest {
     assertEquals("Layer1", this.model.getActiveLayer().getName());
 
     Pixel[][] twoTwos = new RGBAPixel[][]{
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)}};
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)}};
     assertArrayEquals(twoTwos, this.model.currentCanvas());
 
     this.model.addLayer("Purple");
@@ -694,9 +694,9 @@ public class ProjectImplTest {
     this.model.getActiveLayer().setPixelColor(0, 0, 0, 255, 255, 255);
     Pixel[][] twoTwos2 = new RGBAPixel[][]{
             {new RGBAPixel(255, 0, 255, 255),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 0, 0, 0),
-                    new RGBAPixel(255, 0, 0, 0)}};
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 255, 255),
+                    new RGBAPixel(255, 255, 255, 255)}};
     assertArrayEquals(twoTwos2, this.model.currentCanvas());
 
     this.model.setActiveLayer(1);
@@ -704,9 +704,9 @@ public class ProjectImplTest {
 
     Pixel[][] twoTwos3 = new RGBAPixel[][]{
             {new RGBAPixel(255, 0, 255, 255),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 128, 0, 128),
-                    new RGBAPixel(255, 0, 0, 0)}};
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 127, 255),
+                    new RGBAPixel(255, 255, 255, 255)}};
     assertArrayEquals(twoTwos3, this.model.currentCanvas());
     assertEquals(2, this.model.getNumberOfLayers());
 
@@ -714,9 +714,9 @@ public class ProjectImplTest {
 
     Pixel[][] twoTwos4 = new RGBAPixel[][]{
             {new RGBAPixel(255, 128, 127, 255),
-                    new RGBAPixel(255, 0, 0, 0)},
-            {new RGBAPixel(255, 128, 0, 128),
-                    new RGBAPixel(255, 0, 0, 0)}};
+                    new RGBAPixel(255, 255, 255, 255)},
+            {new RGBAPixel(255, 255, 127, 255),
+                    new RGBAPixel(255, 255, 255, 255)}};
     assertArrayEquals(twoTwos4, this.model.currentCanvas());
   }
 }

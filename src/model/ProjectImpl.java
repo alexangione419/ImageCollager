@@ -204,6 +204,11 @@ public class ProjectImpl implements ImageProject {
   }
 
   @Override
+  public String getActiveLayerName() {
+    return this.getActiveLayer().getName();
+  }
+
+  @Override
   public void addLayer(String layerName) throws IllegalArgumentException, IllegalStateException {
     if (!hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
