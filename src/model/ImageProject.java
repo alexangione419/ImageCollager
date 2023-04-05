@@ -99,4 +99,6 @@ public interface ImageProject extends ImageProjectState {
    * @throws IllegalStateException if this {@code ImageProject} doesn't have a loaded project
    */
   Pixel[][] currentCanvas() throws IllegalStateException;
+
+
 }

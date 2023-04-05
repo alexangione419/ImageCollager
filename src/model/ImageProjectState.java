@@ -88,4 +88,10 @@ public interface ImageProjectState {
    * @return the name of the currently active layer.
    */
   String getActiveLayerName();
+
+  /**
+   * Allows for the setting/changing of the name of the project.
+   * @param name the name to change the project's name to
+   */
+  void setName(String name);
 }

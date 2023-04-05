@@ -4,7 +4,7 @@ import controller.ImageProjectController;
 import java.io.IOException;
 import java.util.Scanner;
 import model.ImageProject;
-import model.ImageProjectFileUtils;
+import controller.ImageProjectFileUtils;
 import model.pixels.Pixel;
 import view.ImageProjectView;
 

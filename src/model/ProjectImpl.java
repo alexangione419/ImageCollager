@@ -366,4 +366,8 @@ public class ProjectImpl implements ImageProject {
 
     return result;
   }
+
+  public void setName(String name) {
+    this.name = name;
+  }
 }

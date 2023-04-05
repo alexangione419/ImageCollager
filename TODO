@@ -1,15 +1,9 @@
-A. Top Priority
-  - Make Errors not break GUI
-
-B. Bugs
-  - Save Project is being weird
-  - AddImageToLayer when stuff will hang off
-  - Load Project rotates? or does save project rotate?
-  - clearLayer being wierd?
 
 C. Testing
 - getImageRepresentation(Model)
 - makeVisible (Layer)
+- setName (Model)
+- confirm for getName(model)
 
 D. For Design
   - Move Layer buttons under Layer
@@ -17,6 +11,7 @@ D. For Design
 
 E. Good to do
   - Save Project takes a few years
+    - Maybe add a popup saying its actually doing a thing
 
 
 

@@ -3,7 +3,7 @@ package controller.commands;
 import java.io.IOException;
 import java.util.Scanner;
 import model.ImageProject;
-import model.ImageProjectFileUtils;
+import controller.ImageProjectFileUtils;
 import model.Layer;
 import model.pixels.Pixel;
 import view.ImageProjectView;
@@ -79,9 +79,9 @@ public final class SaveProject extends ACommand {
     }
 
     if (ImageProjectFileUtils.isFileNameValid(fileName)) {
-
+      this.model.setName(fileName);
       String output = fileName + "\n"
-          + this.model.getWidth() + " " + this.model.getHeight() + "\n";
+          + this.model.getWidth() + " " + this.model.getHeight();
 
       Layer[] layers = new Layer[this.model.getNumberOfLayers()];
       String prevActiveLayerName = this.model.getActiveLayer().getName();
@@ -94,20 +94,17 @@ public final class SaveProject extends ACommand {
       this.model.setActiveLayer(prevActiveLayerName);
 
       for (Layer currLayer : layers) {
-        output = output.concat(currLayer.getName() + " " + currLayer.getFilter() + "\n");
+        output = output.concat("\n" + currLayer.getName() + " " + currLayer.getFilter() + "\n");
 
         int i = 0;
 
-        for (Pixel[] row : currLayer.getLayerData()) {
-          for (Pixel p : row) {
-            output = output.concat(p.toString());
-
-            if (i != ((this.model.getWidth() * this.model.getHeight()) - 1)) {
-              output = output.concat("\n");
-            }
-            i++;
+        for (int y = 0; y < this.model.getHeight(); y++) {
+          for (int x = 0; x < this.model.getWidth(); x++) {
+            output = output.concat(currLayer.getLayerData()[x][y].toString());
           }
         }
+
+
       }
 
       ImageProjectFileUtils.createFile(fileName + ".collage");
