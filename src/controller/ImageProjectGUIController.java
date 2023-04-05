@@ -45,16 +45,24 @@ public class ImageProjectGUIController implements Features {
   }
 
   @Override
-  public void addImageToLayer(String layer, String image, int x, int y)
-          throws IllegalArgumentException{
-    this.model.addImageToLayer(layer, image, x, y);
-    this.view.runMainGUI();
+  public void addImageToLayer(String layer, String image, int x, int y) {
+    try {
+      this.model.addImageToLayer(layer, image, x, y);
+      this.view.runMainGUI();
+    } catch (IllegalArgumentException a) {
+      this.view.throwBadInput(a);
+    }
   }
 
   @Override
-  public void addLayer(String layerName) throws IllegalArgumentException, IllegalStateException{
-    this.model.addLayer(layerName);
-    this.view.runMainGUI();
+  public void addLayer(String layerName) {
+    try {
+      this.model.addLayer(layerName);
+      this.view.runMainGUI();
+    } catch (IllegalArgumentException a) {
+      this.view.throwBadInput(a);
+    }
+
   }
 
   @Override
@@ -78,20 +86,29 @@ public class ImageProjectGUIController implements Features {
       new SaveImage(this.model).save(name);
     } catch (IOException io) {
       // welp
+    } catch (IllegalArgumentException a) {
+      this.view.throwBadInput(a);
     }
   }
 
   @Override
   public void newProject(int width, int height) {
-    this.model.createNewProject(width, height);
-    this.view.runMainGUI();
+    try {
+      this.model.createNewProject(width, height);
+      this.view.runMainGUI();
+    } catch (IllegalArgumentException a) {
+      this.view.throwBadInput(a);
+    }
   }
 
   @Override
-  public void setFilter(String filterName, String layerName) throws IllegalStateException,
-          IllegalArgumentException {
-    this.model.setFilter(filterName, layerName);
-    this.view.runMainGUI();
+  public void setFilter(String filterName, String layerName) {
+    try {
+      this.model.setFilter(filterName, layerName);
+      this.view.runMainGUI();
+    } catch (IllegalArgumentException a) {
+      this.view.throwBadInput(a);
+    }
   }
 
   @Override
