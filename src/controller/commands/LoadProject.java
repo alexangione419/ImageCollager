@@ -61,7 +61,13 @@ public final class LoadProject extends ACommand {
     }
   }
 
-  public void load(String file) {
+  /**
+   * Loads the project file found at the given String.
+   * @param file the file or filepath of the project file
+   * @throws IllegalArgumentException if the file path is null or if there is no valid
+   *                                  .collage file found at the given file path.
+   */
+  public void load(String file) throws IllegalArgumentException {
     if (file == null) {
       throw new IllegalArgumentException("Filepath cannot be null.");
     }

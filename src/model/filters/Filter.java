@@ -19,6 +19,13 @@ public interface Filter {
   Pixel[][] apply(Layer layer);
 
 
+  /**
+   * Returns an array of {@code Layer}s omitting the layer's whose name is the same as.
+   * layerToIgnore.
+   * @param layers the list of layers
+   * @param layerToIgnore the layer to omit from creating the composite image
+   * @return an array of {@code Layer}s omitting the layer's whose name is the same as.
+   */
   static Layer[] getCompositeImage(List<Layer> layers, String layerToIgnore) {
     Layer[] bottom = new Layer[layers.size() - 1];
 
@@ -30,11 +37,4 @@ public interface Filter {
 
     return bottom;
   }
-
-  static void applyToAll() {
-
-
-
-  }
-
 }

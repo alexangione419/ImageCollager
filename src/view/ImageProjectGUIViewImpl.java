@@ -54,7 +54,11 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
   private JButton sIButton;
 
 
-
+  /**
+   * Constructs a new {@code ImageProjectGUIViewImpl} with the given
+   * {@code ImageProjectState} model.
+   * @param model
+   */
   public ImageProjectGUIViewImpl(ImageProjectState model) {
     super();
     this.model = model;
@@ -192,7 +196,6 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     this.eButton.addActionListener(evt ->
             features.exit());
   }
-
 
 
   private String getNameToLoad() {

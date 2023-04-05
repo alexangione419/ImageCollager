@@ -70,7 +70,7 @@ public interface ImageProjectState {
   boolean doesLayerExist(String layerName);
 
   /**
-   * Returns a buffered image of the current state of the project
+   * Returns a buffered image of the current state of the project.
    * @return a BufferedImage of the current project state
    */
   BufferedImage getImageRepresentation();

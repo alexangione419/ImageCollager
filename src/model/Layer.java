@@ -95,7 +95,7 @@ public interface Layer {
   void clearLayer();
 
   /**
-   * Makes this layer fully opaque, with an alpha of 255
+   * Makes this layer fully opaque, with an alpha of 255.
    */
   void makeVisible();
 

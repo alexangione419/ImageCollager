@@ -55,6 +55,7 @@ public class ProjectImpl implements ImageProject {
 
   }
 
+  @Override
   public Pixel[][] currentCanvas() throws IllegalStateException {
     if (!this.hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
@@ -134,7 +135,7 @@ public class ProjectImpl implements ImageProject {
   }
 
   @Override
-  public void setName(String name) throws IllegalStateException, IllegalArgumentException{
+  public void setName(String name) throws IllegalStateException, IllegalArgumentException {
     if (!hasAOpenProject) {
       throw new IllegalStateException("There's currently no open project.");
     }

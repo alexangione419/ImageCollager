@@ -120,7 +120,7 @@ public final class LayerImpl implements Layer {
         int b = sc.nextInt();
 
         if (y2 >= this.project.getHeight()
-          || (x2 >= this.project.getWidth())) {
+            || (x2 >= this.project.getWidth())) {
           continue;
         }
 

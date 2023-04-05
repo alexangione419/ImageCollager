@@ -67,7 +67,13 @@ public final class SaveImage extends ACommand {
     }
   }
 
-  public void save(String name) throws IOException {
+  /**
+   * Saves the currently opened project as a .ppm image file.
+   * @param name the name to give the file
+   * @throws IOException if the method for some reason cannot create or write the .ppm file
+   * @throws IllegalStateException if the {@code ImageProject} model doesn't have a loaded project
+   */
+  public void save(String name) throws IOException, IllegalStateException {
     if (!this.model.hasOpenProject()) {
       throw new IllegalStateException("There's currently no open project.");
     }

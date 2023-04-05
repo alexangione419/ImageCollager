@@ -8,11 +8,15 @@ import java.util.Scanner;
 import model.ImageProject;
 import view.ImageProjectGUIViewImpl;
 
+/**
+ * An implementation of {@code ImageProjectController} that allows users to manipulate an
+ * {@code ImageProject}. This controller will use an {@code ImageProjectGUIViewImpl}.
+ */
 public class ImageProjectGUIController implements Features {
   boolean running;
   private final ImageProject model;
   private ImageProjectGUIViewImpl view;
-  private final Scanner sc;
+  //private final Scanner sc;
 
 
   /**
@@ -32,7 +36,7 @@ public class ImageProjectGUIController implements Features {
     }
 
     this.model = model;
-    this.sc = new Scanner(input);
+    //this.sc = new Scanner(input);
 
   }
 

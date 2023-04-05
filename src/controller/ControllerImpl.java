@@ -17,7 +17,7 @@ import model.ImageProject;
 import view.ImageProjectView;
 
 /**
- * A implementation of {@code ImageProjectController} that allows users to manipulate an
+ * An implementation of {@code ImageProjectController} that allows users to manipulate an
  * {@code ImageProject}.
  */
 public class ControllerImpl implements ImageProjectController {

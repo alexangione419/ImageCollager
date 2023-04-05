@@ -30,7 +30,7 @@ public final class NewProject extends ACommand {
   @Override
   public void run() {
 
-    int size[] = new int[2];
+    int[] size = new int[2];
 
     for (int i = 0; i < size.length; i++) {
       if (!this.sc.hasNext()) {
