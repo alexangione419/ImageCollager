@@ -141,7 +141,8 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
   public void addFeatures(Features features) {
     // Tells the controller to create a new project
     this.initialNewProjectButton.addActionListener(evt ->
-            features.newProject(this.getDesiredWidth(), this.getDesiredHeight()));
+              features.newProject(this.getDesiredWidth(), this.getDesiredHeight()));
+
 
     // Tells the controller when to create a new project
     this.nPButton.addActionListener(evt ->
@@ -184,8 +185,8 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
   }
 
   private int getDesiredWidth() {
-    int w = 0;
-    while (w == 0) {
+    int w = -1;
+    while (w == -1) {
       w = Integer.parseInt(JOptionPane.showInputDialog("Please enter" +
               " project width as a number of pixels."));
     }
@@ -351,5 +352,11 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
       this.model.setActiveLayer(index);
       this.currentLayerIndex = index;
     }
+  }
+
+
+  public void throwBadInput(Exception a) {
+    JOptionPane.showMessageDialog(this, a.getMessage(),
+            "Bad Parameters", JOptionPane.ERROR_MESSAGE);
   }
 }
