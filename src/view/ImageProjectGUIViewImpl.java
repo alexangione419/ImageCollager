@@ -191,27 +191,9 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     // Tells the controller when to quit
     this.eButton.addActionListener(evt ->
             features.exit());
-
-    this.repaint();
   }
 
-  private int getDesiredWidth() {
-    int w = -1;
-    while (w == -1) {
-      w = Integer.parseInt(JOptionPane.showInputDialog("Please enter" +
-              " project width as a number of pixels."));
-    }
-    return w;
-  }
 
-  private int getDesiredHeight() {
-    int h = 0;
-    while (h == 0) {
-      h = Integer.parseInt(JOptionPane.showInputDialog("Please enter" +
-              " project height as a number of pixels."));
-    }
-    return h;
-  }
 
   private String getNameToLoad() {
     String s = "";
@@ -225,14 +207,6 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
         File f = fileChooser.getSelectedFile();
         s = f.getAbsolutePath();
       }
-    }
-    return s;
-  }
-
-  private String getDesiredLayerName() {
-    String s = "";
-    while (s.equalsIgnoreCase("")) {
-      s = JOptionPane.showInputDialog("Please enter name of Layer.");
     }
     return s;
   }
@@ -252,50 +226,61 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     return s;
   }
 
-  private String getDesiredImageName() {
-    String s = "";
-    while (s.equalsIgnoreCase("")) {
-      s = JOptionPane.showInputDialog("Please enter name to save image as.");
-    }
-    return s;
-  }
-
   private int getDesiredX() {
-    int h = -1;
-    while (h == -1) {
-      h = Integer.parseInt(JOptionPane.showInputDialog("Please enter desired x" +
-              " location of the image's top left."));
-    }
-    return h;
+    return this.intInput("Please enter desired x" +
+            " location of the image's top left.");
   }
 
   private int getDesiredY() {
-    int h = -1;
-    while (h == -1) {
-      h = Integer.parseInt(JOptionPane.showInputDialog("Please enter desired y" +
-              " location of the image's top left."));
+    return this.intInput("Please enter desired y" +
+            " location of the image's top left.");
+  }
+
+  private int getDesiredWidth() {
+    return this.intInput("Please enter" +
+            " project width as a number of pixels.");
+  }
+
+  private int getDesiredHeight() {
+    return this.intInput("Please enter" +
+            " project height as a number of pixels.");
+  }
+
+  private int intInput(String message) {
+    int h = -2;
+    while (h == -2) {
+      h = Integer.parseInt(JOptionPane.showInputDialog(message));
     }
     return h;
+  }
+
+  private String getDesiredLayerName() {
+    return this.stringInput("Please enter name of Layer.");
+  }
+
+  private String getDesiredImageName() {
+    return this.stringInput("Please enter name to save image as.");
   }
 
   private String getDesiredFilter() {
-    String h = "";
-    while (h.equals("")) {
-      h = JOptionPane.showInputDialog("Please one of the following valid filters.\n" +
-              "normal, red-component, green-component, blue-component, brighten-value," +
-              " brighten-intensity, brighten-luma, darken-value, darken-intensity, darken-luma, " +
-              "difference, multiply, screen");
-    }
-    return h;
+    return this.stringInput("Please one of the following valid filters.\n" +
+            "normal, red-component, green-component, blue-component, brighten-value," +
+            " brighten-intensity, brighten-luma, darken-value, darken-intensity, darken-luma, " +
+            "difference, multiply, screen");
   }
 
   private String getNameToSaveProject() {
+    return this.stringInput("Please enter name to save project as.");
+  }
+
+  private String stringInput(String message) {
     String s = "";
     while (s.equalsIgnoreCase("")) {
-      s = JOptionPane.showInputDialog("Please enter name to save project as.");
+      s = JOptionPane.showInputDialog(message);
     }
     return s;
   }
+
   public void runMainGUI() {
     this.resetMainPanel();
     this.setSize(1200, 900);
