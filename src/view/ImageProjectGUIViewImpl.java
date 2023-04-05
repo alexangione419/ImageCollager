@@ -268,7 +268,7 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
 
   private String getDesiredFilter() {
     String h = "";
-    while (h == "") {
+    while (h.equals("")) {
       h = JOptionPane.showInputDialog("Please one of the following valid filters.\n" +
               "normal, red-component, green-component, blue-component, brighten-value," +
               " brighten-intensity, brighten-luma, darken-value, darken-intensity, darken-luma, " +

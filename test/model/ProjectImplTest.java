@@ -719,4 +719,17 @@ public class ProjectImplTest {
                     new RGBAPixel(255, 255, 255, 255)}};
     assertArrayEquals(twoTwos4, this.model.currentCanvas());
   }
+
+  @Test
+  public void testGetActiveLayerName() {
+    this.model.createNewProject(3, 4);
+    assertEquals("Layer1", this.model.getActiveLayerName());
+    this.model.addLayer("Cancun");
+    assertEquals("Cancun", this.model.getActiveLayerName());
+    this.model.setActiveLayer("Layer1");
+    assertEquals("Layer1", this.model.getActiveLayerName());
+    this.model.setActiveLayer(1);
+    assertEquals("Cancun", this.model.getActiveLayerName());
+
+  }
 }

@@ -168,13 +168,9 @@ public final class LayerImpl implements Layer {
       for (int y = 0; y < this.project.getHeight(); y++) {
         this.currentLayer[x][y] =
             new RGBAPixel(this.getMaxPixel(), 255, 255, 255, 0);
-      }
-    }
 
-    for (int x = 0; x < this.project.getWidth(); x++) {
-      for (int y = 0; y < this.project.getHeight(); y++) {
         this.unfilteredLayer[x][y] =
-            new RGBAPixel(this.getMaxPixel(), 255, 255, 255, 0);
+                new RGBAPixel(this.getMaxPixel(), 255, 255, 255, 0);
       }
     }
   }
@@ -184,14 +180,14 @@ public final class LayerImpl implements Layer {
     for (int x = 0; x < this.project.getWidth(); x++) {
       for (int y = 0; y < this.project.getHeight(); y++) {
         this.currentLayer[x][y] =
-                new RGBAPixel(this.getMaxPixel(), 255, 255, 255, 255);
-      }
-    }
+                new RGBAPixel(this.getMaxPixel(), this.currentLayer[x][y].getRed(),
+                        this.currentLayer[x][y].getGreen(), this.currentLayer[x][y].getBlue(),
+                        255);
 
-    for (int x = 0; x < this.project.getWidth(); x++) {
-      for (int y = 0; y < this.project.getHeight(); y++) {
         this.unfilteredLayer[x][y] =
-                new RGBAPixel(this.getMaxPixel(), 255, 255, 255, 255);
+                new RGBAPixel(this.getMaxPixel(), this.currentLayer[x][y].getRed(),
+                        this.currentLayer[x][y].getGreen(), this.currentLayer[x][y].getBlue(),
+                        255);
       }
     }
   }
