@@ -1,4 +1,4 @@
-# ImageProcessor
+# Image Collager
 
 Our project class is the main class making up our model. This class implements the majority of the 
 functionality required for our Image Processor, not including file operations. This class contains
