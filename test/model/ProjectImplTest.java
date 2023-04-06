@@ -5,8 +5,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
+import controller.ControllerImpl;
+import controller.ImageProjectController;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
+import javax.imageio.ImageIO;
 import model.filters.Filter;
 import model.filters.Normal;
 import model.pixels.Pixel;
@@ -14,6 +20,8 @@ import model.pixels.RGBAPixel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import view.ImageProjectView;
+import view.PPMProjectTextView;
 
 /**
  * A testing class for {@code ProjectImpl}.
@@ -806,5 +814,37 @@ public class ProjectImplTest {
 
     this.model.setName("Project1");
     assertEquals(this.model.getName(), "Project1");
+  }
+
+
+  @Test
+  public void testImageRepresentation() {
+    this.model.createNewProject(200, 200);
+    this.model.addImageToLayer("Layer1", "./res/chromelogo.ppm", 0, 0);
+
+    Appendable output = new StringBuilder();
+    Readable input = new StringReader("");
+    ImageProjectView view = new PPMProjectTextView(this.model, output);
+    ImageProjectController controller = new ControllerImpl(this.model, view, input);
+
+    BufferedImage img = this.model.getImageRepresentation();
+
+    BufferedImage img2 = null;
+    try {
+      img2 = ImageIO.read(new File("strawberry.jpg"));
+    } catch (IOException e) {
+    }
+
+//    BufferedImage img2 = new BufferedImage()
+    Pixel[][] proj = this.model.currentCanvas();
+
+    for (int y = 0; y < this.model.getWidth(); y++) {
+      for (int x = 0; x < this.model.getHeight(); x++) {
+        int rgbVal = (proj[y][x].getRed() << 16)
+            + (proj[y][x].getGreen() << 8) + proj[y][x].getBlue();
+
+        assertEquals(rgbVal, img.getRGB(y, x));
+      }
+    }
   }
 }
