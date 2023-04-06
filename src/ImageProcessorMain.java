@@ -1,6 +1,10 @@
 import controller.ControllerImpl;
 import controller.ImageProjectController;
 import controller.ImageProjectGUIController;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import model.ImageProject;
 import model.ProjectImpl;
@@ -18,13 +22,26 @@ public class ImageProcessorMain {
    *
    * @param args arguments to give
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws FileNotFoundException {
     ImageProject project = new ProjectImpl();
 
     if (args.length > 0) {
-      if (args[0].equalsIgnoreCase("Text")) {
+      if (args[0].equalsIgnoreCase("-text")) {
         ImageProjectView view = new PPMProjectTextView(project, System.out);
         Readable rd = new InputStreamReader(System.in);
+        ImageProjectController controller = new ControllerImpl(project, view, rd);
+
+        controller.start();
+      }
+
+      if (args[0].equalsIgnoreCase("-file")) {
+        ImageProjectView view = new PPMProjectTextView(project, System.out);
+        Readable rd;
+        try {
+          rd = new InputStreamReader(new FileInputStream(args[1]));
+        } catch (IOException io) {
+          throw new FileNotFoundException("Unable to open file");
+        }
         ImageProjectController controller = new ControllerImpl(project, view, rd);
 
         controller.start();

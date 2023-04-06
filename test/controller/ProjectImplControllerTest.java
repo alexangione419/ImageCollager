@@ -1567,7 +1567,7 @@ public class ProjectImplControllerTest {
     assertEquals("Awaiting command:\n"
             + "Created new project with canvas size of 2x2.\n"
             + "Awaiting command:\n"
-            + "Image was saved to as P1.ppm.\n"
+            + "Image was saved as P1.ppm.\n"
             + "Awaiting command:\n"
             + "WARNING: Quitting will delete any unsaved progress. Confirm? (y/n)\n"
             + "Bye Bye!",

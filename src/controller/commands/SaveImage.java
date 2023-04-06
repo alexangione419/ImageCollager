@@ -57,7 +57,7 @@ public final class SaveImage extends ACommand {
     try {
       try {
         this.save(fileName);
-        this.view.renderMessage("Image was saved to as " + fileName + ".ppm.\n");
+        this.view.renderMessage("Image was saved as " + fileName + ".ppm.\n");
       } catch (IllegalArgumentException e) {
         this.view.renderMessage("The name for the file is invalid. It must not contain any periods."
             + " Try again\n");

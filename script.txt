@@ -1,0 +1,10 @@
+new-project 400 400
+add-image-to-layer Layer1 ./res/chromeLogo.ppm 0 0
+set-filter red-component Layer1
+add-layer anotherOne
+add-image-to-layer anotherOne ./res/chromeLogo.ppm 200 200
+set-filter green-component anotherOne
+save-image scriptImage
+save-project scriptProject
+quit
+y
