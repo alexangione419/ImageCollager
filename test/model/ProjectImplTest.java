@@ -822,21 +822,16 @@ public class ProjectImplTest {
 
     BufferedImage img = this.model.getImageRepresentation();
 
-    BufferedImage img2 = null;
-    try {
-      img2 = ImageIO.read(new File("strawberry.jpg"));
-    } catch (IOException e) {
-    }
-
 //    BufferedImage img2 = new BufferedImage()
     Pixel[][] proj = this.model.currentCanvas();
 
-    for (int y = 0; y < this.model.getWidth(); y++) {
-      for (int x = 0; x < this.model.getHeight(); x++) {
-        int rgbVal = (proj[y][x].getRed() << 16)
-            + (proj[y][x].getGreen() << 8) + proj[y][x].getBlue();
+    for (int x = 0; x < this.model.getWidth(); x++) {
+      for (int y = 0; y < this.model.getHeight(); y++) {
+        int rgbVal = (proj[x][y].getRed() << 16)
+            + (proj[x][y].getGreen() << 8) + proj[x][y].getBlue();
 
-        assertEquals(rgbVal, img.getRGB(y, x));
+        System.out.println(x + ", " + y);
+        assertEquals(rgbVal, img.getRGB(x, y))
       }
     }
   }
