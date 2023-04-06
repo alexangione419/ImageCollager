@@ -26,32 +26,31 @@ import model.ImageProjectState;
 
 
 /**
- * Represents a Generate User Interface for interacting with Image Processing Software.
+ * Represents a Graphic User Interface for interacting with Image Collage Software.
  */
 public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
 
-  private ImageProjectState model;
+  private ImageProjectState model; // The model this view will represent. Only has access to getter
+                                    // methods for information purposes
 
   int currentLayerIndex;
-
-  private JPanel mainPanel;
-  private JPanel mainBottomPanel;
-  private JPanel introScreen;
-  private JPanel controls;
+  private final JPanel mainPanel;
+  private final JPanel mainBottomPanel;
+  private final JPanel introScreen;
+  private final JPanel controls;
   private JPanel imageDisplay;
   private JLabel imageLabel;
-  private JScrollPane imageScrollPane;
   private JPanel radioPanel;
   private final JButton initialNewProjectButton;
   private final JButton initialLoadNewProjectButton;
-  private JButton nPButton;
-  private JButton aITLButton;
-  private JButton nLButton;
-  private JButton sFButton;
-  private JButton lPButton;
-  private JButton sPButton;
-  private JButton eButton;
-  private JButton sIButton;
+  private final JButton nPButton;
+  private final JButton aITLButton;
+  private final JButton nLButton;
+  private final JButton sFButton;
+  private final JButton lPButton;
+  private final JButton sPButton;
+  private final JButton eButton;
+  private final JButton sIButton;
 
 
   /**
@@ -75,6 +74,7 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     this.mainPanel.setPreferredSize(new Dimension(1200, 500));
     this.mainBottomPanel = new JPanel();
     this.mainBottomPanel.setLayout(new BoxLayout(this.mainBottomPanel, BoxLayout.PAGE_AXIS));
+
     // adds top panel above bottom section
     this.mainBottomPanel.add(this.mainPanel);
     this.add(mainBottomPanel);
@@ -106,7 +106,6 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     initialButtons.add(this.initialLoadNewProjectButton);
 
     this.introScreen.add(intro);
-    //this.introScreen.add(dim);
     this.introScreen.add(initialButtons);
 
     this.mainPanel.add(this.introScreen);
@@ -114,17 +113,18 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
 
     //prepares buttons for mainGUI use
     // does not use buttons until runMainGUI is run
-    // Panel representing important commands
+    // This panel contains relevant commands
     this.controls = new JPanel();
 
     // divides buttons into two categories to make them look nicer in GUI
+    JPanel projectControls = new JPanel();
+    projectControls.setLayout(new GridLayout(5, 0, 10, 10));
+    controls.add(projectControls);
+
     JPanel layerControls = new JPanel();
     layerControls.setLayout(new GridLayout(3, 0, 10, 10));
     controls.add(layerControls);
 
-    JPanel projectControls = new JPanel();
-    projectControls.setLayout(new GridLayout(5, 0, 10, 10));
-    controls.add(projectControls);
 
     this.nLButton = new JButton("Add New Layer");
     layerControls.add(this.nLButton);
@@ -149,15 +149,17 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     this.radioPanel = new JPanel();
 
     this.setVisible(true);
-
-
   }
 
+  /**
+   * Allows for controller features to added to the GUI. Creates the bridge between user giving the
+   * view input and the controller acting on those inputs.
+   * @param features the class that will be able to run the desired features
+   */
   public void addFeatures(Features features) {
     // Tells the controller to create a new project
     this.initialNewProjectButton.addActionListener(evt ->
               features.newProject(this.getDesiredWidth(), this.getDesiredHeight()));
-
 
     // Tells the controller when to create a new project
     this.nPButton.addActionListener(evt ->
@@ -197,7 +199,11 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
             features.exit());
   }
 
-
+  /**
+   * Prompts the user with a file selection screen asking
+   * them to select the desired project to load.
+   * @return the absolute path of the project so the controller can load it
+   */
   private String getNameToLoad() {
     String s = "";
     while (s.equalsIgnoreCase("")) {
@@ -214,6 +220,11 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     return s;
   }
 
+  /**
+   * Prompts the user with a file selection screen asking
+   * them to select the desired image to add to this project.
+   * @return the absolute path of the image so the controller can add it to the model
+   */
   private String getDesiredImage() {
     String s = "";
     while (s.equalsIgnoreCase("")) {
@@ -229,26 +240,46 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     return s;
   }
 
+  /**
+   * Prompts the user for the x location it should place an image.
+   * @return an integer representing the desired x location of the image
+   */
   private int getDesiredX() {
     return this.intInput("Please enter desired x" +
             " location of the image's top left.");
   }
 
+  /**
+   * Prompts the user for the y location it should place an image.
+   * @return an integer representing the desired y location of the image
+   */
   private int getDesiredY() {
     return this.intInput("Please enter desired y" +
             " location of the image's top left.");
   }
 
+  /**
+   * Prompts the user for the desired width of the project.
+   * @return an integer representing the width of the project to create
+   */
   private int getDesiredWidth() {
     return this.intInput("Please enter" +
             " project width as a number of pixels.");
   }
 
+  /**
+   * Prompts the user for the desired height of the project.
+   * @return an integer representing the height of the project to create
+   */
   private int getDesiredHeight() {
     return this.intInput("Please enter" +
             " project height as a number of pixels.");
   }
 
+  /**
+   * Creates and displays a prompt and collects an integer from the user.
+   * @return the integer collected from the user
+   */
   private int intInput(String message) {
     int h = -2;
     while (h == -2) {
@@ -257,14 +288,26 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     return h;
   }
 
+  /**
+   * Prompts the user for the name they want to give to the new layer they are creating.
+   * @return the chosen name of the new layer
+   */
   private String getDesiredLayerName() {
     return this.stringInput("Please enter name of Layer.");
   }
 
+  /**
+   * Prompts the user for the name they want to give to the new image they are creating.
+   * @return the chosen name of the new image
+   */
   private String getDesiredImageName() {
     return this.stringInput("Please enter name to save image as.");
   }
 
+  /**
+   * Prompts the user for the name of the filter they wish to apply.
+   * @return the name of the filter
+   */
   private String getDesiredFilter() {
     return this.stringInput("Please one of the following valid filters.\n" +
             "normal, red-component, green-component, blue-component, brighten-value," +
@@ -272,10 +315,18 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
             "difference, multiply, screen");
   }
 
+  /**
+   * Prompts the user for the name they want to give to the new project they are saving.
+   * @return the name of the project
+   */
   private String getNameToSaveProject() {
     return this.stringInput("Please enter name to save project as.");
   }
 
+  /**
+   * Creates and displays a prompt and collects a String from the user.
+   * @return the String collected from the user
+   */
   private String stringInput(String message) {
     String s = "";
     while (s.equalsIgnoreCase("")) {
@@ -284,6 +335,11 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     return s;
   }
 
+  /**
+   * The method that displays the main screen of the GUI, including the image, the layer
+   * information, and all the command buttons. It is used by the controller to update the view
+   * whenever the model is changed.
+   */
   public void runMainGUI() {
     this.resetMainPanel();
     this.setSize(1200, 900);
@@ -296,10 +352,10 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
 
     // adds image to that panel
     this.imageLabel = new JLabel();
-    this.imageScrollPane = new JScrollPane(this.imageLabel);
+    JScrollPane imageScrollPane = new JScrollPane(this.imageLabel);
     this.imageLabel.setIcon(new ImageIcon(this.model.getImageRepresentation()));
-    this.imageScrollPane.setPreferredSize(new Dimension(900, 500));
-    this.imageDisplay.add(this.imageScrollPane);
+    imageScrollPane.setPreferredSize(new Dimension(900, 500));
+    this.imageDisplay.add(imageScrollPane);
     //----------------------------------------------------------------------------------------------
 
     // radio buttons representing Layers
@@ -334,6 +390,9 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
 
   }
 
+  /**
+   * Resets the main panel of the GUI so that no new information is added on top of old information.
+   */
   private void resetMainPanel() {
     this.mainPanel.remove(this.introScreen);
     this.mainPanel.remove(this.imageDisplay);
@@ -344,8 +403,13 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
   }
 
 
+  /**
+   * The action listener that primarily deals with the layer radio buttons. It determines which
+   * button was pressed tells the controller to make that one the active layer.
+   * @param e the event to be processed
+   */
   @Override
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent e) {  // MAKE THE CONTROLLER DO TEH SETTING
     if (e.getActionCommand().substring(0, 2).equalsIgnoreCase("RB")) {
       int index = Integer.parseInt(e.getActionCommand().substring(2, 3));
       this.model.setActiveLayer(index);
@@ -353,9 +417,13 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
     }
   }
 
-
-  public void throwBadInput(Exception a) {
-    JOptionPane.showMessageDialog(this, a.getMessage(),
+  /**
+   * A method used by the controller to inform the GUI when bad input has been received and an error
+   * message should be shown to the user.
+   * @param a the exception t
+   */
+  public void throwBadInput(String ex) {
+    JOptionPane.showMessageDialog(this, ex,
             "Bad Parameters", JOptionPane.ERROR_MESSAGE);
   }
 }

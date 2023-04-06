@@ -13,10 +13,8 @@ import view.ImageProjectGUIViewImpl;
  * {@code ImageProject}. This controller will use an {@code ImageProjectGUIViewImpl}.
  */
 public class ImageProjectGUIController implements Features {
-  boolean running;
   private final ImageProject model;
   private ImageProjectGUIViewImpl view;
-  //private final Scanner sc;
 
 
   /**
@@ -25,21 +23,19 @@ public class ImageProjectGUIController implements Features {
    * @param model the model to control
    * @throws IllegalArgumentException if any of the given arguments are null
    */
-  public ImageProjectGUIController(ImageProject model, Readable input)
+  public ImageProjectGUIController(ImageProject model)
           throws IllegalArgumentException {
     if (model == null) {
       throw new IllegalArgumentException("Project argument cannot be null.");
     }
-
-    if (input == null) {
-      throw new IllegalArgumentException("Readable for the controller cannot be null.");
-    }
-
     this.model = model;
-    //this.sc = new Scanner(input);
-
   }
 
+  /**
+   * Allows the controller to initialize the GUI view.
+   * @param view the GUI to run
+   * @throws IllegalStateException if the provided view is null
+   */
   public void start(ImageProjectGUIViewImpl view) throws IllegalStateException {
     if (view == null) {
       throw new IllegalArgumentException("View argument cannot be null.");
@@ -54,7 +50,7 @@ public class ImageProjectGUIController implements Features {
       this.model.addImageToLayer(layer, image, x, y);
       this.view.runMainGUI();
     } catch (IllegalArgumentException a) {
-      this.view.throwBadInput(a);
+      this.view.throwBadInput(a.getMessage());
     }
   }
 
@@ -64,7 +60,7 @@ public class ImageProjectGUIController implements Features {
       this.model.addLayer(layerName);
       this.view.runMainGUI();
     } catch (IllegalArgumentException a) {
-      this.view.throwBadInput(a);
+      this.view.throwBadInput(a.getMessage());
     }
 
   }
@@ -91,7 +87,7 @@ public class ImageProjectGUIController implements Features {
     } catch (IOException io) {
       // welp
     } catch (IllegalArgumentException a) {
-      this.view.throwBadInput(a);
+      this.view.throwBadInput(a.getMessage());
     }
   }
 
@@ -101,7 +97,7 @@ public class ImageProjectGUIController implements Features {
       this.model.createNewProject(width, height);
       this.view.runMainGUI();
     } catch (IllegalArgumentException a) {
-      this.view.throwBadInput(a);
+      this.view.throwBadInput(a.getMessage());
     }
   }
 
@@ -111,7 +107,7 @@ public class ImageProjectGUIController implements Features {
       this.model.setFilter(filterName, layerName);
       this.view.runMainGUI();
     } catch (IllegalArgumentException a) {
-      this.view.throwBadInput(a);
+      this.view.throwBadInput(a.getMessage());
     }
   }
 

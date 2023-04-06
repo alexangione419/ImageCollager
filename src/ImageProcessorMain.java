@@ -33,8 +33,7 @@ public class ImageProcessorMain {
 
     else {
       ImageProjectGUIViewImpl view = new ImageProjectGUIViewImpl(project);
-      Readable rd = new InputStreamReader(System.in);
-      ImageProjectGUIController controller = new ImageProjectGUIController(project, rd);
+      ImageProjectGUIController controller = new ImageProjectGUIController(project);
 
       controller.start(view);
     }
