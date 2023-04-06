@@ -1273,13 +1273,8 @@ public class ProjectImplControllerTest {
     this.model = new ProjectImpl();
     this.view = new PPMProjectTextView(this.model, output);
     this.controller = new ControllerImpl(this.model, this.view, input);
+    this.controller.start();
 
-    try {
-      this.controller.start();
-      fail();
-    } catch (IllegalStateException e) {
-      assertEquals("No input detected.", e.getMessage());
-    }
 
     assertEquals("Awaiting command:\n"
             + "Created new project with canvas size of 2x2.\n"

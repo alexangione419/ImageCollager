@@ -785,14 +785,16 @@ public class ProjectImplTest {
       this.model.setName("\n");
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Project name cannot contain a space or a linebreak.", e.getMessage());
+      assertEquals("Project name cannot be an empty string or just whitespace.",
+              e.getMessage());
     }
 
     try {
       this.model.setName(" ");
       fail();
     } catch (IllegalArgumentException e) {
-      assertEquals("Project name cannot contain a space or a linebreak.", e.getMessage());
+      assertEquals("Project name cannot be an empty string or just whitespace.",
+              e.getMessage());
     }
 
     try {

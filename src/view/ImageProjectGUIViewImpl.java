@@ -31,7 +31,7 @@ import model.ImageProjectState;
 public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
 
   private ImageProjectState model; // The model this view will represent. Only has access to getter
-                                    // methods for information purposes
+  // methods for information purposes
 
   int currentLayerIndex;
   private final JPanel mainPanel;
@@ -56,7 +56,7 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
   /**
    * Constructs a new {@code ImageProjectGUIViewImpl} with the given
    * {@code ImageProjectState} model.
-   * @param model
+   * @param model the model being represented by the GUI
    */
   public ImageProjectGUIViewImpl(ImageProjectState model) {
     super();
@@ -420,7 +420,7 @@ public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
   /**
    * A method used by the controller to inform the GUI when bad input has been received and an error
    * message should be shown to the user.
-   * @param a the exception t
+   * @param ex the message given by the error
    */
   public void throwBadInput(String ex) {
     JOptionPane.showMessageDialog(this, ex,

@@ -4,7 +4,6 @@ import controller.commands.LoadProject;
 import controller.commands.SaveImage;
 import controller.commands.SaveProject;
 import java.io.IOException;
-import java.util.Scanner;
 import model.ImageProject;
 import view.ImageProjectGUIViewImpl;
 
@@ -72,7 +71,7 @@ public class ImageProjectGUIController implements Features {
   }
 
   @Override
-  public void saveProject(String name){
+  public void saveProject(String name) {
     try {
       new SaveProject(this.model).save(name);
     } catch (IOException io) {

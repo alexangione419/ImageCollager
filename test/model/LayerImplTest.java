@@ -629,12 +629,12 @@ public class LayerImplTest {
             new RGBAPixel(255, 225, 225, 225),
             new RGBAPixel(255, 225, 225, 225),
             new RGBAPixel(255, 225, 225, 225)},
-            {purpBlue, new RGBAPixel(255, 225, 225, 225),
-                new RGBAPixel(255, 225, 225, 225),
-                new RGBAPixel(255, 225, 225, 225)},
-            {purpBrown, new RGBAPixel(255, 225, 225, 225),
-                new RGBAPixel(255, 225, 225, 225),
-                new RGBAPixel(255, 225, 225, 225)}},
+        {purpBlue, new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)},
+        {purpBrown, new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225),
+            new RGBAPixel(255, 225, 225, 225)}},
         this.project3x4.currentCanvas());
 
     this.project3x4.setFilter("normal", "Layer2");
@@ -674,12 +674,12 @@ public class LayerImplTest {
             new RGBAPixel(255, 255, 255, 255),
             new RGBAPixel(255, 255, 255, 255),
             new RGBAPixel(255, 255, 255, 255)},
-            {purpBlue, new RGBAPixel(255, 255, 255, 255),
-                new RGBAPixel(255, 255, 255, 255),
-                new RGBAPixel(255, 255, 255, 255)},
-            {purpBrown, new RGBAPixel(255, 255, 255, 255),
-                new RGBAPixel(255, 255, 255, 255),
-                new RGBAPixel(255, 255, 255, 255, 255)}},
+        {purpBlue, new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255)},
+        {purpBrown, new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255, 255)}},
         this.project3x4.currentCanvas());
 
   }
