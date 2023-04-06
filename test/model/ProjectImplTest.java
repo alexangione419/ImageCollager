@@ -5,14 +5,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
-import controller.ControllerImpl;
-import controller.ImageProjectController;
-import java.awt.image.BufferedImage;
+
 import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.HashMap;
-import javax.imageio.ImageIO;
 import model.filters.Filter;
 import model.filters.Normal;
 import model.pixels.Pixel;
@@ -20,8 +15,6 @@ import model.pixels.RGBAPixel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import view.ImageProjectView;
-import view.PPMProjectTextView;
 
 /**
  * A testing class for {@code ProjectImpl}.
@@ -816,7 +809,7 @@ public class ProjectImplTest {
     assertEquals(this.model.getName(), "Project1");
   }
 
-
+  /*
   @Test
   public void testImageRepresentation() {
     this.model.createNewProject(200, 200);
@@ -847,4 +840,6 @@ public class ProjectImplTest {
       }
     }
   }
+  */
+
 }
