@@ -1,5 +1,6 @@
 package controller.commands;
 
+import controller.ImageFileFormats;
 import controller.ImageProjectController;
 import controller.ImageProjectFileUtils;
 import java.io.IOException;
@@ -57,10 +58,9 @@ public final class SaveImage extends ACommand {
     try {
       try {
         this.save(fileName);
-        this.view.renderMessage("Image was saved as " + fileName + ".ppm.\n");
+        this.view.renderMessage("Image was saved as " + fileName + ".\n");
       } catch (IllegalArgumentException e) {
-        this.view.renderMessage("The name for the file is invalid. It must not contain any periods."
-            + " Try again\n");
+        this.view.renderMessage("The name for the file is invalid. Try again\n");
       }
     } catch (IOException e) {
       //ignore
@@ -78,15 +78,35 @@ public final class SaveImage extends ACommand {
       throw new IllegalStateException("There's currently no open project.");
     }
 
-    if (ImageProjectFileUtils.isFileNameValid(name)) {
+    if (name == null) {
+      throw new IllegalArgumentException("File name cannot be null.");
+    }
 
+    if (!name.contains(".")) {
+      throw new IllegalArgumentException("No file extension present."
+          + " Please provide a supported file extension.");
+    }
+
+    String fileExtension = "";
+    try {
+      fileExtension = name.split("[.]")[1];
+    }
+    catch (IndexOutOfBoundsException e) {
+      //ignore
+    }
+    if (ImageFileFormats.validFileFormat(fileExtension)
+        && ImageProjectFileUtils.isFileNameValid(name.split("[.]")[0])) {
       String output = "P3\n"
           + this.model.getWidth() + " " + this.model.getHeight() + "\n"
           + this.model.getMaxPixelValue() + "\n"
           + this.makeCanvasString() + "\n";
 
-      ImageProjectFileUtils.createFile(name + ".ppm");
-      ImageProjectFileUtils.writeToFile(name + ".ppm", output);
+      ImageProjectFileUtils.createFile(name + ".");
+      ImageProjectFileUtils.writeToFile(name + ".", output);
+    }
+    else {
+      throw new IllegalArgumentException("Invalid file format."
+          + " Please try a different file extension.");
     }
   }
 

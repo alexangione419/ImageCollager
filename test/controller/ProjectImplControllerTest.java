@@ -50,6 +50,9 @@ public class ProjectImplControllerTest {
 
     f = new File("smolLow2.collage");
     f.delete();
+
+    f = new File("something.png");
+    f.delete();
   }
 
   @Test
@@ -64,7 +67,7 @@ public class ProjectImplControllerTest {
     this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
 
     try {
-      this.controller.saveImage("P1");
+      this.controller.saveImage("P1.ppm");
       this.controller.saveProject("P1");
     } catch (IOException io) {
       fail(io.getMessage());
@@ -95,6 +98,51 @@ public class ProjectImplControllerTest {
   }
 
   @Test
+  public void invalidSaveImage() {
+    Readable input = new StringReader("quit y");
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
+    this.model.createNewProject(2, 2);
+    this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
+
+    try {
+      this.controller.saveImage("P1");
+      this.controller.saveProject("P1");
+      fail();
+    } catch (IOException | IllegalArgumentException e) {
+      assertEquals("No file extension present. Please provide a supported file extension.",
+          e.getMessage());
+    }
+
+    try {
+      this.controller.saveImage("P1.");
+      this.controller.saveProject("P1");
+    } catch (IOException | IllegalArgumentException e) {
+      assertEquals("Invalid file format. Please try a different file extension.",
+          e.getMessage());
+    }
+
+    try {
+      this.controller.saveImage("P1.gif");
+      this.controller.saveProject("P1");
+    } catch (IOException | IllegalArgumentException e) {
+      assertEquals("Invalid file format. Please try a different file extension.",
+          e.getMessage());
+    }
+
+    try {
+      this.controller.saveImage("P1.ase");
+      this.controller.saveProject("P1");
+    } catch (IOException | IllegalArgumentException e) {
+      assertEquals("Invalid file format. Please try a different file extension.",
+          e.getMessage());
+    }
+  }
+
+  @Test
   public void validSaveImageOneLayer() {
     Readable input = new StringReader("quit y");
     Appendable output = new StringBuilder();
@@ -107,7 +155,7 @@ public class ProjectImplControllerTest {
     Pixel[][] curCanvas = this.model.currentCanvas();
 
     try {
-      this.controller.saveImage("smol2");
+      this.controller.saveImage("smol2.ppm");
       this.controller.saveProject("smol2");
     } catch (IOException io) {
       // ignore
@@ -168,7 +216,7 @@ public class ProjectImplControllerTest {
     assertEquals(4, this.model.getHeight());
 
     try {
-      this.controller.saveImage("smol2");
+      this.controller.saveImage("smol2.ppm");
       this.controller.saveProject("smol2");
       this.controller.loadProject("./res/good.collage");
     } catch (IOException io) {
@@ -215,7 +263,7 @@ public class ProjectImplControllerTest {
     this.model.addImageToLayer("Layer2", "./res/smolLow.ppm", 0, 0);
 
     try {
-      this.controller.saveImage("smolLow2");
+      this.controller.saveImage("smolLow2.ppm");
     } catch (IOException io) {
       // welp
     }
@@ -278,7 +326,7 @@ public class ProjectImplControllerTest {
       }
       fail("Whitespace passed as an argument");
     } catch (IllegalArgumentException e) {
-      assertEquals("File name cannot be whitespace.", e.getMessage());
+      assertEquals("No file extension present. Please provide a supported file extension.", e.getMessage());
     }
 
     try {
@@ -289,7 +337,7 @@ public class ProjectImplControllerTest {
       }
       fail("Whitespace passed as an argument");
     } catch (IllegalArgumentException e) {
-      assertEquals("File name cannot be whitespace.", e.getMessage());
+      assertEquals("No file extension present. Please provide a supported file extension.", e.getMessage());
     }
 
     try {
@@ -300,7 +348,7 @@ public class ProjectImplControllerTest {
       }
       fail("Whitespace passed as an argument");
     } catch (IllegalArgumentException e) {
-      assertEquals("File name cannot be whitespace.", e.getMessage());
+      assertEquals("No file extension present. Please provide a supported file extension.", e.getMessage());
     }
   }
 
@@ -1275,7 +1323,6 @@ public class ProjectImplControllerTest {
     this.controller = new ControllerImpl(this.model, this.view, input);
     this.controller.start();
 
-
     assertEquals("Awaiting command:\n"
             + "Created new project with canvas size of 2x2.\n"
             + "Awaiting command:\n"
@@ -1527,7 +1574,7 @@ public class ProjectImplControllerTest {
 
   @Test
   public void badSaveImage3() {
-    Readable input = new StringReader("new-project 2 2 save-image something.png");
+    Readable input = new StringReader("new-project 2 2 save-image something.pn");
 
     Appendable output = new StringBuilder();
 
@@ -1545,15 +1592,14 @@ public class ProjectImplControllerTest {
     assertEquals("Awaiting command:\n"
             + "Created new project with canvas size of 2x2.\n"
             + "Awaiting command:\n"
-            + "The name for the file is invalid. It must not contain any periods. "
-            + "Try again\n"
+            + "The name for the file is invalid. Try again\n"
             + "Awaiting command:\n",
         output.toString().split("Welcome to our Image Processor.\n")[1]);
   }
 
   @Test
   public void saveImage() {
-    Readable input = new StringReader("new-project 2 2 save-image P1"
+    Readable input = new StringReader("new-project 2 2 save-image P1.ppm"
         + " quit y");
 
     Appendable output = new StringBuilder();
