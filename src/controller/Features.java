@@ -16,7 +16,7 @@ public interface Features {
   void addImageToLayer(String layer, String image, int x, int y);
 
   /**
-   * Allows the inherited class to implement functionality for adding a new layer, dependant on
+   * Allows the inherited class to implement functionality for adding a new layer, dependent on
    * its model.
    * @param layerName the name of the layer to add
    */

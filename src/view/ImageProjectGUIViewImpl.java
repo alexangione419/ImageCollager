@@ -28,7 +28,7 @@ import model.ImageProjectState;
 /**
  * Represents a Graphic User Interface for interacting with Image Collage Software.
  */
-public class ImageProjectGUIViewImpl extends JFrame implements ActionListener {
+public class ImageProjectGUIViewImpl extends JFrame implements ImageProjectGUIView, ActionListener {
 
   private ImageProjectState model; // The model this view will represent. Only has access to getter
   // methods for information purposes

@@ -1,13 +1,16 @@
 import controller.ControllerImpl;
 import controller.ImageProjectController;
-import controller.ImageProjectGUIController;
+import controller.ImageProjectGUIControllerImpl;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import controller.ImageProjectGUIController;
 import model.ImageProject;
 import model.ProjectImpl;
+import view.ImageProjectGUIView;
 import view.ImageProjectGUIViewImpl;
 import view.ImageProjectView;
 import view.PPMProjectTextView;
@@ -49,8 +52,8 @@ public class ImageProcessorMain {
     }
 
     else {
-      ImageProjectGUIViewImpl view = new ImageProjectGUIViewImpl(project);
-      ImageProjectGUIController controller = new ImageProjectGUIController(project);
+      ImageProjectGUIView view = new ImageProjectGUIViewImpl(project);
+      ImageProjectGUIController controller = new ImageProjectGUIControllerImpl(project);
 
       controller.start(view);
     }

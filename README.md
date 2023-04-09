@@ -128,6 +128,9 @@ created in the model, and so that creating a BufferedImage of our project would 
 ## Known Issues
 * The Save Project method takes extremely long for larger projects. 
 
+## Decoupling The View
+* Our view is fully decoupled from the rest of the project. For the Text View (interface and implementation) you only need to include the model state interface. This interface provides functionality for the view to observe the current state of the model. For the GUI View (interface and implementation), you need to inlcude the same model state interface, as well as a controller features interface. This features interface allows the GUI to make changes to the model indirectly, asking the controller to do something not worrying about how it gets done. 
+
 ### Image Citation
 * The Google Chrome logo used in our project was a png we converted to a P6 PPM file. We then 
 converted that P6 PPM file to a P3 PPM file. The logo was used in accordance with Google's policy
