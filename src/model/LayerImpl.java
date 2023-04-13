@@ -1,10 +1,16 @@
 package model;
 
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
+
 import model.filters.Filter;
 import model.pixels.Pixel;
 import model.pixels.RGBAPixel;
@@ -95,7 +101,69 @@ public final class LayerImpl implements Layer {
 
 
 
+    String fileExtension = "";
+    try {
+      String[] sp = imageFilename.split("[.]");
+      fileExtension = sp[sp.length-1];
+    }
+    catch (IndexOutOfBoundsException e) {
+      //ignore
+    }
 
+    if (fileExtension.equalsIgnoreCase("ppm")) {
+      addPPM(imageFilename, x, y);
+    } else {
+
+      BufferedImage img;
+      try {
+        img = ImageIO.read(new File(imageFilename));
+      } catch (IOException io) {
+        throw new IllegalArgumentException("Invalid Image Format");
+      }
+      decodeBuffered(img, x, y);
+    }
+
+    this.applyFilter(this.currentFilter);
+
+
+  }
+
+  /**
+   * Takes in a buffered image and adds each pixel to this layer's grid of pixels.
+   * @param img the buffered image to retrieve pixel data from
+   * @param x the x location to start adding the image
+   * @param y the y location to start adding the image
+   */
+  private void decodeBuffered(BufferedImage img, int x, int y) {
+    for (int i = y; i < y + img.getHeight(); i++) {
+      for (int j = x; j < x + img.getWidth(); j++) {
+
+        if (i >= this.project.getHeight()
+                || (j >= this.project.getWidth())) {
+          continue;
+        }
+
+        // Code from stack overflow to reverse bit shifting
+        // https://stackoverflow.com/a/22391906
+        int rgb = img.getRGB(j, i);
+        int red =   (rgb & 0x00ff0000) >> 16;
+        int green = (rgb & 0x0000ff00) >> 8;
+        int blue =  (rgb & 0x000000ff);
+
+
+        this.currentLayer[j][i] = new RGBAPixel(255, red, green, blue);
+        this.unfilteredLayer[j][i] = new RGBAPixel(255, red, green, blue);
+      }
+    }
+  }
+
+  /**
+   * Adds a ppm image to the current layer using ppm specific instructions.
+   * @param imageFilename the name of the file to get the image from
+   * @param x the x to place the image at on the layer
+   * @param y the y to place the image at on the layer
+   */
+  private void addPPM(String imageFilename, int x, int y) {
     Scanner sc;
 
     try {
@@ -123,7 +191,7 @@ public final class LayerImpl implements Layer {
         int b = sc.nextInt();
 
         if (y2 >= this.project.getHeight()
-            || (x2 >= this.project.getWidth())) {
+                || (x2 >= this.project.getWidth())) {
           continue;
         }
 
@@ -131,9 +199,6 @@ public final class LayerImpl implements Layer {
         this.unfilteredLayer[x2][y2] = new RGBAPixel(this.getMaxPixel(), r, g, b);
       }
     }
-
-    this.applyFilter(this.currentFilter);
-
   }
 
   @Override

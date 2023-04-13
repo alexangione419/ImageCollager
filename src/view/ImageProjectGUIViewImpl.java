@@ -229,7 +229,8 @@ public class ImageProjectGUIViewImpl extends JFrame implements ImageProjectGUIVi
     String s = "";
     while (s.equalsIgnoreCase("")) {
       final JFileChooser fileChooser = new JFileChooser(".");
-      fileChooser.setFileFilter(new FileNameExtensionFilter("PPM Images", "ppm"));
+      fileChooser.setFileFilter(new FileNameExtensionFilter(
+              "PPM, JPEG, JPG, PNG Accepted", "ppm", "jpg", "jpeg", "png"));
       fileChooser.setDialogTitle("Select an image to add.");
       if (fileChooser.showOpenDialog(ImageProjectGUIViewImpl.this)
               == JFileChooser.APPROVE_OPTION) {
