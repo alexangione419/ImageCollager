@@ -93,6 +93,9 @@ public final class LayerImpl implements Layer {
       throw new IllegalArgumentException("Invalid Coordinates given");
     }
 
+
+
+
     Scanner sc;
 
     try {
@@ -128,6 +131,7 @@ public final class LayerImpl implements Layer {
         this.unfilteredLayer[x2][y2] = new RGBAPixel(this.getMaxPixel(), r, g, b);
       }
     }
+
     this.applyFilter(this.currentFilter);
 
   }

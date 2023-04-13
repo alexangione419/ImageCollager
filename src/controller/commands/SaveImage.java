@@ -3,8 +3,14 @@ package controller.commands;
 import controller.ImageFileFormats;
 import controller.ImageProjectController;
 import controller.ImageProjectFileUtils;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
+
 import model.ImageProject;
 import model.pixels.Pixel;
 import view.ImageProjectView;
@@ -94,20 +100,35 @@ public final class SaveImage extends ACommand {
     catch (IndexOutOfBoundsException e) {
       //ignore
     }
-    if (ImageFileFormats.validFileFormat(fileExtension)
-        && ImageProjectFileUtils.isFileNameValid(name.split("[.]")[0])) {
-      String output = "P3\n"
-          + this.model.getWidth() + " " + this.model.getHeight() + "\n"
-          + this.model.getMaxPixelValue() + "\n"
-          + this.makeCanvasString() + "\n";
 
-      ImageProjectFileUtils.createFile(name + ".");
-      ImageProjectFileUtils.writeToFile(name + ".", output);
-    }
-    else {
+    if (ImageFileFormats.validFileFormat(fileExtension)
+            && ImageProjectFileUtils.isFileNameValid(name.split("[.]")[0])){
+      if (fileExtension.equalsIgnoreCase("ppm")) {
+        String output = "P3\n"
+                + this.model.getWidth() + " " + this.model.getHeight() + "\n"
+                + this.model.getMaxPixelValue() + "\n"
+                + this.makeCanvasString() + "\n";
+
+        ImageProjectFileUtils.createFile(name + ".");
+        ImageProjectFileUtils.writeToFile(name + ".", output);
+      } else {
+        try {
+          // retrieve image
+          BufferedImage bi = this.model.getImageRepresentation();
+          File outputfile = new File(name);
+          ImageIO.write(bi, fileExtension, outputfile);
+        } catch (IOException e) {
+          throw new IllegalArgumentException("Invalid file format."
+                  + " Please try a different file extension.");
+        }
+      }
+    } else {
       throw new IllegalArgumentException("Invalid file format."
-          + " Please try a different file extension.");
+              + " Please try a different file extension.");
     }
+
+
+
   }
 
   private String makeCanvasString() {
