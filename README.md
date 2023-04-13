@@ -13,7 +13,7 @@ image on that layer. It also stores a version of the image with no filters added
 a reference back to the project it is held in. 
 
 ## Command Line Configurations
-To use with a premade script
+To use with a pre-made script
 
 ```
 java -jar ImageCollager.jar -file script.txt
@@ -91,7 +91,7 @@ From there the user can type in the following commands (case-sensitive):
    ```
 
 ## Changes
-
+### From A4 to A5
 * In A5 we changed how we represent pixels and colors. In A4, pixels were represented by an
 integer array of 4 elements. These elements represented the red, green, blue, and alpha
 components of a Pixel. While this design works, it became too unclear for us and we saw that
@@ -116,9 +116,12 @@ expand the functionality of our code.
 current project image to creating a 2D list of Pixels, representing the image of our current 
 project. This was done both to ensure that string representations of our project were not being
 created in the model, and so that creating a BufferedImage of our project would be much easier.
+### From A5 to A6
+* We did not have to alter our existing design in order to implement the features asked for in A6. 
+Since the ppm format is not an accepted format by the java ImageIO class, we kept our 
+logic for adding and saving ppm images and added new logic for the formats jpeg, png, and jpg.
 
 ## Bug Fixes
-
 * The loadProject() method now works properly
 * The new-project and add-image-to-layer methods would throw an exception if given a double
   for their additional inputs. These commands now check to make sure that they are only given
@@ -126,7 +129,7 @@ created in the model, and so that creating a BufferedImage of our project would 
 * The controller will respond accordingly when given bad input, thus not causing the program to end.
 
 ## Known Issues
-* The Save Project method takes extremely long for larger projects. 
+* The Save Project method takes extremely long for larger projects.
 
 ## Decoupling The View
 * Our view is fully decoupled from the rest of the project. For the Text View (interface and implementation) you only need to include the model state interface. This interface provides functionality for the view to observe the current state of the model. For the GUI View (interface and implementation), you need to inlcude the same model state interface, as well as a controller features interface. This features interface allows the GUI to make changes to the model indirectly, asking the controller to do something not worrying about how it gets done. 
