@@ -1,12 +1,17 @@
 package model;
 
+import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
 
+import controller.ControllerImpl;
+import controller.ImageProjectController;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.StringReader;
 import java.util.HashMap;
 import model.filters.Filter;
 import model.filters.Normal;
@@ -15,6 +20,8 @@ import model.pixels.RGBAPixel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import view.ImageProjectView;
+import view.PPMProjectTextView;
 
 /**
  * A testing class for {@code ProjectImpl}.
@@ -809,7 +816,6 @@ public class ProjectImplTest {
     assertEquals(this.model.getName(), "Project1");
   }
 
-  /*
   @Test
   public void testImageRepresentation() {
     this.model.createNewProject(200, 200);
@@ -822,19 +828,16 @@ public class ProjectImplTest {
 
     BufferedImage img = this.model.getImageRepresentation();
 
-//    BufferedImage img2 = new BufferedImage()
     Pixel[][] proj = this.model.currentCanvas();
 
     for (int x = 0; x < this.model.getWidth(); x++) {
       for (int y = 0; y < this.model.getHeight(); y++) {
         int rgbVal = (proj[x][y].getRed() << 16)
             + (proj[x][y].getGreen() << 8) + proj[x][y].getBlue();
-
-        System.out.println(x + ", " + y);
-        assertEquals(rgbVal, img.getRGB(x, y))
+        
+        assertEquals(rgbVal, img.getRGB(x, y));
       }
     }
   }
-  */
 
 }

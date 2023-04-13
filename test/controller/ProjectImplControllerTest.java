@@ -98,6 +98,67 @@ public class ProjectImplControllerTest {
   }
 
   @Test
+  public void validSaveImagePNG() {
+    Readable input = new StringReader("quit y");
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
+    this.model.createNewProject(2, 2);
+    this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
+
+    try {
+      this.controller.saveImage("P1.ppm");
+      this.controller.saveProject("P1");
+    } catch (IOException io) {
+      fail(io.getMessage());
+    }
+
+    Scanner sc;
+
+    try {
+      sc = new Scanner(new FileInputStream("P1.collage"));
+    } catch (FileNotFoundException fnf) {
+      fail("File not found");
+    }
+    //checks that after saving the image, the loaded project is as expected
+    Pixel[][] curCanvas = this.model.currentCanvas();
+
+    this.controller.loadProject("P1.collage");
+
+    assertArrayEquals(this.model.currentCanvas(), curCanvas);
+
+    assertArrayEquals(new RGBAPixel[][]{{new RGBAPixel(255, 255, 0, 0),
+        new RGBAPixel(255, 255, 255, 255)},
+        {new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255)}}, curCanvas);
+    assertArrayEquals(new RGBAPixel[][]{{new RGBAPixel(255, 255, 0, 0),
+        new RGBAPixel(255, 255, 255, 255)},
+        {new RGBAPixel(255, 255, 255, 255),
+            new RGBAPixel(255, 255, 255, 255)}}, this.model.currentCanvas());
+  }
+
+  @Test
+  public void invalidSaveImageUnsupportedFormat() {
+    Readable input = new StringReader("quit y");
+    Appendable output = new StringBuilder();
+
+    this.model = new ProjectImpl();
+    this.view = new PPMProjectTextView(this.model, output);
+    this.controller = new ControllerImpl(this.model, this.view, input);
+    this.model.createNewProject(2, 2);
+    this.model.getActiveLayer().setPixelColor(0, 0, 255, 0, 0, 255);
+
+    try {
+      this.controller.saveImage("P1.gif");
+      this.controller.saveProject("P1");
+    } catch (IOException | IllegalArgumentException e) {
+      assertEquals("Unsupported file format.", e.getMessage());
+    }
+  }
+
+  @Test
   public void invalidSaveImage() {
     Readable input = new StringReader("quit y");
     Appendable output = new StringBuilder();
