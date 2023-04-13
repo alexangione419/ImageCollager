@@ -1,9 +1,15 @@
 package controller;
 
-import static org.junit.Assert.*;
+
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+/**
+ * Testing for our ImageFileFormat enum.
+ */
 public class ImageFileFormatsTest {
 
 
