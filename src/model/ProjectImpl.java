@@ -1,8 +1,6 @@
 package model;
 
 import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
-import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static java.awt.image.BufferedImage.TYPE_INT_BGR;
 
 import controller.commands.ACommand;
 import java.awt.image.BufferedImage;
@@ -347,7 +345,7 @@ public class ProjectImpl implements ImageProject {
 
   @Override
   public BufferedImage getImageRepresentation() {
-    BufferedImage image = new BufferedImage(this.width, this.height, TYPE_INT_ARGB);
+    BufferedImage image = new BufferedImage(this.width, this.height, TYPE_3BYTE_BGR);
     Pixel[][] proj = this.currentCanvas();
 
     for (int i = 0; i < this.width; i++) {
