@@ -102,7 +102,7 @@ public final class SaveImage extends ACommand {
     }
 
     if (ImageFileFormats.validFileFormat(fileExtension)
-            && ImageProjectFileUtils.isFileNameValid(name.split("[.]")[0])){
+            && ImageProjectFileUtils.isFileNameValid(name.split("[.]")[0])) {
       if (fileExtension.equalsIgnoreCase("ppm")) {
         String output = "P3\n"
                 + this.model.getWidth() + " " + this.model.getHeight() + "\n"

@@ -2,6 +2,9 @@ package view;
 
 import controller.Features;
 
+/**
+ * Represents an interface for a GUI view of an image processor.
+ */
 public interface ImageProjectGUIView {
 
   /**

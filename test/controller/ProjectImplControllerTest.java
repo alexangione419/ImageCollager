@@ -387,7 +387,8 @@ public class ProjectImplControllerTest {
       }
       fail("Whitespace passed as an argument");
     } catch (IllegalArgumentException e) {
-      assertEquals("No file extension present. Please provide a supported file extension.", e.getMessage());
+      assertEquals("No file extension present. Please provide a supported file extension."
+              , e.getMessage());
     }
 
     try {
@@ -398,7 +399,8 @@ public class ProjectImplControllerTest {
       }
       fail("Whitespace passed as an argument");
     } catch (IllegalArgumentException e) {
-      assertEquals("No file extension present. Please provide a supported file extension.", e.getMessage());
+      assertEquals("No file extension present. Please provide a supported file extension."
+              , e.getMessage());
     }
 
     try {
@@ -409,7 +411,8 @@ public class ProjectImplControllerTest {
       }
       fail("Whitespace passed as an argument");
     } catch (IllegalArgumentException e) {
-      assertEquals("No file extension present. Please provide a supported file extension.", e.getMessage());
+      assertEquals("No file extension present. Please provide a supported file extension."
+              , e.getMessage());
     }
   }
 

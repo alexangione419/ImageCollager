@@ -104,7 +104,7 @@ public final class LayerImpl implements Layer {
     String fileExtension = "";
     try {
       String[] sp = imageFilename.split("[.]");
-      fileExtension = sp[sp.length-1];
+      fileExtension = sp[sp.length - 1];
     }
     catch (IndexOutOfBoundsException e) {
       //ignore

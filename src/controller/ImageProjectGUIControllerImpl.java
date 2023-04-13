@@ -30,11 +30,7 @@ public class ImageProjectGUIControllerImpl implements ImageProjectGUIController 
     this.model = model;
   }
 
-  /**
-   * Allows the controller to initialize the GUI view.
-   * @param view the GUI to run
-   * @throws IllegalStateException if the provided view is null
-   */
+  @Override
   public void start(ImageProjectGUIView view) throws IllegalStateException {
     if (view == null) {
       throw new IllegalArgumentException("View argument cannot be null.");

@@ -28,9 +28,7 @@ import model.pixels.Pixel;
 import model.pixels.PixelUtils;
 
 /**
- * A class that represents a PPM Image Project. PPM is an image file format that contains rows and
- * columns, each containing the red, green, and blue values for each pixel in an image. The PPM
- * files that this class takes in also contain the alpha value of an image.
+ * A class that represents an Image Project. The supported Image types are ppm, jpg, jpeg, and png.
  */
 public class ProjectImpl implements ImageProject {
 
@@ -46,7 +44,7 @@ public class ProjectImpl implements ImageProject {
   private boolean hasAOpenProject;
 
   /**
-   * Constructs a new PPMProject and initializes layers to an ArrayList of {@code Layer}s and sets
+   * Constructs a new Project and initializes layers to an ArrayList of {@code Layer}s and sets
    * the name to "New Project".
    */
   public ProjectImpl() {
