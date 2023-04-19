@@ -1,3 +1,12 @@
+## Decoupling The View
+* Our view is fully decoupled from the rest of the project. For the Text View (interface and
+implementation) you only need to include the model state interface. This interface provides 
+functionality for the view to observe the current state of the model. For the GUI View 
+(interface and implementation), you need to includes the same model state interface, as well 
+as a controller features interface. This features interface allows the GUI to make changes to 
+the model indirectly, asking the controller to do something not worrying about how it gets done.
+
+
 ## Decoupling the Controller
 * For our controller, in order to compile, it requires a few things from within its own controller
 package
