@@ -1,3 +1,84 @@
+## Command Line Configurations
+To use with a pre-made script
+
+```
+java -jar ImageCollager.jar -file script.txt
+```
+
+To use in text view mode
+```
+java -jar ImageCollager.jar -text
+```
+
+To use in GUI mode
+```
+java -jar ImageCollager.jar
+```
+
+## How to Use Text View
+
+Start the program with the argument "Text".
+
+Once this occurs, and the main method runs, the console will output
+"Welcome to our Image Processor." and then "Awaiting command:".
+
+From there the user can type in the following commands (case-sensitive):
+
+1. **help**: Outputs every valid command the user can input along with their descriptions.
+2. **?**: Does the same as the help command.
+3. **quit**: Exits the program.
+4. **q**: Exits the program.
+3. **filter-list**: Outputs every supported filter that the user can apply to a layer.
+4. **new-project**: Starts a new project once given two more additional inputs:
+   two non-zero positive integers.
+  * Example:
+   ``` 
+   new-project 32 32
+   ```
+
+### The following commands will fail if there is no project open:
+
+5. **save-project**: Saves the current project as a .collage file once given an additional input:
+   this input is the file name and must not contain a period or be just whitespace.
+  * Example:
+   ``` 
+   new-project 2 2 
+   save-project myProject
+   ```
+6. **add-layer**: Adds a new layer to an open project once given one additional input:
+   a name for the layer. The layer name cannot contain any spaces or linebreaks.
+  * Example:
+   ``` 
+   new-project 2 2 
+   add-layer Layer2
+   ```
+7. **add-image-to-layer**: Adds an image from an existing .ppm image once given 3 additional inputs:
+   the layer name to put the image on, the filepath location of the .ppm image, and two positive
+   integers, representing coordinates on the canvas.
+  * Example:
+   ``` 
+   new-project 2 2 
+   add-image-to-layer Layer1 ./res/smol.ppm 0 0
+   ```
+8. **set-filter**: Sets a filter to a layer once given the filter name and then the layer name.
+  * Example:
+   ``` 
+   new-project 2 2 
+   set-filter red-component Layer1
+   ```
+9. **save-image**: Saves the image currently displayed on the canvas as a .ppm image. This removes
+   the alpha component of every pixel present on the canvas.
+  * Example:
+   ``` 
+   new-project 2 2 
+   add-image-to-layer Layer1 ./res/smol.ppm 0 0
+   set-filter red-component Layer1
+   save-image redSmol
+   ```
+
+
+
+
 ## How to use GUI View
 * First, select either "New Project" or "Load Project" to either create a new project or load one, 
 respectively.
