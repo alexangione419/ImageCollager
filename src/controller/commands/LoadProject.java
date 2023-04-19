@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import model.ImageProject;
-import model.pixels.RGBAPixel;
 import view.ImageProjectView;
 
 /**
@@ -135,8 +134,7 @@ public final class LoadProject extends ACommand {
 
             int a = sc.nextInt();
 
-            this.model.getActiveLayer().setPixelColor(x, y,
-                new RGBAPixel(this.model.getMaxPixelValue(), r, g, b, a));
+            this.model.getActiveLayer().setPixelColor(x, y, r, g, b, a);
           }
         }
       }
