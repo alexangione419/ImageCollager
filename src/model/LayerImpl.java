@@ -143,7 +143,7 @@ public final class LayerImpl implements Layer {
 
         // Code from stack overflow to reverse bit shifting
         // https://stackoverflow.com/a/22391906
-        int rgb = img.getRGB(j, i);
+        int rgb = img.getRGB(j - x, i - y);
         int red =   (rgb & 0x00ff0000) >> 16;
         int green = (rgb & 0x0000ff00) >> 8;
         int blue =  (rgb & 0x000000ff);
