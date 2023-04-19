@@ -8,9 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
-
 import javax.imageio.ImageIO;
-
 import model.filters.Filter;
 import model.pixels.Pixel;
 import model.pixels.RGBAPixel;

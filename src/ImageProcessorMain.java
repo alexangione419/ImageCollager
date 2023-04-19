@@ -1,13 +1,11 @@
 import controller.ControllerImpl;
 import controller.ImageProjectController;
+import controller.ImageProjectGUIController;
 import controller.ImageProjectGUIControllerImpl;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-import controller.ImageProjectGUIController;
 import model.ImageProject;
 import model.ProjectImpl;
 import view.ImageProjectGUIView;

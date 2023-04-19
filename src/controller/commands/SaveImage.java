@@ -3,14 +3,11 @@ package controller.commands;
 import controller.ImageFileFormats;
 import controller.ImageProjectController;
 import controller.ImageProjectFileUtils;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
-
 import javax.imageio.ImageIO;
-
 import model.ImageProject;
 import model.pixels.Pixel;
 import view.ImageProjectView;
@@ -126,9 +123,6 @@ public final class SaveImage extends ACommand {
       throw new IllegalArgumentException("Invalid file format."
               + " Please try a different file extension.");
     }
-
-
-
   }
 
   private String makeCanvasString() {
